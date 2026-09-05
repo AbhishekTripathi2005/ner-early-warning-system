@@ -585,7 +585,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
             <div style="position:relative;width:38px;height:38px;display:flex;align-items:center;justify-content:center;">
               <div style="position:absolute;width:100%;height:100%;border-radius:50%;background:${badgeColor};opacity:0.35;animation:ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
               <div style="position:relative;width:30px;height:30px;border-radius:50%;background:#090d16;border:2px solid ${badgeColor};display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px ${badgeColor};cursor:pointer;">
-                <span style="font-size:14px;">📸</span>
+                <span style="font-size:14px;">${rep.mediaType === "video" ? "🎥" : "📸"}</span>
               </div>
               <div style="position:absolute;bottom:-2px;right:-2px;width:10px;height:10px;border-radius:50%;background:${badgeColor};border:1.5px solid white;"></div>
             </div>
@@ -598,8 +598,12 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
 
         const popupContent = `
           <div style="min-width:210px;font-family:sans-serif;color:#1e293b;">
-            <div style="width:100%;height:100px;border-radius:6px;overflow:hidden;margin-bottom:6px;background:#000;">
-              <img src="${rep.photoUrl}" style="width:100%;height:100%;object-fit:cover;" />
+            <div style="width:100%;height:110px;border-radius:6px;overflow:hidden;margin-bottom:6px;background:#000;">
+              ${
+                rep.mediaType === "video"
+                  ? `<video src="${rep.photoUrl}" controls style="width:100%;height:100%;object-fit:cover;"></video>`
+                  : `<img src="${rep.photoUrl}" style="width:100%;height:100%;object-fit:cover;" />`
+              }
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;">
               <b style="font-size:12px;color:#0f172a;">${rep.hazard}</b>
@@ -736,7 +740,11 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
         const popupContent = `
           <div style="min-width:220px;font-family:sans-serif;color:#1e293b;">
             <div style="width:100%;height:110px;border-radius:8px;overflow:hidden;margin-bottom:8px;background:#000;">
-              <img src="${matched.photoUrl}" style="width:100%;height:100%;object-fit:cover;" />
+              ${
+                matched.mediaType === "video"
+                  ? `<video src="${matched.photoUrl}" controls style="width:100%;height:100%;object-fit:cover;"></video>`
+                  : `<img src="${matched.photoUrl}" style="width:100%;height:100%;object-fit:cover;" />`
+              }
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
               <b style="font-size:13px;color:#0f172a;">${matched.hazard}</b>

@@ -57,3 +57,50 @@ async def broadcast_alert(payload: BroadcastRequest):
         },
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+# In-memory store fallback for feedback logs
+FEEDBACK_LOGS = [
+    {
+        "id": 1,
+        "alert_id": 101,
+        "alert_title": "RED ALERT: Imminent Slope Failure Threat in East Khasi Hills",
+        "feedback_type": "CONFIRMED",
+        "officer_name": "Major Arvind Sharma",
+        "officer_badge": "NDRF-NER-884",
+        "observed_rainfall_mm": 285.5,
+        "notes": "Verified 6m toe blowout along NH-206. Evacuation order validated.",
+        "created_at": datetime.utcnow().isoformat()
+    }
+]
+
+
+@router.post("/feedback", summary="Log Ground-Truth Feedback for Model Retraining")
+async def log_alert_feedback(feedback: dict):
+    """
+    Officer feedback logging for continuous AI model retraining:
+    Stores Confirmed (TP), False Alarm (FP), and Missed Event (FN).
+    """
+    record = {
+        "id": len(FEEDBACK_LOGS) + 1,
+        "alert_id": feedback.get("alert_id"),
+        "alert_title": feedback.get("alert_title", "Unclassified / Missed Event"),
+        "feedback_type": feedback.get("feedback_type", "CONFIRMED"),
+        "officer_name": feedback.get("officer_name", "Anonymous Officer"),
+        "officer_badge": feedback.get("officer_badge", "NER-SDRF"),
+        "observed_rainfall_mm": feedback.get("observed_rainfall_mm"),
+        "notes": feedback.get("notes", ""),
+        "created_at": datetime.utcnow().isoformat()
+    }
+    FEEDBACK_LOGS.insert(0, record)
+    return {
+        "status": "success",
+        "message": "Ground-truth feedback recorded in retraining pipeline.",
+        "entry": record
+    }
+
+
+@router.get("/feedback", summary="List Model Feedback Audit Trail")
+async def get_alert_feedback():
+    """Retrieve all ground-truth validation logs."""
+    return FEEDBACK_LOGS

@@ -1,8 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Upload, Camera, Image as ImageIcon, MapPin, AlertTriangle, CheckCircle, ShieldAlert } from "lucide-react";
+import {
+  X,
+  Upload,
+  Camera,
+  Video,
+  Image as ImageIcon,
+  MapPin,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Compass,
+  FileVideo
+} from "lucide-react";
 import { Language, translations } from "../../lib/i18n";
+import { offlineDb } from "../../lib/offlineDb";
 
 export interface CitizenReportData {
   id: number;
@@ -17,10 +30,15 @@ export interface CitizenReportData {
   severity: "MODERATE" | "HIGH" | "SEVERE";
   desc: string;
   photoUrl: string;
+  mediaType: "image" | "video";
+  videoUrl?: string;
+  durationSeconds?: number;
+  capturedAt?: string;
   status: "PENDING_REVIEW" | "VERIFIED_TRUE_ALARM" | "DISMISSED_FALSE_ALARM";
   time: string;
   aiCorrelationScore?: number;
   aiCorrelationNote?: string;
+  isOfflineQueued?: boolean;
 }
 
 interface CitizenReportModalProps {
@@ -30,10 +48,11 @@ interface CitizenReportModalProps {
   lang: Language;
 }
 
-// 3 Realistic Ground Hazard Samples for 1-Click Instant Demo
-const SAMPLE_PRESET_PHOTOS = [
+// Realistic Ground Hazard Samples for 1-Click Instant Demo (Photos + 1 Video)
+const SAMPLE_PRESETS = [
   {
     title: "Hill Slope Crack (Singtam)",
+    mediaType: "image" as const,
     hazard: "New Hill Fissure / Creep",
     district: "East Sikkim",
     state: "Sikkim",
@@ -45,7 +64,22 @@ const SAMPLE_PRESET_PHOTOS = [
     desc: "Active 4-inch tension fissure spreading across the upper slope cut above primary road."
   },
   {
+    title: "Active Debris Clip (12s Video)",
+    mediaType: "video" as const,
+    hazard: "Active Highway Mudflow & Gravel",
+    district: "Dima Hasao",
+    state: "Assam",
+    location: "Haflong Hill Cutting (Km 42)",
+    lat: 25.17,
+    lon: 93.02,
+    severity: "SEVERE" as const,
+    url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    durationSeconds: 12,
+    desc: "Continuous slope collapse and saturated soil sliding onto road shoulder captured live."
+  },
+  {
     title: "Retaining Wall Bulge (Cherrapunji)",
+    mediaType: "image" as const,
     hazard: "Retaining Wall Bulging",
     district: "East Khasi Hills",
     state: "Meghalaya",
@@ -55,18 +89,6 @@ const SAMPLE_PRESET_PHOTOS = [
     severity: "HIGH" as const,
     url: "https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=600&q=80",
     desc: "Concrete road culvert retaining wall tilting outward with muddy spring water seepage."
-  },
-  {
-    title: "Mudflow Debris Choke (Diphu)",
-    hazard: "Debris Mudflow Choking Highway",
-    district: "Karbi Anglong",
-    state: "Assam",
-    location: "Diphu-Lumding Hill Cut (Km 18)",
-    lat: 25.84,
-    lon: 93.44,
-    severity: "SEVERE" as const,
-    url: "https://images.unsplash.com/photo-1618083707368-b3823daa2726?auto=format&fit=crop&w=600&q=80",
-    desc: "Sludge and saturated gravel sliding down embankment directly obstructing one traffic lane."
   }
 ];
 
@@ -76,12 +98,14 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
   onSubmitReport,
   lang
 }) => {
-  const t = translations[lang];
+  const t = translations[lang] || translations.en;
 
+  const [activeMediaTab, setActiveMediaTab] = useState<"image" | "video">("image");
   const [reporterName, setReporterName] = useState("");
   const [reporterPhone, setReporterPhone] = useState("");
   const [selectedPresetIndex, setSelectedPresetIndex] = useState<number | null>(0);
-  const [customPhotoUrl, setCustomPhotoUrl] = useState<string>(SAMPLE_PRESET_PHOTOS[0].url);
+  const [mediaUrl, setMediaUrl] = useState<string>(SAMPLE_PRESETS[0].url);
+  const [videoDuration, setVideoDuration] = useState<number>(0);
   const [hazardType, setHazardType] = useState("New Hill Fissure / Creep");
   const [district, setDistrict] = useState("East Sikkim");
   const [stateName, setStateName] = useState("Sikkim");
@@ -89,33 +113,69 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
   const [lat, setLat] = useState(27.23);
   const [lon, setLon] = useState(88.50);
   const [severity, setSeverity] = useState<"MODERATE" | "HIGH" | "SEVERE">("SEVERE");
-  const [description, setDescription] = useState(SAMPLE_PRESET_PHOTOS[0].desc);
+  const [description, setDescription] = useState(SAMPLE_PRESETS[0].desc);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadFeedback, setUploadFeedback] = useState<string | null>(null);
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [videoWarning, setVideoWarning] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
-  // Handle local file upload (converts to Base64)
+  // Handle local file upload (Photo or Video with duration validation)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.result) {
-        setCustomPhotoUrl(reader.result as string);
-        setSelectedPresetIndex(null);
-        setUploadFeedback(`Selected file: ${file.name}`);
-      }
-    };
-    reader.readAsDataURL(file);
+    const isVideo = file.type.startsWith("video/");
+    setVideoWarning(null);
+
+    if (isVideo) {
+      setActiveMediaTab("video");
+      const videoElement = document.createElement("video");
+      videoElement.preload = "metadata";
+      videoElement.src = URL.createObjectURL(file);
+
+      videoElement.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(videoElement.src);
+        const duration = Math.round(videoElement.duration);
+        setVideoDuration(duration);
+
+        if (duration > 20) {
+          setVideoWarning(`⚠️ Video is ${duration}s long. Please keep videos under 15-20s for low-bandwidth field sync.`);
+        } else {
+          setUploadFeedback(`Selected video clip (${duration}s): ${file.name}`);
+        }
+      };
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setMediaUrl(reader.result as string);
+          setSelectedPresetIndex(null);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setActiveMediaTab("image");
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setMediaUrl(reader.result as string);
+          setSelectedPresetIndex(null);
+          setUploadFeedback(`Selected photo: ${file.name}`);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Quick Preset Selection
   const applyPreset = (index: number) => {
-    const preset = SAMPLE_PRESET_PHOTOS[index];
+    const preset = SAMPLE_PRESETS[index];
     setSelectedPresetIndex(index);
-    setCustomPhotoUrl(preset.url);
+    setActiveMediaTab(preset.mediaType);
+    setMediaUrl(preset.url);
+    setVideoDuration(preset.durationSeconds || 0);
     setHazardType(preset.hazard);
     setDistrict(preset.district);
     setStateName(preset.state);
@@ -124,14 +184,40 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
     setLon(preset.lon);
     setSeverity(preset.severity);
     setDescription(preset.desc);
+    setVideoWarning(null);
     setUploadFeedback(`Applied sample: ${preset.title}`);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Auto-Detect Current GPS Coordinates
+  const handleDetectGPS = () => {
+    if (typeof window === "undefined" || !("geolocation" in navigator)) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    setIsDetectingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLat(parseFloat(pos.coords.latitude.toFixed(4)));
+        setLon(parseFloat(pos.coords.longitude.toFixed(4)));
+        setLocationName(`Current GPS (${pos.coords.latitude.toFixed(2)}°N, ${pos.coords.longitude.toFixed(2)}°E)`);
+        setUploadFeedback(`📍 Accurate GPS acquired: ${pos.coords.latitude.toFixed(4)}°N, ${pos.coords.longitude.toFixed(4)}°E`);
+        setIsDetectingLocation(false);
+      },
+      (err) => {
+        alert("GPS detection failed: " + err.message + ". Keeping existing coordinates.");
+        setIsDetectingLocation(false);
+      },
+      { timeout: 8000, enableHighAccuracy: true }
+    );
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const reportId = Math.floor(500 + Math.random() * 400);
+    const nowIso = new Date().toISOString();
 
     const newReport: CitizenReportData = {
       id: reportId,
@@ -145,23 +231,42 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
       hazard: hazardType,
       severity: severity,
       desc: description,
-      photoUrl: customPhotoUrl,
+      photoUrl: mediaUrl,
+      mediaType: activeMediaTab,
+      videoUrl: activeMediaTab === "video" ? mediaUrl : undefined,
+      durationSeconds: activeMediaTab === "video" ? (videoDuration || 12) : undefined,
+      capturedAt: nowIso,
       status: "PENDING_REVIEW",
       time: "Just now",
-      aiCorrelationScore: severity === "SEVERE" ? 0.92 : severity === "HIGH" ? 0.78 : 0.54,
-      aiCorrelationNote: `Ground observation coordinates (${lat.toFixed(2)}, ${lon.toFixed(2)}) align with GSI Susceptibility Zone (${district}). Recent 48h rainfall exceeds slope failure threshold.`
+      aiCorrelationScore: severity === "SEVERE" ? 0.94 : severity === "HIGH" ? 0.78 : 0.54,
+      aiCorrelationNote: `Ground observation (${lat.toFixed(2)}, ${lon.toFixed(2)}) validated against GSI Slope Susceptibility layer (${district}). Recent 48h rainfall exceeds critical threshold.`,
+      isOfflineQueued: typeof navigator !== "undefined" && !navigator.onLine
     };
+
+    // If Offline: Queue into IndexedDB
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      try {
+        await offlineDb.queueReport({
+          ...newReport,
+          timestamp: Date.now(),
+          isOfflineQueued: true
+        });
+        alert("⚡ Stored in Offline Queue: You are currently offline. This report will automatically sync once your internet connection is restored.");
+      } catch (err) {
+        console.error("Failed to queue offline report:", err);
+      }
+    }
 
     setTimeout(() => {
       onSubmitReport(newReport);
       setIsSubmitting(false);
       onClose();
-    }, 600);
+    }, 500);
   };
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#0e1424] border border-gray-700 shadow-2xl p-5 sm:p-6 text-slate-100 space-y-5">
+      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#0e1424] border border-gray-700 shadow-2xl p-4 sm:p-6 text-slate-100 space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-gray-800">
           <div className="flex items-center space-x-2.5">
@@ -173,7 +278,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                 {t.reportModalTitle}
               </h3>
               <p className="text-xs text-gray-400">
-                Geo-tagged Ground Observation &bull; Instant Early Warning Map Sync
+                Photo & Video (Max 20s) &bull; Auto GPS &bull; Offline Resilient Queue
               </p>
             </div>
           </div>
@@ -186,49 +291,90 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* 1. Photo Selection: Upload File OR Pick Quick Sample */}
+          {/* 1. Media Type Selector: Photo vs Video */}
           <div className="space-y-2">
-            <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider">
-              {t.uploadPhoto}
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-gray-300 uppercase tracking-wider">
+                {t.uploadPhoto}
+              </label>
+              <div className="flex items-center space-x-1 bg-slate-900 border border-gray-800 p-0.5 rounded-lg text-xs">
+                <button
+                  type="button"
+                  onClick={() => setActiveMediaTab("image")}
+                  className={`px-3 py-1 rounded-md font-bold flex items-center gap-1.5 transition ${
+                    activeMediaTab === "image"
+                      ? "bg-rose-600 text-white shadow-sm"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>Photo</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveMediaTab("video")}
+                  className={`px-3 py-1 rounded-md font-bold flex items-center gap-1.5 transition ${
+                    activeMediaTab === "video"
+                      ? "bg-rose-600 text-white shadow-sm"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  <Video className="w-3.5 h-3.5" />
+                  <span>Video (15-20s)</span>
+                </button>
+              </div>
+            </div>
 
             {/* Quick Sample Selector Buttons */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
               <span className="text-[11px] text-gray-400 shrink-0 font-medium">Demo Samples:</span>
-              {SAMPLE_PRESET_PHOTOS.map((preset, idx) => (
+              {SAMPLE_PRESETS.map((preset, idx) => (
                 <button
                   type="button"
                   key={preset.title}
                   onClick={() => applyPreset(idx)}
-                  className={`text-xs px-2.5 py-1 rounded-lg border transition shrink-0 ${
+                  className={`text-xs px-2.5 py-1 rounded-lg border transition shrink-0 flex items-center gap-1.5 ${
                     selectedPresetIndex === idx
                       ? "bg-sky-600 text-white border-sky-400 font-bold shadow-md shadow-sky-600/30"
                       : "bg-slate-900/80 text-gray-400 border-gray-700 hover:text-white hover:border-gray-600"
                   }`}
                 >
-                  {preset.title}
+                  {preset.mediaType === "video" ? (
+                    <FileVideo className="w-3 h-3 text-amber-300" />
+                  ) : (
+                    <ImageIcon className="w-3 h-3 text-sky-300" />
+                  )}
+                  <span>{preset.title}</span>
                 </button>
               ))}
             </div>
 
-            {/* Photo Preview & Custom Upload Box */}
+            {/* Media Preview & Upload Box */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-              {/* Image Preview Box */}
+              {/* Media Preview Box */}
               <div className="relative h-44 rounded-xl border border-gray-700 bg-slate-950 overflow-hidden flex items-center justify-center group shadow-inner">
-                {customPhotoUrl ? (
+                {activeMediaTab === "video" ? (
+                  <video
+                    src={mediaUrl}
+                    controls
+                    className="w-full h-full object-cover"
+                    poster="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=600&q=80"
+                  />
+                ) : mediaUrl ? (
                   <img
-                    src={customPhotoUrl}
+                    src={mediaUrl}
                     alt="Hazard Preview"
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                 ) : (
                   <div className="text-center p-4 text-gray-500">
                     <ImageIcon className="w-8 h-8 mx-auto mb-1 opacity-50" />
-                    <span className="text-xs">No image selected</span>
+                    <span className="text-xs">No media selected</span>
                   </div>
                 )}
-                <div className="absolute top-2 left-2 bg-black/70 backdrop-blur px-2 py-0.5 rounded text-[10px] text-sky-300 font-mono">
-                  {severity} HAZARD
+                <div className="absolute top-2 left-2 bg-black/75 backdrop-blur px-2 py-0.5 rounded text-[10px] text-sky-300 font-mono flex items-center gap-1 pointer-events-none">
+                  {activeMediaTab === "video" ? <Video className="w-3 h-3 text-amber-400" /> : <Camera className="w-3 h-3 text-sky-400" />}
+                  <span>{activeMediaTab.toUpperCase()} &bull; {severity}</span>
                 </div>
               </div>
 
@@ -237,20 +383,27 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                 <label className="flex flex-col items-center justify-center h-44 border-2 border-dashed border-gray-700 hover:border-sky-500 rounded-xl bg-slate-900/50 cursor-pointer p-4 text-center transition group">
                   <Upload className="w-8 h-8 text-sky-400 group-hover:-translate-y-1 transition duration-200 mb-2" />
                   <span className="text-xs font-bold text-gray-200">
-                    Click to browse your device
+                    Click to browse device file
                   </span>
                   <span className="text-[10px] text-gray-400 mt-1">
-                    Supports JPG, PNG, WEBP from camera or gallery
+                    Supports Photos (JPG, PNG) & Videos (MP4, WebM, max 20s)
                   </span>
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/*,video/mp4,video/webm,video/quicktime"
                     onChange={handleFileUpload}
                     className="hidden"
                   />
                 </label>
               </div>
             </div>
+
+            {videoWarning && (
+              <p className="text-[11px] text-amber-400 font-medium flex items-center gap-1">
+                <AlertTriangle className="w-3.5 h-3.5" /> {videoWarning}
+              </p>
+            )}
+
             {uploadFeedback && (
               <p className="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
                 <CheckCircle className="w-3.5 h-3.5" /> {uploadFeedback}
@@ -270,8 +423,8 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                 className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
               >
                 <option value="New Hill Fissure / Creep">New Hill Fissure / Creep</option>
+                <option value="Active Highway Mudflow & Gravel">Active Highway Mudflow & Gravel</option>
                 <option value="Retaining Wall Bulging">Retaining Wall Failure / Bulging</option>
-                <option value="Debris Mudflow Choking Highway">Debris Mudflow Choking Highway</option>
                 <option value="Active Rockfall / Boulder Rolling">Active Rockfall / Boulder Rolling</option>
                 <option value="Road Embankment Subsidence">Road Embankment Subsidence</option>
               </select>
@@ -304,46 +457,56 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
             </div>
           </div>
 
-          {/* 3. Location / Coordinates */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">
-                Sector / District
+          {/* 3. Location / Coordinates with Auto-GPS Button */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-gray-400">
+                Geo-Location Coordinates
               </label>
-              <input
-                type="text"
-                value={locationName}
-                onChange={(e) => setLocationName(e.target.value)}
-                placeholder="e.g. Singtam Flank, NH-10"
-                className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
-                required
-              />
+              <button
+                type="button"
+                onClick={handleDetectGPS}
+                disabled={isDetectingLocation}
+                className="text-[11px] text-sky-400 hover:text-sky-300 font-bold flex items-center gap-1 bg-sky-950/60 border border-sky-600/40 px-2 py-0.5 rounded-lg transition"
+              >
+                <Compass className={`w-3 h-3 ${isDetectingLocation ? "animate-spin" : ""}`} />
+                <span>{isDetectingLocation ? "Acquiring GPS..." : "📍 Auto-Detect My GPS"}</span>
+              </button>
             </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">
-                Latitude (°N)
-              </label>
-              <input
-                type="number"
-                step="0.001"
-                value={lat}
-                onChange={(e) => setLat(parseFloat(e.target.value) || 0)}
-                className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">
-                Longitude (°E)
-              </label>
-              <input
-                type="number"
-                step="0.001"
-                value={lon}
-                onChange={(e) => setLon(parseFloat(e.target.value) || 0)}
-                className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
-                required
-              />
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <input
+                  type="text"
+                  value={locationName}
+                  onChange={(e) => setLocationName(e.target.value)}
+                  placeholder="e.g. Singtam Flank, NH-10"
+                  className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  type="number"
+                  step="0.0001"
+                  value={lat}
+                  onChange={(e) => setLat(parseFloat(e.target.value) || 0)}
+                  placeholder="Latitude (°N)"
+                  className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  type="number"
+                  step="0.0001"
+                  value={lon}
+                  onChange={(e) => setLon(parseFloat(e.target.value) || 0)}
+                  placeholder="Longitude (°E)"
+                  className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
+                  required
+                />
+              </div>
             </div>
           </div>
 
@@ -356,7 +519,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
               rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe width of crack, muddy water flow, or threatening structures..."
+              placeholder="Describe width of crack, rate of mudflow, threatening buildings or road obstruction..."
               className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 leading-relaxed"
               required
             ></textarea>
@@ -372,7 +535,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                 type="text"
                 value={reporterName}
                 onChange={(e) => setReporterName(e.target.value)}
-                placeholder="e.g. Ramesh Kalita (Local Panchayat Scout)"
+                placeholder="e.g. Ramesh Kalita (Village Volunteer)"
                 className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
               />
             </div>
@@ -408,7 +571,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                 <span>Syncing to Early Warning Map...</span>
               ) : (
                 <>
-                  <Camera className="w-3.5 h-3.5" />
+                  {activeMediaTab === "video" ? <Video className="w-3.5 h-3.5" /> : <Camera className="w-3.5 h-3.5" />}
                   <span>Submit Ground Report to Map</span>
                 </>
               )}

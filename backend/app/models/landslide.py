@@ -122,3 +122,17 @@ class SensorTelemetry(Base):
     unit = Column(String(20))
     recorded_at = Column(DateTime, default=datetime.datetime.utcnow)
     geom = Column(Geometry(geometry_type="POINT", srid=4326), nullable=True)
+
+
+class AlertFeedbackLog(Base):
+    __tablename__ = "alert_feedback_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    alert_id = Column(Integer, nullable=True)
+    alert_title = Column(String(200), nullable=True)
+    feedback_type = Column(String(50), nullable=False)  # CONFIRMED | FALSE_ALARM | MISSED_EVENT
+    officer_name = Column(String(100), nullable=False)
+    officer_badge = Column(String(50), nullable=True)
+    observed_rainfall_mm = Column(Float, nullable=True)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
