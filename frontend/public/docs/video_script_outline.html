@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIH26001 - Video Walkthrough Script (2-3 Min)</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background: #f8fafc;
+      line-height: 1.4;
+      font-size: 11px;
+      padding: 16px;
+    }
+    .page-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 24px 28px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+    .no-print {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .btn-download {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-download:hover {
+      background: #0369a1;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .page-container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    .header {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: uppercase;
+    }
+    .header-sub {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .scene-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 9px 12px;
+      margin-bottom: 9px;
+      page-break-inside: avoid;
+    }
+    .scene-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+    }
+    .scene-title {
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 11.5px;
+    }
+    .timestamp {
+      background: #0284c7;
+      color: white;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .visuals {
+      font-size: 10.5px;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    .narration {
+      background: #ffffff;
+      border-left: 3px solid #0284c7;
+      padding: 6px 10px;
+      font-style: italic;
+      color: #0f172a;
+      font-size: 10.5px;
+      border-radius: 0 4px 4px 0;
+    }
+    .pro-tips {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 12px;
+      font-size: 10.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen-Only Download Toolbar -->
+  <div class="no-print">
+    <div>
+      <span style="font-weight: bold;">🎬 SIH 2026 Video Script Outline</span>
+      <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">2 Min 45 Sec Scene-by-Scene Walkthrough</span>
+    </div>
+    <button class="btn-download" onclick="window.print()">
+      📥 Save / Download as PDF
+    </button>
+  </div>
+
+  <div class="page-container">
+    <div class="header">
+      <h1>Prototype Walkthrough Video Script & Narration Outline</h1>
+      <div class="header-sub">Problem Statement SIH26001 &bull; Ministry of Development of North Eastern Region (MDoNER) &bull; Target: 165s</div>
+    </div>
+
+    <!-- Scene 1 -->
+    <div class="scene-card">
+      <div class="scene-header">
+        <span class="scene-title">Scene 1: Introduction & The North-East Himalayan Reality</span>
+        <span class="timestamp">0:00 &ndash; 0:20</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> Dashboard header, live IST clock, SIH26001 MDoNER badge, clean dark command center layout.</div>
+      <div class="narration">
+        &ldquo;Every monsoon, the North Eastern Region of India faces severe landslides that claim lives and cut off entire mountain valleys. Under Problem Statement SIH26001 for MDoNER, we have built a cloud-native, physics-and-AI hybrid early warning platform designed specifically for the unique terrain and communication challenges of North East India.&rdquo;
+      </div>
+    </div>
+
+    <!-- Scene 2 -->
+    <div class="scene-card">
+      <div class="scene-header">
+        <span class="scene-title">Scene 2: Watermark-Free Esri GIS & Multi-Layer Zonation</span>
+        <span class="timestamp">0:20 &ndash; 0:45</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> Scroll to GIS Map; click camera jump buttons (Sikkim, Cherrapunji, Dima Hasao); toggle layer checkboxes.</div>
+      <div class="narration">
+        &ldquo;Our dashboard features a clean, watermark-free Esri Dark Gray vector GIS engine. Incident commanders can instantly jump between vulnerable hotspots—from Sikkim's Teesta corridor to Meghalaya's Sohra escarpments. With multi-layer controls, officers can overlay satellite InSAR deformation, IoT sensor telemetry, and live road networks in real time.&rdquo;
+      </div>
+    </div>
+
+    <!-- Scene 3 -->
+    <div class="scene-card">
+      <div class="scene-header">
+        <span class="scene-title">Scene 3: Early Warning Dispatches & Voice Alert (Text-to-Speech)</span>
+        <span class="timestamp">0:45 &ndash; 1:10</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> Hover on RED ALERT card; click &ldquo;🔊 Listen&rdquo; (soundwave animation plays audio); click evacuation siren simulator.</div>
+      <div class="narration">
+        &ldquo;Our early warning dispatches provide a critical 3.5 to 5-hour lead time. For low-literacy users and emergency field radios, every alert card features a built-in text-to-speech voice bulletin using browser Web Speech API. Commanders can also trigger automated evacuation sirens and multi-lingual NDMA CAP v1.2 SMS broadcasts directly to thousands of citizens.&rdquo;
+      </div>
+    </div>
+
+    <!-- Scene 4 -->
+    <div class="scene-card">
+      <div class="scene-header">
+        <span class="scene-title">Scene 4: Video & Photo Hazard Reporting with Auto-GPS</span>
+        <span class="timestamp">1:10 &ndash; 1:35</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> Open modal; switch to Video tab; click &ldquo;📍 Auto-Detect My GPS&rdquo;; select video preset & submit; map flies and opens video popup.</div>
+      <div class="narration">
+        &ldquo;Ground reality matters. Citizens and field scouts can submit both photos and short 15-second video clips of active fissures or debris slides. With one-click GPS auto-detection, the report is instantly correlated by AI against slope susceptibility and projected directly onto the early warning map with an interactive video player.&rdquo;
+      </div>
+    </div>
+
+    <!-- Scene 5 -->
+    <div class="scene-card" style="border: 1.5px solid #0284c7; background: #f0f9ff;">
+      <div class="scene-header">
+        <span class="scene-title" style="color: #0369a1;">Scene 5: The Game Changer &mdash; Live Offline Mode Demo</span>
+        <span class="timestamp">1:35 &ndash; 2:05</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> F12 DevTools Network Offline &rarr; show amber banner &rarr; queue report &rarr; toggle Online &rarr; show green auto-sync badge!</div>
+      <div class="narration">
+        &ldquo;Himalayan landslides frequently collapse cell towers and sever fiber cables. Our platform is built offline-first using Service Workers and IndexedDB. Even without internet, the map tiles and alerts continue rendering. Hazard reports queue locally in the phone's database and automatically synchronize the exact second network connectivity is restored!&rdquo;
+      </div>
+    </div>
+
+    <!-- Scene 6 -->
+    <div class="scene-card">
+      <div class="scene-header">
+        <span class="scene-title">Scene 6: Recharts Weather Nowcast & Response Prioritization</span>
+        <span class="timestamp">2:05 &ndash; 2:30</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> Weather tab Recharts dual-axis graph hover; Priorities tab ranked table formatted: &ldquo;Sector X: Priority 1 &mdash; N villages isolated&rdquo;.</div>
+      <div class="narration">
+        &ldquo;In the weather nowcast tab, our interactive Recharts time-series correlates IMD radar precipitation against dynamic slope failure thresholds. And in our Emergency Response Prioritization tab, incidents are algorithmically ranked by population at risk and isolated cut-off hamlets, giving NDRF and SDRF teams clear tactical deployment priorities.&rdquo;
+      </div>
+    </div>
+
+    <!-- Scene 7 -->
+    <div class="scene-card">
+      <div class="scene-header">
+        <span class="scene-title">Scene 7: Road Isolation Impact & Multilingual Coverage</span>
+        <span class="timestamp">2:30 &ndash; 2:50</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> Highlight NH-10 card cut-off hamlets; click language switcher: Hindi &rarr; Assamese &rarr; Bodo &rarr; Khasi.</div>
+      <div class="narration">
+        &ldquo;Every blocked road card derived from our road network graph explicitly flags cut-off hamlets and isolated residents. And with full trilingual and tribal language support—including Assamese, Bodo, and Khasi—no community in the North East is left behind.&rdquo;
+      </div>
+    </div>
+
+    <!-- Scene 8 -->
+    <div class="scene-card">
+      <div class="scene-header">
+        <span class="scene-title">Scene 8: Conclusion & Vision</span>
+        <span class="timestamp">2:50 &ndash; 3:00</span>
+      </div>
+      <div class="visuals"><b>Visuals:</b> Wide angle view of command center, MDoNER logo, live Vercel URL, and team credits.</div>
+      <div class="narration">
+        &ldquo;A resilient, cloud-native, and offline-ready early warning system—saving lives and protecting lifelines across North East India. Thank you.&rdquo;
+      </div>
+    </div>
+
+    <div class="pro-tips">
+      <b>💡 Pro Recording Tip:</b> The offline demo in Scene 5 (toggling DevTools to Offline and back to Online) is your highest-scoring presentation moment. Keep screen in 1080p and record audio in a quiet room with a clear microphone.
+    </div>
+  </div>
+
+</body>
+</html>

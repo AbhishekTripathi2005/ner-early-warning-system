@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIH26001 - Presentation Deck Outline (10 Slides)</title>
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 8mm 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background: #0f172a;
+      line-height: 1.4;
+      font-size: 11px;
+      padding: 16px;
+    }
+    .no-print {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e293b;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #334155;
+    }
+    .btn-download {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-download:hover {
+      background: #0369a1;
+    }
+    .deck-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .slide-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border: 1px solid #e2e8f0;
+      page-break-inside: avoid;
+      position: relative;
+    }
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .slide-num {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #e0f2fe;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .slide-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.2px;
+    }
+    h3 {
+      font-size: 12px;
+      color: #0369a1;
+      margin: 8px 0 4px 0;
+      font-weight: 800;
+    }
+    p, li {
+      color: #334155;
+      font-size: 11px;
+    }
+    ul {
+      margin-left: 18px;
+      margin-bottom: 8px;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .code-box {
+      background: #0f172a;
+      color: #38bdf8;
+      font-family: "Courier New", monospace;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 9.5px;
+      line-height: 1.35;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 10px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 8px;
+      text-align: left;
+    }
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 800;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .slide-card {
+        box-shadow: none;
+        border: 1px solid #94a3b8;
+        margin-bottom: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen-Only Download Toolbar -->
+  <div class="no-print">
+    <div>
+      <span style="font-weight: bold; font-size: 13px;">📑 SIH 2026 Presentation Deck Outline</span>
+      <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">10-Slide Complete Presentation Structure</span>
+    </div>
+    <button class="btn-download" onclick="window.print()">
+      📥 Save / Download as PDF
+    </button>
+  </div>
+
+  <div class="deck-container">
+
+    <!-- Slide 1 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Cloud-Native AI & Physics-Hybrid Landslide Early Warning System</div>
+        <span class="slide-num">Slide 1: Title</span>
+      </div>
+      <p style="font-size: 13px; font-weight: bold; color: #0284c7; margin-bottom: 8px;">
+        Protecting Critical Himalayan Lifelines & Isolated Mountain Communities across North East India
+      </p>
+      <div class="grid-2" style="margin-top: 10px;">
+        <div class="box">
+          <p><b>Problem Statement ID:</b> SIH26001</p>
+          <p><b>Ministry:</b> Ministry of Development of North Eastern Region (MDoNER)</p>
+          <p><b>Theme:</b> Disaster Management | Category: Software</p>
+        </div>
+        <div class="box">
+          <p><b>Target Geography:</b> All 8 NER States (Sikkim, Meghalaya, Assam, Arunachal, Nagaland, Manipur, Mizoram, Tripura)</p>
+          <p><b>Live Prototype:</b> <code>ner-early-warning-system.vercel.app</code></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">The Problem & Regional Vulnerability in North East India</div>
+        <span class="slide-num">Slide 2: Context</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h3>Geological & Climatic Extremes</h3>
+          <ul>
+            <li>World's highest rainfall (>11,000 mm/yr in Meghalaya) combined with young, fragile Himalayan tectonic folds (Seismic Zone V).</li>
+            <li>Over 150 catastrophic landslides occur every monsoon season, cutting off critical arterial corridors.</li>
+            <li>Single points of failure: NH-10 (Sikkim lifeline) and SH-5 (Sohra) frequently severed for days.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>The 4 Existing System Failures</h3>
+          <ul>
+            <li><b>Coarse Scale:</b> Regional generic district alerts (15-25 km) rather than road-kilometer accuracy.</li>
+            <li><b>The Last-Mile Blackout:</b> Severe storms down cell towers and fiber lines; existing apps fail completely offline.</li>
+            <li><b>No Field Ground Truth:</b> Satellite data is delayed 24-48 hours; zero crowdsourced citizen photos or videos.</li>
+            <li><b>Static Warnings:</b> No road-isolation impact metrics for NDRF/SDRF tactical response.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Our Unique 7-Pillar Solution Architecture</div>
+        <span class="slide-num">Slide 3: Innovations</span>
+      </div>
+      <div class="grid-3">
+        <div class="box">
+          <h3>1. Physics + GeoAI</h3>
+          Couples Dynamic Factor of Safety (FoS) with XGBoost & PyTorch, Sentinel-1 InSAR (-28mm/yr creep), and IMD Doppler Radar.
+        </div>
+        <div class="box">
+          <h3>2. Citizen Photo/Video</h3>
+          Crowdsourced hazard reporting with 1-click auto-GPS coordinate detection and video player popup on GIS map.
+        </div>
+        <div class="box">
+          <h3>3. Road-Isolation Graph</h3>
+          Calculates cut-off Himalayan hamlets and affected populations for every blocked road card.
+        </div>
+        <div class="box">
+          <h3>4. Offline-First PWA</h3>
+          Service Worker + IndexedDB caching keeps map tiles and alerts alive during total network blackout; auto-syncs on reconnect.
+        </div>
+        <div class="box">
+          <h3>5. Multi-Horizon Nowcast</h3>
+          Recharts dual-axis projection correlating precipitation (mm/h) against Landslide Susceptibility across 6h, 24h, and 48h.
+        </div>
+        <div class="box">
+          <h3>6. Continuous Retraining</h3>
+          Officer panel to mark alerts as Confirmed (TP), False Alarm (FP), or Missed Event (FN) to retrain AI pipeline.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">End-to-End Enterprise System Architecture</div>
+        <span class="slide-num">Slide 4: Architecture</span>
+      </div>
+      <div class="code-box">
+[DATA INGESTION]          [PREDICTIVE AI ENGINE]       [BACKEND & STORAGE]         [MISSION CONTROL INTERFACE]
+├── Sentinel-1 InSAR      ├── Dynamic Factor of Safety ├── FastAPI Microservices   ├── Next.js 14 + Recharts
+├── IMD Doppler Radar     ├── XGBoost + PyTorch LSTMs  ├── PostgreSQL + PostGIS    ├── Esri Dark Gray GIS (No Watermark)
+├── Copernicus DEM 30m    └── Retraining Feedback Loop ├── Redis Broker + Celery   ├── 5 Languages (EN, HI, AS, Bodo, Khasi)
+└── IoT Hill Sensors                                   └── IndexedDB Offline Store └── Web Speech API Voice + Web Audio Siren
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Live Prototype Walkthrough & Key Differentiators</div>
+        <span class="slide-num">Slide 5: Demo Flow</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h3>1. Tactical GIS Map & Audio Bulletins</h3>
+          <ul>
+            <li>Esri Dark Gray canvas with zero watermark.</li>
+            <li>Regional camera jumps (Sikkim, Cherrapunji, Dima Hasao).</li>
+            <li>Spoken voice alerts in 5 languages for low-literacy users.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>2. Offline Mode & Video Hazard Reporting</h3>
+          <ul>
+            <li>DevTools offline test proves zero-network map and alert rendering.</li>
+            <li>Offline citizen reports queue locally and auto-sync on reconnect.</li>
+            <li>12s video clip playback directly inside map popup pin.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Quantitative Impact Metrics & Benchmarks</div>
+        <span class="slide-num">Slide 6: Impact</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Traditional Systems</th>
+            <th>Our Solution (SIH 2026)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Warning Lead Time</b></td>
+            <td>0 &ndash; 30 minutes</td>
+            <td style="color:#0284c7; font-weight:bold;">3.5 &ndash; 6.0 Hours Advance Lead Time</td>
+          </tr>
+          <tr>
+            <td><b>Spatial Precision</b></td>
+            <td>District level (15 &ndash; 25 km)</td>
+            <td style="color:#0284c7; font-weight:bold;">Slope & Road Kilometre Level (30 meters)</td>
+          </tr>
+          <tr>
+            <td><b>Network Dependency</b></td>
+            <td>100% Online only</td>
+            <td style="color:#0284c7; font-weight:bold;">Offline PWA + IndexedDB Queue (Zero Data Loss)</td>
+          </tr>
+          <tr>
+            <td><b>Ground Truth Verification</b></td>
+            <td>Delayed by 24 &ndash; 48 hours</td>
+            <td style="color:#0284c7; font-weight:bold;">Real-Time Citizen Photo & Video with Auto-GPS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Scalability Roadmap Across All 8 NER States</div>
+        <span class="slide-num">Slide 7: Scalability</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h3>State-Specific Risk Calibrations</h3>
+          <ul>
+            <li><b>Sikkim & Arunachal:</b> GLOF and steep rockfall along NH-10 and Tawang lifelines.</li>
+            <li><b>Meghalaya:</b> Escarpment saturation in Cherrapunji and Shillong plateau.</li>
+            <li><b>Assam & Tripura:</b> Soft sedimentary hill cutting and railway line slips (Dima Hasao).</li>
+            <li><b>Mizoram & Nagaland:</b> Urban slope creep and clay weathering (Aizawl & Kohima).</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Zero-Cost Infrastructure Scaling</h3>
+          <ul>
+            <li>Free open satellite data (Sentinel-1/2, Copernicus 30m DEM, IMD Gridded).</li>
+            <li>Public watermark-free Esri Dark Gray canvas endpoints—zero recurring tile costs.</li>
+            <li>Containerized microservices ready for immediate deployment on NIC MeghRaj Cloud.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Enterprise Tech Stack & Open Standards</div>
+        <span class="slide-num">Slide 8: Tech Stack</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h3>Technology Components</h3>
+          <ul>
+            <li><b>Frontend:</b> Next.js 14, TypeScript, Tailwind CSS, Leaflet, Recharts, Web Audio & Web Speech APIs.</li>
+            <li><b>Backend & GIS:</b> Python FastAPI, SQLAlchemy, PostgreSQL + PostGIS (EPSG:4326), Redis, Celery.</li>
+            <li><b>AI & ML:</b> XGBoost, PyTorch (Temporal LSTM), Scikit-Learn.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Standards & Protocols</h3>
+          <ul>
+            <li>OGC (Open Geospatial Consortium) GeoJSON standard compliance.</li>
+            <li>NDMA Common Alerting Protocol (CAP v1.2) for multi-channel SMS broadcast.</li>
+            <li>W3C Progressive Web App (PWA) Service Worker specification.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Implementation Timeline & Government Rollout</div>
+        <span class="slide-num">Slide 9: Rollout</span>
+      </div>
+      <div class="grid-3">
+        <div class="box">
+          <h3>Phase 1: Pilot Staging</h3>
+          <b>Months 1 - 2:</b> Live pilot with SDMA Meghalaya & Sikkim along NH-10 and SH-5 corridors.
+        </div>
+        <div class="box">
+          <h3>Phase 2: Agency APIs</h3>
+          <b>Months 3 - 4:</b> Integrate Border Roads Organisation (BRO) telemetry and IMD Doppler Radar feeds.
+        </div>
+        <div class="box">
+          <h3>Phase 3: National Rollout</h3>
+          <b>Months 5 - 6:</b> Production deployment across all 8 states on NIC MeghRaj Government Cloud.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide-card">
+      <div class="slide-header">
+        <div class="slide-title">Conclusion & Q&A</div>
+        <span class="slide-num">Slide 10: Conclusion</span>
+      </div>
+      <p style="font-size: 13px; color: #0284c7; font-weight: bold; margin-bottom: 10px;">
+        Transforming early warnings from passive post-disaster notifications into actionable, localized, offline-resilient lifelines for North East India.
+      </p>
+      <div class="box">
+        <p><b>Live Dashboard:</b> <code>https://ner-early-warning-system.vercel.app</code></p>
+        <p><b>GitHub Source Code:</b> <code>https://github.com/AbhishekTripathi2005/ner-early-warning-system</code></p>
+        <p style="margin-top: 8px; font-weight: bold; color: #0f172a;">Thank You! We welcome questions from the jury.</p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

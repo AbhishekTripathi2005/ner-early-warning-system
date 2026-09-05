@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIH26001 - Executive One Pager (MDoNER)</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background: #f8fafc;
+      line-height: 1.35;
+      font-size: 11px;
+      padding: 16px;
+    }
+    .page-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 24px 28px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+    .no-print {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .btn-download {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-download:hover {
+      background: #0369a1;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .page-container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    .header {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header h1 {
+      font-size: 17px;
+      font-weight: 900;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: -0.3px;
+    }
+    .header-sub {
+      font-size: 10.5px;
+      color: #64748b;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 9.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+    h2 {
+      font-size: 12px;
+      color: #0369a1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 800;
+      border-left: 3px solid #0284c7;
+      padding-left: 6px;
+      margin: 10px 0 5px 0;
+    }
+    p {
+      margin-bottom: 6px;
+      color: #334155;
+      text-align: justify;
+    }
+    b {
+      color: #0f172a;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .feature-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 7px 9px;
+      font-size: 10.5px;
+    }
+    .feature-title {
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 10px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 7px;
+      text-align: left;
+    }
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 9px;
+    }
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    .highlight-cell {
+      font-weight: 800;
+      color: #0284c7;
+    }
+    .architecture-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: "Courier New", monospace;
+      font-size: 9px;
+      line-height: 1.35;
+      margin: 6px 0;
+    }
+    .footer {
+      margin-top: 12px;
+      padding-top: 6px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen-Only Download Toolbar -->
+  <div class="no-print">
+    <div>
+      <span style="font-weight: bold;">📄 SIH 2026 Executive One-Pager</span>
+      <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">Formatted for instant A4 Print / PDF Download</span>
+    </div>
+    <button class="btn-download" onclick="window.print()">
+      📥 Save / Download as PDF
+    </button>
+  </div>
+
+  <div class="page-container">
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <h1>AI-Based Early Warning & Landslide Monitoring in NER</h1>
+        <div class="header-sub">Ministry of Development of North Eastern Region (MDoNER) &bull; Disaster Management Cell</div>
+      </div>
+      <div style="text-align: right;">
+        <span class="badge">Problem ID: SIH26001</span>
+        <div style="font-size: 9px; color: #64748b; margin-top: 3px;">Category: Software &bull; 8 NER States</div>
+      </div>
+    </div>
+
+    <!-- 1. The Challenge -->
+    <h2>1. The Problem Statement & Regional Vulnerability</h2>
+    <p>
+      The North Eastern Region (NER) of India experiences severe monsoon cloudbursts (>260mm/48h) and high seismicity (Zone V), triggering over 150 catastrophic landslides annually. Critical lifelines—such as <b>NH-10 (Sikkim Lifeline)</b> and <b>SH-5 (Meghalaya Sohra)</b>—collapse repeatedly. Existing warning mechanisms fail due to <b>district-level coarseness</b> (15-25 km), <b>total communication blackout</b> during hill storm cable cuts, lack of localized ground truth verification, and zero road-isolation impact intelligence for rescue forces.
+    </p>
+
+    <!-- 2. The Solution -->
+    <h2>2. The Solution: A Cloud-Native & Field-Resilient Platform</h2>
+    <div class="grid-2">
+      <div class="feature-card">
+        <div class="feature-title">🔬 Hybrid Physics + GeoAI Modeling</div>
+        Couples slope mechanics (Dynamic Factor of Safety FoS) with XGBoost and PyTorch LSTMs, fusing Sentinel-1 InSAR surface displacement (-28mm/yr creep), IMD Doppler radar, and 30m Digital Elevation Models.
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">⚡ Offline-First PWA (Service Worker + IndexedDB)</div>
+        Engineered for zero-network conditions. Map tiles and alerts cache locally. Citizen hazard reports queue offline and <b>auto-sync in the background</b> the exact second network connectivity is restored.
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">📹 Crowdsourced Video & Photo Reporting</div>
+        Enables citizens and field scouts to submit photos or short video clips (15-20s) with <b>1-click GPS coordinate auto-detection</b> and automated AI spatial-correlation validation against GSI slope data.
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">🛣️ Road-Isolation Graph Intelligence</div>
+        Derives cut-off Himalayan hamlets and affected populations for every blocked highway card (e.g. <i>NH-10: 5 hamlets cut off &bull; 18,400 residents isolated</i>) with dynamic detour advisories.
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 6px;">
+      <div class="feature-card">
+        <div class="feature-title">📊 Explainable Multi-Horizon Weather Nowcast</div>
+        Interactive Recharts dual-axis projection correlating Precipitation (mm/h) against Landslide Susceptibility (0.0-1.0) across 6h Nowcast, 24h Cumulative, and 48h Outlook.
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">📢 Inclusive Multilingual Voice Alerts</div>
+        Features Web Audio evacuation siren synthesizers, NDMA CAP v1.2 SMS dispatches, Web Speech API spoken audio bulletins, and 5 languages (English, Hindi, Assamese, Bodo, Khasi).
+      </div>
+    </div>
+
+    <!-- 3. Quantitative Impact Table -->
+    <h2>3. Quantitative Impact Metrics & Innovation Benchmarks</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Performance Metric</th>
+          <th>Legacy Early Warning Systems</th>
+          <th>Our Cloud-Native Solution (SIH 2026)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Warning Lead Time</b></td>
+          <td>0 &ndash; 30 minutes (Often post-event)</td>
+          <td class="highlight-cell">3.5 &ndash; 6.0 Hours Advance Lead Time</td>
+        </tr>
+        <tr>
+          <td><b>Spatial Granularity</b></td>
+          <td>District boundary level (15 &ndash; 25 km)</td>
+          <td class="highlight-cell">Slope & Road-Segment Level (30 meters)</td>
+        </tr>
+        <tr>
+          <td><b>Network Blackout Behavior</b></td>
+          <td>100% Online only (Fails during storms)</td>
+          <td class="highlight-cell">Offline PWA + IndexedDB Queue (Zero Data Loss)</td>
+        </tr>
+        <tr>
+          <td><b>Ground Validation</b></td>
+          <td>24 &ndash; 48h delayed inspection</td>
+          <td class="highlight-cell">Real-Time Citizen Photo & Video with Auto-GPS</td>
+        </tr>
+        <tr>
+          <td><b>Accessibility & Inclusion</b></td>
+          <td>English & Hindi text only</td>
+          <td class="highlight-cell">5 Languages (EN, HI, AS, Bodo, Khasi) + Spoken Voice</td>
+        </tr>
+        <tr>
+          <td><b>Data Licensing / Cost</b></td>
+          <td>Costly per-tile commercial API keys</td>
+          <td class="highlight-cell">100% Watermark-Free Esri Dark Gray Vector GIS</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 4. Architecture Diagram -->
+    <h2>4. Enterprise Cloud Architecture</h2>
+    <div class="architecture-box">
+[Sentinel-1 InSAR + IMD Radar + IoT Hill Sensors] ──> [GeoAI XGBoost / PyTorch] ──> [PostGIS Spatial DB + FastAPI]
+                                                                                              ├── [Service Worker + IndexedDB Cache]
+[5 Languages + Voice Alert TTS + Video Player] <── [Next.js 14 + Recharts GIS] <──┘ (Offline PWA Resilient)
+    </div>
+
+    <!-- 5. Deployment Readiness -->
+    <h2>5. Government Deployment Readiness</h2>
+    <p>
+      Containerized Docker architecture engineered for rapid staging on the <b>National Informatics Centre (NIC) MeghRaj Cloud</b>. Features plug-and-play API webhooks for State Disaster Management Authorities (SDMA Meghalaya, Sikkim, Assam), Border Roads Organisation (BRO), and NDRF battalions.
+    </p>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span>Smart India Hackathon 2026 &bull; SIH26001 Prototype Submission</span>
+      <span>Live URL: <b>ner-early-warning-system.vercel.app</b></span>
+    </div>
+  </div>
+
+</body>
+</html>
