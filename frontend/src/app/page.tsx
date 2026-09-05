@@ -95,7 +95,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"roads" | "weather" | "priorities" | "history" | "review">("roads");
   const [currentTime, setCurrentTime] = useState("");
   const [citizenReports, setCitizenReports] = useState<CitizenReportData[]>(defaultCitizenReports);
-  const [focusTarget, setFocusTarget] = useState<{ lat: number; lon: number; id: number } | null>(null);
+  const [focusTarget, setFocusTarget] = useState<{ lat: number; lon: number; id: number; _ts?: number } | null>(null);
 
   const t = translations[lang];
 

@@ -31,7 +31,7 @@ interface HeatmapViewerProps {
   onSelectFeature?: (feature: any) => void;
   citizenReports?: CitizenReportData[];
   onVerifyReport?: (reportId: number, status: "VERIFIED_TRUE_ALARM" | "DISMISSED_FALSE_ALARM") => void;
-  focusTarget?: { lat: number; lon: number; id: number } | null;
+  focusTarget?: { lat: number; lon: number; id: number; _ts?: number } | null;
 }
 
 // 1. Point Heatmap Hotspots across 8 NER States
