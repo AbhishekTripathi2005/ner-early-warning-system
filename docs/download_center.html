@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIH 2026 Submission Download Center | SIH26001</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #090d16;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+      background: #0e1424;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 32px 36px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .header {
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+    .badge {
+      background: rgba(14, 165, 233, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: bold;
+      font-family: monospace;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.15);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-desc {
+      font-size: 12.5px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: #0284c7;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+    }
+    .btn-secondary {
+      background: #1e293b;
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      border: 1px solid #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: #334155;
+      color: white;
+    }
+    .footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      border-top: 1px solid #1e293b;
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1 class="title">SIH 2026 Submission Download Center</h1>
+        <div class="subtitle">Ministry of Development of North Eastern Region (MDoNER) &bull; Problem ID: SIH26001</div>
+      </div>
+      <span class="badge">PROTOTYPE SUBMISSION READY</span>
+    </div>
+
+    <div class="cards-grid">
+      <!-- 1. Executive One-Pager -->
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <div class="card-title">📄 1. Executive One-Pager Summary</div>
+            <div class="card-desc">
+              Comprehensive 1-page PDF-ready brief covering the regional problem, 7 unique solution pillars, impact benchmarks, architecture diagram, and NIC MeghRaj cloud readiness.
+            </div>
+          </div>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">
+            PDF & HTML
+          </span>
+        </div>
+        <div class="btn-group">
+          <a href="SIH26001_Executive_One_Pager.pdf" download class="btn-primary">
+            📥 Download PDF
+          </a>
+          <a href="one_pager.html" target="_blank" class="btn-secondary">
+            🖥️ Open Interactive / Print View
+          </a>
+          <a href="one_pager.md" target="_blank" class="btn-secondary">
+            📝 Markdown Source
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. PPT Presentation Deck Outline -->
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <div class="card-title">📑 2. Presentation Deck Outline (10 Slides)</div>
+            <div class="card-desc">
+              Complete slide-by-slide structure for the hackathon jury: Problem Statement &rarr; Unique Innovations &rarr; Enterprise Architecture &rarr; Live Demo Flow &rarr; Impact Metrics &rarr; 8 NER States Scalability &rarr; Tech Stack.
+            </div>
+          </div>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">
+            PDF & HTML
+          </span>
+        </div>
+        <div class="btn-group">
+          <a href="SIH26001_Presentation_Deck_Outline.pdf" download class="btn-primary">
+            📥 Download PDF
+          </a>
+          <a href="ppt_outline.html" target="_blank" class="btn-secondary">
+            🖥️ Open Interactive / Print View
+          </a>
+          <a href="ppt_outline.md" target="_blank" class="btn-secondary">
+            📝 Markdown Source
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. Video Walkthrough Script -->
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <div class="card-title">🎬 3. Prototype Video Walkthrough Script (2-3 Min)</div>
+            <div class="card-desc">
+              Scene-by-scene 165-second script with exact timestamps, screen actions, authoritative narration voiceover, and pro-tips for demonstrating live Offline Mode in Chrome DevTools.
+            </div>
+          </div>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">
+            PDF & HTML
+          </span>
+        </div>
+        <div class="btn-group">
+          <a href="SIH26001_Walkthrough_Video_Script.pdf" download class="btn-primary">
+            📥 Download PDF
+          </a>
+          <a href="video_script_outline.html" target="_blank" class="btn-secondary">
+            🖥️ Open Interactive / Print View
+          </a>
+          <a href="video_script_outline.md" target="_blank" class="btn-secondary">
+            📝 Markdown Source
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Live URL: <a href="https://ner-early-warning-system.vercel.app" target="_blank" style="color: #38bdf8; text-decoration: none;">ner-early-warning-system.vercel.app</a></span>
+      <span>GitHub: <a href="https://github.com/AbhishekTripathi2005/ner-early-warning-system" target="_blank" style="color: #38bdf8; text-decoration: none;">ner-early-warning-system</a></span>
+    </div>
+  </div>
+
+</body>
+</html>
