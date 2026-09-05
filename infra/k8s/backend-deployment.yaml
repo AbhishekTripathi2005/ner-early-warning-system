@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ner-backend
+  labels:
+    app: ner-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ner-backend
+  template:
+    metadata:
+      labels:
+        app: ner-backend
+    spec:
+      containers:
+        - name: backend
+          image: ner-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://postgres:postgres_password_dev@postgis:5432/landslide_ner"
+            - name: CELERY_BROKER_URL
+              value: "redis://redis:6379/0"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ner-backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: ner-backend
+  ports:
+    - port: 8000
+      targetPort: 8000

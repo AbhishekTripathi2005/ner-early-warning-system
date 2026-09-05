@@ -1,0 +1,124 @@
+version: "3.8"
+
+services:
+  # 1. Spatially enabled PostgreSQL database
+  postgis:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: ner_postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_password_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-landslide_ner}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - ner_disaster_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d landslide_ner"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Redis Message Broker & In-Memory Store
+  redis:
+    image: redis:7-alpine
+    container_name: ner_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ner_disaster_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 3. AI/ML Prediction Microservice
+  ml-engine:
+    build:
+      context: ../ml-engine
+      dockerfile: Dockerfile
+    container_name: ner_ml_engine
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+      - ENVIRONMENT=development
+    networks:
+      - ner_disaster_net
+
+  # 4. Core FastAPI Asynchronous Backend
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: ner_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres_password_dev}@postgis:5432/${POSTGRES_DB:-landslide_ner}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - ML_ENGINE_URL=http://ml-engine:8001
+      - ENVIRONMENT=development
+    depends_on:
+      postgis:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ml-engine:
+        condition: service_started
+    networks:
+      - ner_disaster_net
+
+  # 5. Celery Asynchronous Risk Worker
+  celery-worker:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: ner_celery_worker
+    restart: unless-stopped
+    command: celery -A app.tasks.celery_worker.celery_app worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres_password_dev}@postgis:5432/${POSTGRES_DB:-landslide_ner}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - ML_ENGINE_URL=http://ml-engine:8001
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - ner_disaster_net
+
+  # 6. Next.js Web GIS Dashboard
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: ner_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    depends_on:
+      - backend
+    networks:
+      - ner_disaster_net
+
+volumes:
+  postgis_data:
+  redis_data:
+
+networks:
+  ner_disaster_net:
+    driver: bridge

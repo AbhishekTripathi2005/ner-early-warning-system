@@ -1,0 +1,63 @@
+{
+  "evaluation_summary": {
+    "random_forest": {
+      "model": "Random Forest Classifier",
+      "accuracy": 0.6875,
+      "precision": 0.7024,
+      "recall": 0.7024,
+      "f1_score": 0.7024,
+      "roc_auc": 0.7724
+    },
+    "xgboost": {
+      "model": "XGBoost Classifier",
+      "accuracy": 0.6937,
+      "precision": 0.7108,
+      "recall": 0.7024,
+      "f1_score": 0.7066,
+      "roc_auc": 0.7788
+    }
+  },
+  "feature_importances": {
+    "random_forest": {
+      "rainfall_24h": 0.1193,
+      "rainfall_48h": 0.1758,
+      "soil_moisture": 0.1917,
+      "slope": 0.1464,
+      "elevation": 0.1049,
+      "distance_to_road": 0.1399,
+      "land_use_Barren Land / Quarry": 0.0242,
+      "land_use_Degraded Forest": 0.0113,
+      "land_use_Dense Forest": 0.0755,
+      "land_use_Settlement / Road Corridor": 0.0111
+    },
+    "xgboost": {
+      "rainfall_24h": 0.0697,
+      "rainfall_48h": 0.1233,
+      "soil_moisture": 0.115,
+      "slope": 0.0903,
+      "elevation": 0.071,
+      "distance_to_road": 0.0887,
+      "land_use_Barren Land / Quarry": 0.1246,
+      "land_use_Degraded Forest": 0.0539,
+      "land_use_Dense Forest": 0.1915,
+      "land_use_Settlement / Road Corridor": 0.072
+    }
+  },
+  "training_metadata": {
+    "total_samples": 800,
+    "train_samples": 640,
+    "test_samples": 160,
+    "features_used": [
+      "rainfall_24h",
+      "rainfall_48h",
+      "soil_moisture",
+      "slope",
+      "elevation",
+      "distance_to_road",
+      "land_use_Barren Land / Quarry",
+      "land_use_Degraded Forest",
+      "land_use_Dense Forest",
+      "land_use_Settlement / Road Corridor"
+    ]
+  }
+}

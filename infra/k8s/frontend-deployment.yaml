@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ner-frontend
+  labels:
+    app: ner-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ner-frontend
+  template:
+    metadata:
+      labels:
+        app: ner-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ner-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ner-frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: ner-frontend
+  ports:
+    - port: 80
+      targetPort: 3000
