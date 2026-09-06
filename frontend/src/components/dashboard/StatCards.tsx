@@ -3,7 +3,11 @@
 import React from "react";
 import { Mountain, CloudRain, Activity, Radio, AlertOctagon, TrendingUp, CheckCircle, Cpu } from "lucide-react";
 
-export const StatCards: React.FC = () => {
+interface StatCardsProps {
+  isOnline?: boolean;
+}
+
+export const StatCards: React.FC<StatCardsProps> = ({ isOnline = true }) => {
   const stats = [
     {
       title: "NER Critical Hotspots",
@@ -37,13 +41,13 @@ export const StatCards: React.FC = () => {
     },
     {
       title: "Hybrid AI Inference Engine",
-      value: "ONLINE",
+      value: isOnline ? "ONLINE" : "LOCAL",
       unit: "v2.0",
-      subtext: "Static LSI + LSTM 2-6h Nowcasting",
-      badgeColor: "bg-sky-500/15 text-sky-400 border-sky-500/30",
+      subtext: isOnline ? "Static LSI + LSTM 2-6h Nowcasting" : "Edge Heuristics & Cached Inference",
+      badgeColor: isOnline ? "bg-sky-500/15 text-sky-400 border-sky-500/30" : "bg-amber-500/15 text-amber-300 border-amber-500/30",
       icon: Cpu,
-      accentColor: "from-sky-500/20 to-indigo-500/20",
-      iconColor: "text-sky-400 border-sky-500/30 bg-sky-500/10"
+      accentColor: isOnline ? "from-sky-500/20 to-indigo-500/20" : "from-amber-500/20 to-orange-500/20",
+      iconColor: isOnline ? "text-sky-400 border-sky-500/30 bg-sky-500/10" : "text-amber-400 border-amber-500/30 bg-amber-500/10"
     }
   ];
 

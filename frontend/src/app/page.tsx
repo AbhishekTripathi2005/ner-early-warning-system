@@ -30,7 +30,8 @@ import {
   Camera,
   Video,
   LogOut,
-  Lock
+  Lock,
+  Zap
 } from "lucide-react";
 
 // Default authentic citizen reports across NER with photo & video coverage
@@ -104,6 +105,22 @@ export default function DashboardPage() {
   const [currentTime, setCurrentTime] = useState("");
   const [citizenReports, setCitizenReports] = useState<CitizenReportData[]>(defaultCitizenReports);
   const [focusTarget, setFocusTarget] = useState<{ lat: number; lon: number; id: number; _ts?: number } | null>(null);
+  const [isOnline, setIsOnline] = useState<boolean>(true);
+
+  // Track online/offline status for dynamic AI badge and telemetry
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsOnline(navigator.onLine);
+      const handleOnline = () => setIsOnline(true);
+      const handleOffline = () => setIsOnline(false);
+      window.addEventListener("online", handleOnline);
+      window.addEventListener("offline", handleOffline);
+      return () => {
+        window.removeEventListener("online", handleOnline);
+        window.removeEventListener("offline", handleOffline);
+      };
+    }
+  }, []);
 
   const t = translations[lang] || translations.en;
 
@@ -217,12 +234,20 @@ export default function DashboardPage() {
             <span className="text-[11px]">{currentTime || "LIVE IST"}</span>
           </div>
 
-          {/* AI Engine Status */}
-          <div className="flex items-center space-x-1.5 text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-2.5 py-2 rounded-xl font-medium shadow-md">
-            <Activity className="w-3.5 h-3.5 animate-pulse shrink-0" />
-            <span className="hidden sm:inline font-semibold">{t.aiOnline}</span>
-            <span className="sm:hidden font-mono font-bold text-[10px]">AI OK</span>
-          </div>
+          {/* AI Engine Status (Dynamic Online vs Local Edge Cache State) */}
+          {isOnline ? (
+            <div className="flex items-center space-x-1.5 text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-2.5 py-2 rounded-xl font-medium shadow-md">
+              <Activity className="w-3.5 h-3.5 animate-pulse shrink-0" />
+              <span className="hidden sm:inline font-semibold">{t.aiOnline}</span>
+              <span className="sm:hidden font-mono font-bold text-[10px]">AI OK</span>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-1.5 text-xs bg-amber-500/15 border border-amber-500/40 text-amber-300 px-2.5 py-2 rounded-xl font-medium shadow-md animate-pulse">
+              <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="hidden sm:inline font-semibold font-mono">AI Engine: LOCAL (Edge Cache)</span>
+              <span className="sm:hidden font-mono font-bold text-[10px]">AI LOCAL</span>
+            </div>
+          )}
 
           {/* 5-Language Multilingual Selector (EN, Hindi, Assamese, Bodo, Khasi) */}
           <div className="flex items-center bg-slate-900/90 border border-gray-700/80 rounded-xl p-0.5 text-xs shadow-md overflow-x-auto max-w-full">
@@ -311,7 +336,7 @@ export default function DashboardPage() {
       <AlertBanner lang={lang} />
 
       {/* 3. Real-Time Telemetry KPI Statistics with Strong Hierarchy */}
-      <StatCards />
+      <StatCards isOnline={isOnline} />
 
       {/* 4. Master Interactive GIS Map & Cherrapunji Detail Panel */}
       <section id="gis-map-section" className="space-y-2">
