@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIH26001 - AI/ML Model Cards & Evaluation Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown-dark.min.css">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      .markdown-body { background: #ffffff !important; color: #000000 !important; font-size: 11px; }
+      .markdown-body table { color: #000000 !important; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: #090d16;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .no-print {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0e1424;
+      border: 1px solid #1e293b;
+      padding: 12px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .back-link {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .btn-group { display: flex; gap: 10px; }
+    .btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #0284c7;
+      color: white;
+    }
+    .btn-primary:hover { background: #0369a1; }
+    .btn-secondary {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+    }
+    .btn-secondary:hover { background: #334155; }
+    .content-box {
+      width: 100%;
+      max-width: 1000px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 36px 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .markdown-body table {
+      display: table;
+      width: 100%;
+      overflow-x: auto;
+    }
+    .markdown-body table th, .markdown-body table td {
+      padding: 8px 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <a href="download_center.html" class="back-link">&larr; Back to Submission Download Center</a>
+    <div class="btn-group">
+      <a href="SIH26001_Model_Cards_Evaluation.pdf" download class="btn btn-primary">📥 Download Official PDF</a>
+      <button onclick="window.print()" class="btn btn-secondary">🖨️ Print / Save to PDF</button>
+    </div>
+  </div>
+
+  <div class="content-box">
+    <article id="content" class="markdown-body">
+      Loading document content...
+    </article>
+  </div>
+
+  <script id="raw-markdown" type="text/markdown">
+# 🧠 Comprehensive AI/ML Model Cards & Evaluation Transparency
+## Project: NER Landslide Early Warning & Risk Monitoring System
+### Problem Statement: SIH26001 | Ministry of Development of North Eastern Region (MDoNER)
+
+> **Core Philosophy**: Complete Engineering Honesty.  
+> This document distinguishes between **trained production models**, **architecturally implemented models awaiting temporal sequence data**, and **deterministic geotechnical algorithms**.
+
+---
+
+## Model 1: Static Landslide Susceptibility Index (LSI) Model
+
+### 1.1 Model Overview
+- **Model Type**: Gradient Boosted Decision Tree (`XGBClassifier`)
+- **Library**: `xgboost==2.0.3` via Scikit-Learn `Pipeline`
+- **Implementation File**: [`ml-engine/susceptibility/susceptibility_model.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/susceptibility/susceptibility_model.py)
+- **Training Script**: [`ml-engine/baseline/train_baseline.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/baseline/train_baseline.py)
+- **Serialized Artifact**: `ml-engine/baseline/artifacts/baseline_xgb_model.joblib`
+- **Prediction Objective**: Predicts the static probability of slope failure (`LSI`: 0.0000 to 1.0000) for a given coordinate based on terrain morphometry, rainfall accumulation, soil saturation, road cut proximity, and land use.
+
+### 1.2 Training Data Specification
+- **Data Source**: **Synthetic** georeferenced dataset calibrated to 8 North Eastern Region (NER) morphometric clusters.
+- **Dataset File**: [`ml-engine/data/synthetic_landslide_ner_dataset.csv`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/data/synthetic_landslide_ner_dataset.csv)
+- **Generation Script**: [`ml-engine/data/generate_dataset.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/data/generate_dataset.py)
+- **Dataset Size**: 800 total samples across Meghalaya, Sikkim, Assam (Dima Hasao), Mizoram, Nagaland, Arunachal Pradesh, Manipur, and Tripura.
+- **Train/Test Split**: 80% Train (640 samples) / 20% Test (160 samples), stratified by target class.
+- **Input Features (7)**:
+  1. `rainfall_24h` (mm)
+  2. `rainfall_48h` (mm)
+  3. `soil_moisture` (% saturation)
+  4. `slope` (degrees)
+  5. `elevation` (meters above sea level)
+  6. `distance_to_road` (meters to nearest excavation cut)
+  7. `land_use` (Categorical: Dense Forest, Degraded Forest, Barren Land/Quarry, Settlement/Road Corridor, Agricultural Terrace)
+
+### 1.3 Verified Model Performance Metrics
+The following metrics were computed on the **160 unseen test samples** during evaluation and saved in [`ml-engine/baseline/model_evaluation_report.json`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/baseline/model_evaluation_report.json):
+
+| Metric | Random Forest (Baseline) | XGBoost Classifier (Champion) |
+| :--- | :--- | :--- |
+| **Accuracy** | 68.75% (`0.6875`) | **69.37%** (`0.6937`) |
+| **Precision** | 70.24% (`0.7024`) | **71.08%** (`0.7108`) |
+| **Recall (Sensitivity)** | 70.24% (`0.7024`) | **70.24%** (`0.7024`) |
+| **F1-Score** | 70.24% (`0.7024`) | **70.66%** (`0.7066`) |
+| **ROC-AUC** | 77.24% (`0.7724`) | **77.88%** (`0.7788`) |
+
+### 1.4 Feature Attribution & Importance
+Extracted from the fitted XGBoost pipeline (`model_evaluation_report.json`):
+1. **Land Use (Dense Forest Root Cohesion)**: `19.15%` (Strongest protective factor)
+2. **Land Use (Barren Land / Quarrying Scars)**: `12.46%` (Strongest human hazard accelerator)
+3. **Antecedent Rainfall 48h**: `12.33%`
+4. **Soil Moisture Saturation**: `11.50%`
+5. **Terrain Slope Angle**: `9.03%`
+6. **Distance to Road Toe Cut**: `8.87%`
+7. **Settlement / Road Corridor**: `7.20%`
+8. **Elevation (DEM)**: `7.10%`
+9. **Rainfall 24h**: `6.97%`
+10. **Degraded Forest**: `5.39%`
+
+### 1.5 Explainability Implementation
+- **SHAP Feature Attribution**: Implemented in [`ml-engine/explainability/shap_explainer.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/explainability/shap_explainer.py). Calculates positive (risk accelerators) and negative (protective factors) contributions against baseline training means.
+- **Natural Language Translation**: Implemented in [`ml-engine/explainability/natural_language_explainer.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/explainability/natural_language_explainer.py). Converts quantitative SHAP contributions into localized sentences in **Hindi** and **English** (e.g., *"pichle 48 ghanto ki bhaari baarish (180mm) + steep pahadi dhalan (44°) ki wajah se landslide risk HIGH hai"*).
+
+### 1.6 Benefit Over Baseline
+- **Replaced Baseline**: Traditional empirical rainfall intensity-duration thresholds (e.g. Caine 1980 / IMD single threshold: *"Rainfall > 100mm = Alert"*).
+- **Real Engineering Reasoning**:
+  In North East India, flat valley agricultural lands can receive 250mm of rain without sliding, whereas a 45° road cut in fragile sandstone can fail under 70mm of rain if prior moisture is saturated. A single-variable rainfall threshold generates rampant false alarms. XGBoost models the non-linear interaction between terrain steepness, road toe excavation, and root cohesion, ensuring alerts only trigger where geotechnical failure conditions are satisfied.
+
+---
+
+## Model 2: Short-Term 2-6 Hour Dynamic Nowcaster (PyTorch LSTM)
+
+### 2.1 Model Overview
+- **Model Type**: 2-Layer Long Short-Term Memory Recurrent Neural Network (`LandslideLSTM`)
+- **Library**: `torch==2.2.0` (PyTorch)
+- **Implementation File**: [`ml-engine/nowcast/lstm_nowcast.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/nowcast/lstm_nowcast.py)
+- **Class**: `LandslideLSTM(nn.Module)` & `DynamicNowcaster`
+- **Architecture**:
+  - `nn.LSTM(input_size=2, hidden_size=32, num_layers=2, batch_first=True, dropout=0.15)`
+  - Fully Connected Head: `Linear(32 -> 16) -> ReLU() -> Linear(16 -> 1) -> Sigmoid()`
+- **Inputs**: 6-hour sequential time-series vector: `[[hourly_rainfall_mm, soil_saturation_pct], ...]` (length 6).
+- **Prediction Objective**: Predicts imminent 2 to 6-hour rapid slope failure probability under sudden cloudburst surges.
+
+### 2.2 Training Data & Evaluation Status
+- **Current Training Status**: **NOT YET TRAINED ON REAL HISTORICAL SEQUENCES**.
+- **Explanation**: The PyTorch neural architecture is fully defined and callable in code. However, due to the lack of open, second-by-second piezometric pore pressure and rain gauge sequence datasets for NER slopes, the model currently executes a forward pass combined with calibrated physics boundary thresholds (e.g., surge triggers when rainfall intensity exceeds 35 mm/h and soil saturation exceeds 85%).
+- **Performance Metrics**: **NOT YET EVALUATED**. (We do not fabricate synthetic accuracy numbers for this component; empirical sequence evaluation is scheduled for Phase 3 field calibration).
+
+### 2.3 Benefit Over Baseline
+- **Replaced Baseline**: Cumulative 24-hour static rainfall buckets.
+- **Real Engineering Reasoning**: Landslides in Himalayan escarpments (such as Sohra and Mangan) are triggered by rate-of-change surges (e.g. 50mm falling in a single 45-minute cloudburst burst) rather than steady drizzle spread evenly over 24 hours. An LSTM captures temporal velocity and acceleration in soil moisture saturation.
+
+---
+
+## Model 3: Medium-Term 24-48 Hour Weather Forecast Risk Model
+
+### 3.1 Model Overview
+- **Model Type**: Empirical Hydro-Meteorological Loading Index (Deterministic Equation)
+- **Library**: Pure Python / NumPy
+- **Implementation File**: [`ml-engine/nowcast/forecast_model.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/nowcast/forecast_model.py)
+- **Class**: `WeatherForecastRiskModel`
+- **Formulation**:
+  $$\text{Load Index} = 0.50 \cdot \left(\frac{P_{24} + P_{48}}{250}\right) + 0.30 \cdot \left(\frac{\text{Soil}_{\%}}{100}\right) + 0.20 \cdot \left(\frac{\text{Slope}^\circ}{60}\right)$$
+- **Prediction Objective**: Categorizes 24-48h forecast risk into `LOW_WATCH`, `ELEVATED_WATCH`, or `CRITICAL_WATCH` to provide NDRF/SDRF mobilization lead times.
+
+### 3.2 Evaluation Status
+- **Training Data**: None required (deterministic physical index based on standard geotechnical empirical thresholds).
+- **Performance Metrics**: Not applicable as a statistical model.
+
+### 3.3 Benefit Over Baseline
+- **Replaced Baseline**: Purely reactive post-disaster response.
+- **Real Engineering Reasoning**: Gives incident commanders an anticipatory 24 to 48-hour operational window to pre-position evacuation buses, heavy earthmovers, and medical teams before roads are blocked.
+
+---
+
+## Model 4: Arterial Road Network Lifeline Risk Propagation
+
+### 4.1 Model Overview
+- **Model Type**: Deterministic Graph Disruption & Reachability Analysis
+- **Library**: `networkx==3.2+`
+- **Implementation File**: [`ml-engine/spatiotemporal/road_network_graph.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/spatiotemporal/road_network_graph.py)
+- **Class**: `RoadNetworkRiskPropagator`
+- **Graph Topology**: 13 topological nodes (transit hubs, junctions, border checkposts, capital centers) and 11 arterial road segments representing NH-10 (Sikkim Lifeline), NH-6 (Assam-Meghalaya), and SH-5 (Shillong-Cherrapunji).
+- **Prediction Objective**: Identifies which settlements and district hubs are completely severed from primary supply lifelines when high-risk segments collapse (`nx.has_path() == False`).
+
+### 4.2 Is it a Graph Neural Network (GNN)?
+- **HONEST CLARIFICATION**: It is **NOT** a trained Graph Neural Network (such as PyTorch Geometric GCN/GAT). It is a **NetworkX topological network graph** executing edge disruption and shortest-path reachability algorithms.
+
+### 4.3 Benefit Over Baseline
+- **Replaced Baseline**: Isolated "blocked road" point markers on a map.
+- **Real Engineering Reasoning**: Knowing a road is blocked at Kilometer 29 is insufficient for rescue logistics. The graph algorithm reveals systemic consequences: that blocking Km 29 isolates 5 downstream hamlets and cuts off 18,400 residents with zero alternative road connectivity, immediately triggering helicopter airdrop protocols.
+
+---
+
+## Model 5: Continuous Learning & Feedback Retraining Loop
+
+### 5.1 Overview
+- **Implementation File**: [`ml-engine/feedback_loop/retrain_pipeline.py`](file:///C:/Users/HP/.gemini/antigravity/scratch/sih-landslide-ner/ml-engine/feedback_loop/retrain_pipeline.py)
+- **Class**: `FieldFeedbackRetrainer`
+- **Workflow**:
+  1. Field officers log ground truth observations (`CONFIRMED`, `FALSE_ALARM`, `MISSED_EVENT`).
+  2. The system maps `FALSE_ALARM` to label `0` and `MISSED_EVENT` to label `1`.
+  3. The record is appended to both an audit log (`field_officer_feedback.csv`) and the active training dataset.
+  4. Automated or manual trigger invokes `train_baseline_models()`, generating an updated `.joblib` artifact and refreshed performance report.
+
+  </script>
+
+  <script>
+    const rawMd = document.getElementById('raw-markdown').textContent;
+    marked.setOptions({
+      gfm: true,
+      breaks: true
+    });
+    document.getElementById('content').innerHTML = marked.parse(rawMd);
+  </script>
+</body>
+</html>

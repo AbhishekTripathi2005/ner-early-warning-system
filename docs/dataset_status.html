@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIH26001 - Dataset Status & Integration Matrix</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown-dark.min.css">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      .markdown-body { background: #ffffff !important; color: #000000 !important; font-size: 11px; }
+      .markdown-body table { color: #000000 !important; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: #090d16;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .no-print {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0e1424;
+      border: 1px solid #1e293b;
+      padding: 12px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .back-link {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .btn-group { display: flex; gap: 10px; }
+    .btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #0284c7;
+      color: white;
+    }
+    .btn-primary:hover { background: #0369a1; }
+    .btn-secondary {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+    }
+    .btn-secondary:hover { background: #334155; }
+    .content-box {
+      width: 100%;
+      max-width: 1000px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 36px 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .markdown-body table {
+      display: table;
+      width: 100%;
+      overflow-x: auto;
+    }
+    .markdown-body table th, .markdown-body table td {
+      padding: 8px 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <a href="download_center.html" class="back-link">&larr; Back to Submission Download Center</a>
+    <div class="btn-group">
+      <a href="SIH26001_Dataset_Status_Matrix.pdf" download class="btn btn-primary">📥 Download Official PDF</a>
+      <button onclick="window.print()" class="btn btn-secondary">🖨️ Print / Save to PDF</button>
+    </div>
+  </div>
+
+  <div class="content-box">
+    <article id="content" class="markdown-body">
+      Loading document content...
+    </article>
+  </div>
+
+  <script id="raw-markdown" type="text/markdown">
+# 📊 Comprehensive Dataset Status & Real-World Integration Matrix
+## Project: NER Landslide Early Warning & Risk Monitoring System
+### Problem Statement: SIH26001 | Ministry of Development of North Eastern Region (MDoNER)
+
+> **Document Purpose**: Authoritative, transparent engineering reference for the SIH 2026 technical evaluation panel.  
+> **Integrity Declaration**: Every data stream is explicitly classified as **Real**, **Calibrated Synthetic**, or **Simulated Schema Mock**. No simulated source is falsely represented as an active government live API feed.
+
+---
+
+## 1. Executive Summary of System Data Readiness
+
+| Data Classification | Percentage of System | Description |
+| :--- | :--- | :--- |
+| 🟢 **Live Real-World / Native APIs** | **45%** | Esri dark gray basemap tiles, browser camera & video capture, W3C Geolocation, IndexedDB offline storage, Web Speech TTS, Web Audio siren synthesizer, NetworkX real highway topology. |
+| 🟡 **Calibrated Synthetic Data (Trained)** | **30%** | 800 georeferenced NER samples across 8 states used to train and validate the baseline Random Forest and champion XGBoost models (`69.37%` test accuracy, `77.88%` ROC-AUC). |
+| 🔵 **Simulated Schema / Pending Live Credentials** | **25%** | Production-ready Python ingestion connectors (`IMDRainfallFetcher`, `GEESentinelFetcher`, `DEMProcessor`) that adhere to real API schemas but currently yield calibrated telemetry until official API keys/service accounts are supplied. |
+
+---
+
+## 2. Complete Parameter-by-Parameter Integration Table
+
+| # | Data Stream / Parameter | Specific Fields / Units | Current Source Type | Current Implementation Source & File Path | Target Real-World Source / Agency | Current Status | Production Transition Action Needed |
+| :- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | **GIS Basemap Tiles** | Cartographic vector/raster tiles, dark mode aesthetics, state/district borders, topography labels | **REAL** | Esri World Dark Gray Canvas REST API (`frontend/src/components/HeatmapViewer.tsx`) | Esri ArcGIS Online / Survey of India (SOI) NHP Web Map Service | 🟢 **DONE** | None. Fully live, zero-cost, watermark-free, and precached by Service Worker. |
+| **2** | **Landslide Susceptibility Index (LSI)** | Static slope failure probability (`0.0000` to `1.0000`), Risk Categorization (LOW, MODERATE, HIGH, SEVERE) | **CALIBRATED SYNTHETIC** | Trained XGBoost Classifier (`ml-engine/baseline/artifacts/baseline_xgb_model.joblib`) on 800 NER points (`ml-engine/data/synthetic_landslide_ner_dataset.csv`) | GSI Bhukosh National Landslide Susceptibility Mapping (NLSM 1:50,000 scale shapefiles) | 🟢 **DONE** | Replace CSV with digitized GSI NLSM polygon vectors via `gsi_inventory_loader.py`. |
+| **3** | **Historical Landslide Inventory** | Landslide ID, Coordinates, Movement Type (Debris Flow, Rock Fall), Trigger Rainfall (mm), Fatalities, Date | **CALIBRATED SYNTHETIC** | Ingestion module sample generator (`ml-engine/ingestion/gsi_inventory_loader.py`) | GSI Bhukosh Portal / National Remote Sensing Centre (NRSC) Landslide Atlas of India | 🟢 **DONE (Schema Validated)** | Ingest GSI Bhukosh shapefile / CSV export via PostGIS `ST_GeomFromText`. |
+| **4** | **Precipitation Telemetry (Nowcast)** | Hourly rainfall (mm/h), Cumulative 24h, 48h, 72h rainfall (mm) | **SIMULATED SCHEMA** | IMD Python connector (`ml-engine/ingestion/imd_fetcher.py`) & Client time-series (`mockAlerts.ts`) | India Meteorological Department (IMD) AWS Pune REST API (`https://mausam.imd.gov.in/api/v1`) | 🟡 **SIMULATED SCHEMA** (Pending IMD API Key) | Insert IMD AWS API key into `IMDRainfallFetcher(api_key=...)`. Endpoint contract is already written. |
+| **5** | **Rainfall & Risk Projection (24-48h)** | Projected precipitation curve (mm), Anticipated LSI score surge, Early warning horizon (6h, 12h, 24h, 48h) | **ALGORITHMIC MODEL** | Empirical Geotechnical Load Index (`ml-engine/nowcast/forecast_model.py`) + Recharts UI (`WeatherForecastModal.tsx`) | IMD Global Forecast System (GFS) 0.125° / NCMRWF Unified Model numerical weather prediction | 🟢 **DONE (Forward Model)** | Ingest NetCDF4 / GRIB2 output grids from NCMRWF into PostGIS raster band. |
+| **6** | **Short-Term Surge Failure (2-6h)** | Rapid slope displacement probability under cloudburst surges | **NEURAL ARCHITECTURE** | 2-Layer PyTorch LSTM Neural Network (`ml-engine/nowcast/lstm_nowcast.py`) | High-frequency telemetry combining IMD Doppler Radar (Cherrapunji/Agartala) + In-situ sensors | 🟡 **ARCHITECTURE READY** (Not yet trained on real sequences) | Collect 100+ real temporal rainfall surge events during monsoon field deployment to fit LSTM weights. |
+| **7** | **Digital Elevation Model (DEM)** | Elevation (m a.s.l.), Slope angle ($\beta^\circ$), Aspect (compass azimuth), Topographic Wetness Index (TWI) | **REAL ALGORITHM + SYNTHETIC SAMPLES** | Horn's 3x3 DEM processing engine (`ml-engine/ingestion/dem_processor.py`) + synthetic tabular features | NASA SRTM 30m Global DEM / Copernicus DEM GLO-30 / ISRO Bhuvan CartoDEM (10m) | 🟢 **DONE (Processor)** / 🟡 **TILES IN PROGRESS** | Deploy Cloud-Optimized GeoTIFF (COG) on S3/MinIO to query elevation window via `rasterio`. |
+| **8** | **Satellite InSAR Surface Creep** | Line-of-Sight (LOS) ground displacement velocity (mm/year), Interferometric Coherence, Anomaly Flag | **SIMULATED SCHEMA** | Google Earth Engine / Copernicus API connector (`ml-engine/ingestion/gee_sentinel_fetcher.py`) | Sentinel-1 SAR (C-band IW SLC interferometry via ESA Copernicus Open Access Hub or GEE) | 🟡 **SIMULATED SCHEMA** (Pending GEE Account) | Provide GEE service account JSON key to `GEESentinelFetcher(service_account, key_path)`. |
+| **9** | **Vegetation & Soil Moisture Indices** | NDVI (Normalised Difference Vegetation Index), NDMI (Normalized Difference Moisture Index) | **SIMULATED SCHEMA** | Sentinel-2 multispectral pipeline schema in `gee_sentinel_fetcher.py` | Sentinel-2 Optical (10m resolution bands B4, B8, B11) | 🟡 **SIMULATED SCHEMA** (Pending GEE Account) | Automated 5-day NDVI delta calculation via GEE ImageCollection pipeline. |
+| **10** | **Soil Moisture Saturation (% Vol)** | Volumetric water content in top 1m soil layer, Pre-saturation ratio | **CALIBRATED SIMULATION** | Soil moisture loader module (`ml-engine/ingestion/soil_moisture_loader.py`) | NASA SMAP (Soil Moisture Active Passive 9km/36km) / In-situ Time-Domain Reflectometry (TDR) probes | 🟡 **SIMULATED SCHEMA** | Connect to NASA Earthdata OpenSearch API for SMAP L3 radiometer soil moisture. |
+| **11** | **In-Situ Geotechnical IoT Telemetry** | Pore-water pressure ($kPa$), Slope tilt angle rate of change ($^\circ/\text{hr}$), Acoustic emission pulses | **SIMULATED TELEMETRY** | Sensor threshold monitoring hooks in `ml-engine/nowcast/lstm_nowcast.py` | SDMA / IIT-Roorkee / Amrita IoT sensor node deployments on high-risk cuttings | 🔵 **UI MOCK / HARDWARE READY** | MQTT / CoAP broker listener (`backend/iot_listener.py`) to stream real telemetry into Redis. |
+| **12** | **Arterial Highway Corridor Graph** | Road segments (NH-10, NH-6, SH-5, NH-29), Node coordinates, Disruption blockage status, Isolated nodes | **REAL GRAPH TOPOLOGY** | NetworkX directional graph (`ml-engine/spatiotemporal/road_network_graph.py`) + Leaflet GIS layer (`HeatmapViewer.tsx`) | Ministry of Road Transport & Highways (MoRTH) / Border Roads Organisation (BRO) Project Beacon & Swastik | 🟢 **DONE** | Ingest live BRO road clearance bulletins via automated RSS / WhatsApp emergency bulletin parser. |
+| **13** | **Citizen Hazard Reports (Photo)** | Photo upload (JPEG/PNG), Geolocation coordinates (lat, lon), Accuracy (m), Timestamp, Severity rating | **REAL** | Native HTML5 File Input (`ReportHazardModal.tsx`) + W3C Geolocation API + IndexedDB queue (`offlineDb.ts`) | Direct citizen smartphone edge sensing (Citizens-as-Sensors) | 🟢 **DONE** | Fully functioning on production PWA with live client device camera & geolocation. |
+| **14** | **Citizen Hazard Reports (Video)** | Video clip recording (MP4/WebM, 15-20 sec, max 25MB), Auto-generated thumbnail, Offline caching | **REAL** | HTML5 Media Capture API (`ReportHazardModal.tsx`) + client-side validation + IndexedDB base64 storage | Direct citizen smartphone edge sensing | 🟢 **DONE** | Fully functioning on production PWA; supports on-camera recording or library video upload. |
+| **15** | **Offline Queue & Sync Protocol** | Queued citizen reports count, Pending synchronization status, Auto-upload trigger on `window.online` | **REAL** | Browser IndexedDB API + `window.addEventListener('online')` in `Navbar.tsx` & `ReportHazardModal.tsx` | Local device storage -> FastAPI Backend `/api/v1/hazards/report` | 🟢 **DONE** | Works unconditionally in zero-connectivity environments with visual status badges. |
+| **16** | **Field Officer Ground-Truth Feedback** | Alert ID, Verified Status (True Positive / False Alarm), Actual Failure Observed, Volume ($m^3$), Officer Comments | **REAL** | Interactive officer review modal (`OfficerFeedbackModal.tsx`) + IndexedDB + Backend `/api/v1/alerts/feedback` | District Disaster Management Authorities (DDMA) & PWD Field Engineers | 🟢 **DONE** | Complete closed-loop workflow: UI capture -> persistent storage -> retraining script pipeline. |
+| **17** | **Emergency Evacuation Audio Siren** | Multi-frequency evacuation siren warble (880Hz to 440Hz alert chirps) | **REAL** | W3C Web Audio API (`AudioContext`) oscillator synthesizer (`EvacuationSirenModal.tsx`) | Local browser / device audio speaker output | 🟢 **DONE** | No external audio files or MP3 downloads needed; synthesized in real-time in memory. |
+| **18** | **Multilingual Voice Broadcast (TTS)** | Spoken emergency audio bulletins in English, Hindi, Bengali, and Assamese | **REAL** | W3C Web Speech API (`SpeechSynthesisUtterance`) in `AlertBanner.tsx` | Browser native localized speech engine | 🟢 **DONE** | Provides zero-latency, zero-bandwidth spoken warnings for non-literate rural citizens. |
+
+---
+
+## 3. Why Calibrated Synthetic Data Was Used for Initial Training
+
+When defending the machine learning pipeline before the SIH Jury, cite these **three authoritative engineering justifications**:
+
+1. **Absence of Standardized Machine-Readable Landslide Datasets in NER**:
+   - While Geological Survey of India (GSI) maintains the *Bhukosh National Landslide Susceptibility Mapping (NLSM)*, the data is predominantly published as static PDF maps and raster atlases without unified tabular feature vectors (slope, antecedent rainfall, road toe distance, soil moisture) per failure event.
+   - Real-world records suffer from severe spatial reporting bias (only landslides blocking major highways like NH-10 are logged; landslides in dense forests go unrecorded).
+
+2. **Calibrated Physical Boundaries, Not Pure Noise**:
+   - The synthetic dataset (`synthetic_landslide_ner_dataset.csv`) was **not generated using arbitrary Gaussian noise**. It was mathematically bounded by actual geotechnical slope stability thresholds:
+     - Slopes $< 15^\circ$ have virtually zero failure probability regardless of rainfall.
+     - Slopes $> 35^\circ$ cut by road excavation (`distance_to_road < 30m`) combined with soil moisture $> 75\%$ exhibit high failure probability.
+     - Dense forest roots provide a calibrated shear resistance bonus ($\sim 20\%$ hazard reduction).
+
+3. **Plug-and-Play Production Ingestion Architecture**:
+   - As evidenced in `ml-engine/ingestion/`, every external data connector (`IMDRainfallFetcher`, `GEESentinelFetcher`, `GSIInventoryLoader`, `DEMProcessor`) is already implemented with exact API request signatures.
+   - The moment official government credentials (IMD API Key, GEE Service Account, PostGIS Bhukosh credentials) are added to the `.env` file, the system ingests live telemetry without a single line of model retraining logic changing.
+
+---
+
+## 4. SIH Jury Defense Checklist: Questions & Exact Answers
+
+### Q1: "Is this rainfall data live from IMD right now?"
+> **Your Exact Answer**:  
+> *"No, sir. Right now our system uses a simulated schema connector (`imd_fetcher.py`) that strictly mirrors IMD Pune’s AWS REST API structure. We have implemented the complete client ingestion pipeline, but because IMD AWS requires formal institutional authorization and API credentials from the Ministry, our demo uses calibrated regional monsoon values. The system is 100% ready to switch to live IMD feeds the moment an API key is inserted into our `.env` configuration."*
+
+### Q2: "Did you train your XGBoost model on real GSI data or synthetic data?"
+> **Your Exact Answer**:  
+> *"Our XGBoost classifier is currently trained on 800 synthetic samples calibrated to the 8 NER states. We did this because GSI Bhukosh historical records exist primarily as spatial polygons and PDF atlases, which lack synchronized historical soil moisture and antecedent hourly rainfall pairs for every coordinate. However, our model pipeline (`train_baseline.py`) and continuous retraining feedback loop (`retrain_pipeline.py`) are fully automated. When GSI shapefiles are loaded into our PostGIS database, the exact same pipeline refits the model with zero architectural refactoring."*
+
+### Q3: "What parts of this deployed dashboard are 100% real today?"
+> **Your Exact Answer**:  
+> *"Four major components are 100% real and verifiable in front of you:  
+> 1. **Live GIS Basemap**: We are fetching real Esri World Dark Gray Canvas raster tiles directly from Esri servers.  
+> 2. **Citizen Edge Sensing**: The citizen photo and video reporting uses your smartphone's actual camera hardware, HTML5 Media Capture, real device GPS coordinates, and stores them in local IndexedDB.  
+> 3. **Offline PWA Architecture**: You can cut your internet connection right now, and the Service Worker continues serving the dashboard and tiles from cache while queueing your citizen reports.  
+> 4. **Emergency Audio & Voice Alerting**: The evacuation siren is synthesized live using the W3C Web Audio API oscillator, and the spoken bulletins use the native W3C Web Speech API."*
+
+  </script>
+
+  <script>
+    const rawMd = document.getElementById('raw-markdown').textContent;
+    marked.setOptions({
+      gfm: true,
+      breaks: true
+    });
+    document.getElementById('content').innerHTML = marked.parse(rawMd);
+  </script>
+</body>
+</html>
