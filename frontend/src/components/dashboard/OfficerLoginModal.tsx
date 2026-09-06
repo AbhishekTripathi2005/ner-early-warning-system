@@ -43,8 +43,8 @@ export const OfficerLoginModal: React.FC<OfficerLoginModalProps> = ({ isOpen, on
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md bg-[#111827] border border-gray-700 rounded-2xl p-6 shadow-2xl space-y-4">
+    <div className="fixed inset-0 z-[5000] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-150">
+      <div className="w-full max-w-md bg-[#111827] border border-gray-700 rounded-2xl p-6 shadow-2xl space-y-4 relative z-[5001]">
         <div className="flex items-center justify-between pb-3 border-b border-gray-800">
           <div className="flex items-center space-x-2.5 text-sky-400">
             <Shield className="w-5 h-5" />
@@ -90,16 +90,57 @@ export const OfficerLoginModal: React.FC<OfficerLoginModalProps> = ({ isOpen, on
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold transition flex items-center justify-center space-x-2"
+              className="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 shadow-lg shadow-sky-600/30"
             >
               {loading ? "Authenticating..." : "Authorize Emergency Access"}
             </button>
           </div>
         </form>
 
-        <p className="text-[11px] text-gray-500 text-center">
-          SIH 2026 Demo Access: <code className="text-gray-300">sih_officer_ner / sih2026_password</code>
-        </p>
+        {/* 1-Click Quick Demo Profiles */}
+        <div className="pt-3 border-t border-gray-800 space-y-2">
+          <p className="text-[11px] text-gray-400 font-medium text-center">
+            Quick 1-Click Authenticated Profiles (for Jury Demo):
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                onLoginSuccess({
+                  username: "sih_officer_ner",
+                  name: "Major Arvind Sharma",
+                  badge: "NDRF-NER-884",
+                  role: "FIELD_DISASTER_COMMANDER"
+                });
+                onClose();
+              }}
+              className="p-2.5 bg-slate-900/90 hover:bg-slate-800 text-emerald-300 hover:text-white border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl text-[11px] font-bold text-left transition flex flex-col gap-0.5"
+            >
+              <span>👮 Major A. Sharma</span>
+              <span className="text-[10px] text-gray-400 font-normal font-mono">NDRF Battalion 1</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                onLoginSuccess({
+                  username: "sdrf_lepcha",
+                  name: "Inspector T. Lepcha",
+                  badge: "SDRF-SK-102",
+                  role: "SDRF_INSPECTOR"
+                });
+                onClose();
+              }}
+              className="p-2.5 bg-slate-900/90 hover:bg-slate-800 text-sky-300 hover:text-white border border-sky-500/30 hover:border-sky-500/60 rounded-xl text-[11px] font-bold text-left transition flex flex-col gap-0.5"
+            >
+              <span>🛡️ Inspector T. Lepcha</span>
+              <span className="text-[10px] text-gray-400 font-normal font-mono">SDRF Sikkim Quick Unit</span>
+            </button>
+          </div>
+          <p className="text-[10px] text-gray-500 text-center font-mono pt-1">
+            Manual Credentials: sih_officer_ner / sih2026_password
+          </p>
+        </div>
       </div>
     </div>
   );

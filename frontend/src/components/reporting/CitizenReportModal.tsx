@@ -265,8 +265,8 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#0e1424] border border-gray-700 shadow-2xl p-4 sm:p-6 text-slate-100 space-y-4">
+    <div className="fixed inset-0 z-[5000] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#0e1424] border border-gray-700 shadow-2xl p-4 sm:p-6 text-slate-100 space-y-4 relative z-[5001]">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-gray-800">
           <div className="flex items-center space-x-2.5">
