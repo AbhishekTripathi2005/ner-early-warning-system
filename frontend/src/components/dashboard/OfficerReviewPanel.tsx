@@ -15,7 +15,11 @@ import {
   Send,
   AlertTriangle,
   History,
-  Award
+  Award,
+  Lock,
+  LogOut,
+  ShieldCheck,
+  UserCheck
 } from "lucide-react";
 import { Language, translations } from "../../lib/i18n";
 import { CitizenReportData } from "../reporting/CitizenReportModal";
@@ -29,6 +33,8 @@ interface OfficerReviewPanelProps {
   onLocateOnMap?: (report: CitizenReportData) => void;
   onOpenReportModal?: () => void;
   currentOfficer?: any;
+  onOpenLoginModal?: () => void;
+  onLogoutOfficer?: () => void;
 }
 
 const defaultFeedbackLogs: OfflineFeedbackLog[] = [
@@ -64,7 +70,9 @@ export const OfficerReviewPanel: React.FC<OfficerReviewPanelProps> = ({
   onVerifyReport,
   onLocateOnMap,
   onOpenReportModal,
-  currentOfficer
+  currentOfficer,
+  onOpenLoginModal,
+  onLogoutOfficer
 }) => {
   const t = translations[lang] || translations.en;
 
@@ -168,7 +176,7 @@ export const OfficerReviewPanel: React.FC<OfficerReviewPanelProps> = ({
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {onOpenReportModal && (
               <button
                 onClick={onOpenReportModal}
@@ -178,9 +186,39 @@ export const OfficerReviewPanel: React.FC<OfficerReviewPanelProps> = ({
                 <span>{t.reportHazard}</span>
               </button>
             )}
-            <span className="text-xs bg-slate-800 text-gray-400 px-2.5 py-1 rounded-xl border border-gray-700 font-mono text-[11px]">
-              Ground Verification Queue
-            </span>
+
+            {currentOfficer ? (
+              <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-xl">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span className="text-xs text-emerald-300 font-bold truncate max-w-[120px]">
+                  {currentOfficer.name}
+                </span>
+                <span className="text-[10px] text-emerald-400/80 font-mono hidden sm:inline">
+                  ({currentOfficer.badge || "Verified"})
+                </span>
+                {onLogoutOfficer && (
+                  <button
+                    onClick={onLogoutOfficer}
+                    className="ml-1 px-2 py-0.5 bg-rose-600/20 hover:bg-rose-600/40 text-rose-300 hover:text-white border border-rose-500/30 rounded-lg text-[11px] font-bold flex items-center gap-1 transition shadow-sm"
+                    title="Log out of Officer Mode"
+                  >
+                    <LogOut className="w-3 h-3 text-rose-400" />
+                    <span>Logout</span>
+                  </button>
+                )}
+              </div>
+            ) : (
+              onOpenLoginModal && (
+                <button
+                  onClick={onOpenLoginModal}
+                  className="px-3 py-1.5 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm"
+                  title="Authenticate with official badge to verify citizen reports"
+                >
+                  <Lock className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Officer Login to Verify</span>
+                </button>
+              )
+            )}
           </div>
         </div>
 
@@ -280,23 +318,36 @@ export const OfficerReviewPanel: React.FC<OfficerReviewPanelProps> = ({
                     </button>
                   )}
 
-                  {r.status === "PENDING_REVIEW" && onVerifyReport && (
-                    <div className="flex items-center gap-2">
+                  {r.status === "PENDING_REVIEW" && (
+                    currentOfficer && onVerifyReport ? (
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => onVerifyReport(r.id, "VERIFIED_TRUE_ALARM")}
+                          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 transition shadow-md shadow-emerald-600/20"
+                          title={`Authorized as ${currentOfficer.name} (${currentOfficer.badge || "Officer"})`}
+                        >
+                          <Check className="w-3.5 h-3.5" />
+                          <span>{t.verifyAction}</span>
+                        </button>
+                        <button
+                          onClick={() => onVerifyReport(r.id, "DISMISSED_FALSE_ALARM")}
+                          className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg text-xs font-medium flex items-center gap-1 border border-gray-700 transition"
+                          title="Dismiss as False Alarm or Spam"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                          <span>{t.dismissAction}</span>
+                        </button>
+                      </div>
+                    ) : (
                       <button
-                        onClick={() => onVerifyReport(r.id, "VERIFIED_TRUE_ALARM")}
-                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 transition shadow-md shadow-emerald-600/20"
+                        onClick={onOpenLoginModal}
+                        className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-amber-300 hover:text-amber-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-amber-500/40 transition shadow-sm group"
+                        title="Only authorized disaster management officers can verify reports"
                       >
-                        <Check className="w-3.5 h-3.5" />
-                        <span>{t.verifyAction}</span>
+                        <Lock className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition" />
+                        <span>Officer Login to Verify</span>
                       </button>
-                      <button
-                        onClick={() => onVerifyReport(r.id, "DISMISSED_FALSE_ALARM")}
-                        className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-lg text-xs font-medium flex items-center gap-1 border border-gray-700 transition"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                        <span>{t.dismissAction}</span>
-                      </button>
-                    </div>
+                    )
                   )}
                 </div>
               </div>
@@ -409,8 +460,18 @@ export const OfficerReviewPanel: React.FC<OfficerReviewPanelProps> = ({
                 <Check className="w-3.5 h-3.5" /> {feedbackSuccessMsg}
               </span>
             ) : (
-              <span className="text-[11px] text-gray-400 font-mono">
-                Submitting as: <b className="text-white">{currentOfficer?.name || "Major Arvind Sharma (NDRF-NER-884)"}</b>
+              <span className="text-[11px] text-gray-400 font-mono flex items-center gap-1.5">
+                {currentOfficer ? (
+                  <>
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Signing as: <b className="text-emerald-300">{currentOfficer.name}</b> ({currentOfficer.badge || "Officer"})</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Public View &bull; <button type="button" onClick={onOpenLoginModal} className="text-amber-300 underline font-bold hover:text-amber-200">Login as Officer</button> to sign official record</span>
+                  </>
+                )}
               </span>
             )}
 
