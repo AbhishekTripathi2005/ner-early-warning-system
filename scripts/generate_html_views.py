@@ -22,6 +22,12 @@ DOCS_TO_RENDER = [
         "html_file": "dataset_status.html",
         "pdf_file": "SIH26001_Dataset_Status_Matrix.pdf",
         "title": "SIH26001 - Dataset Status & Integration Matrix"
+    },
+    {
+        "md_file": "EVALUATION_CRITERIA.md",
+        "html_file": "evaluation_criteria.html",
+        "pdf_file": "SIH26001_Evaluation_Criteria_Defense_Guide.pdf",
+        "title": "SIH26001 - Core Evaluation Criteria & Jury Defense Guide"
     }
 ]
 
