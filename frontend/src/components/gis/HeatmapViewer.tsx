@@ -34,8 +34,35 @@ interface HeatmapViewerProps {
   focusTarget?: { lat: number; lon: number; id: number; _ts?: number } | null;
 }
 
+interface AiContribution {
+  name: string;
+  pct: number;
+  color: string;
+  gradient: string;
+}
+
+export interface HotspotSector {
+  id: string;
+  name: string;
+  district: string;
+  state: string;
+  lat: number;
+  lon: number;
+  slope: number;
+  rain48: number;
+  soil: number;
+  intensity: number;
+  tier: "SEVERE" | "HIGH" | "MODERATE" | "LOW";
+  insar: number;
+  suggestedAction: string;
+  lastUpdated: string;
+  exp_hi: string;
+  exp_en: string;
+  aiContributions: AiContribution[];
+}
+
 // 1. Point Heatmap Hotspots across 8 NER States
-const nerHotspots = [
+const nerHotspots: HotspotSector[] = [
   {
     id: "NER-ML-01",
     name: "Cherrapunji Escarpment",
@@ -49,8 +76,16 @@ const nerHotspots = [
     intensity: 0.94,
     tier: "SEVERE",
     insar: -32.5,
+    suggestedAction: "Pre-emptive evacuation along steep escarpment settlements; suspend vehicular transit on SH-5.",
+    lastUpdated: "2 mins ago (Live IMD Sync)",
     exp_hi: "Pichle 48 ghanto ki bhaari baarish (260.4mm) + mitti mein 94% saturation + steep 44.2° dhalan ki wajah se risk SEVERE hai.",
-    exp_en: "Severe risk driven by 260.4mm 48h rainfall + 94% saturated soil on steep 44.2° sandstone slope."
+    exp_en: "Severe risk driven by 260.4mm 48h rainfall + 94% saturated soil on steep 44.2° sandstone slope.",
+    aiContributions: [
+      { name: "Rainfall (Antecedent 48h)", pct: 42, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Slope Gradient (SRTM DEM)", pct: 28, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Soil Moisture Saturation", pct: 18, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "InSAR Surface Creep", pct: 12, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   },
   {
     id: "NER-AS-01",
@@ -65,8 +100,16 @@ const nerHotspots = [
     intensity: 0.96,
     tier: "SEVERE",
     insar: -34.8,
+    suggestedAction: "Immediate road closure on Lumding-Diphu highway cut; mobilize SDRF heavy earthmovers.",
+    lastUpdated: "4 mins ago (Live AWS Telemetry)",
     exp_hi: "Lumding-Diphu highway cutting par 265mm baarish aur 34.8mm/yr InSAR subsidence ki wajah se catastrophic failure alert.",
-    exp_en: "Critical road cut failure alert driven by 265mm rain and 34.8mm/yr active InSAR subsidence along SH-19."
+    exp_en: "Critical road cut failure alert driven by 265mm rain and 34.8mm/yr active InSAR subsidence along SH-19.",
+    aiContributions: [
+      { name: "Rainfall (Antecedent 48h)", pct: 44, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Slope Gradient (SRTM DEM)", pct: 26, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "InSAR Surface Creep", pct: 16, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" },
+      { name: "Soil Moisture Saturation", pct: 14, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" }
+    ]
   },
   {
     id: "NER-SK-01",
@@ -81,8 +124,16 @@ const nerHotspots = [
     intensity: 0.89,
     tier: "SEVERE",
     insar: -28.0,
+    suggestedAction: "Divert all Sikkim transit via Panbu-Mungpoo detour; deploy NDRF spotters at river toe.",
+    lastUpdated: "1 min ago (Real-time Doppler)",
     exp_hi: "Teesta nadi ke kataav aur InSAR creep ki wajah se NH-10 arterial highway par debris avalanche active hai.",
-    exp_en: "Active debris avalanche blocking NH-10 corridor caused by river toe erosion and heavy 195mm rainfall."
+    exp_en: "Active debris avalanche blocking NH-10 corridor caused by river toe erosion and heavy 195mm rainfall.",
+    aiContributions: [
+      { name: "Slope Gradient (SRTM DEM)", pct: 36, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Rainfall (Antecedent 48h)", pct: 34, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Soil Moisture Saturation", pct: 16, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "InSAR Surface Creep", pct: 14, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   },
   {
     id: "NER-SK-02",
@@ -97,8 +148,16 @@ const nerHotspots = [
     intensity: 0.81,
     tier: "HIGH",
     insar: -14.2,
+    suggestedAction: "Restrict NH-10 to controlled single-lane pilot convoys; halt night commercial travel.",
+    lastUpdated: "6 mins ago (Automatic Station)",
     exp_hi: "InSAR surface creep (14.2mm/yr) aur 86.5% saturated soil se one-way police convoy chalai ja rahi hai.",
-    exp_en: "Active InSAR surface creep (14.2mm/yr) + 86.5% soil saturation creates critical slope shear hazard along NH-10."
+    exp_en: "Active InSAR surface creep (14.2mm/yr) + 86.5% soil saturation creates critical slope shear hazard along NH-10.",
+    aiContributions: [
+      { name: "Slope Gradient (SRTM DEM)", pct: 32, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Rainfall (Antecedent 48h)", pct: 30, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Soil Moisture Saturation", pct: 22, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "InSAR Surface Creep", pct: 16, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   },
   {
     id: "NER-AS-02",
@@ -113,8 +172,16 @@ const nerHotspots = [
     intensity: 0.62,
     tier: "HIGH",
     insar: -9.5,
+    suggestedAction: "Speed restriction of 20 km/h on NFR hill railway section; alert track inspection patrols.",
+    lastUpdated: "8 mins ago (AWS Telemetry)",
     exp_hi: "Clay-shale strata mein 110mm baarish ke baad moderate creep darj hua hai.",
-    exp_en: "Elevated risk on clay-shale strata due to 110mm antecedent rainfall and railway slope cutting."
+    exp_en: "Elevated risk on clay-shale strata due to 110mm antecedent rainfall and railway slope cutting.",
+    aiContributions: [
+      { name: "Rainfall (Antecedent 48h)", pct: 35, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Slope Gradient (SRTM DEM)", pct: 29, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Soil Moisture Saturation", pct: 24, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "InSAR Surface Creep", pct: 12, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   },
   {
     id: "NER-NL-01",
@@ -129,8 +196,16 @@ const nerHotspots = [
     intensity: 0.58,
     tier: "HIGH",
     insar: -11.0,
+    suggestedAction: "Advisory to Kohima district emergency cell; inspect retaining wall drainage weep-holes.",
+    lastUpdated: "10 mins ago (Satellite Telemetry)",
     exp_hi: "Active thrust fault aur 98mm baarish ki wajah se highway slip hazard elevated hai.",
-    exp_en: "Thrust fault zone activation with 98mm rain creating elevated highway slip warning."
+    exp_en: "Thrust fault zone activation with 98mm rain creating elevated highway slip warning.",
+    aiContributions: [
+      { name: "Slope Gradient (SRTM DEM)", pct: 34, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Rainfall (Antecedent 48h)", pct: 28, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Soil Moisture Saturation", pct: 25, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "InSAR Surface Creep", pct: 13, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   },
   {
     id: "NER-MZ-01",
@@ -145,8 +220,16 @@ const nerHotspots = [
     intensity: 0.28,
     tier: "LOW",
     insar: -2.1,
+    suggestedAction: "Normal situational vigilance; continue routine 6-hour automated geotechnical polling.",
+    lastUpdated: "12 mins ago (Routine Polling)",
     exp_hi: "Nami aur dhalan surakshit sima ke andar hain. Normal advisory active hai.",
-    exp_en: "Soil moisture and precipitation well within geotechnical safety margins."
+    exp_en: "Soil moisture and precipitation well within geotechnical safety margins.",
+    aiContributions: [
+      { name: "Soil Moisture Saturation", pct: 28, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "Slope Gradient (SRTM DEM)", pct: 26, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Rainfall (Antecedent 48h)", pct: 24, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "InSAR Surface Creep", pct: 22, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   },
   {
     id: "NER-AR-01",
@@ -161,8 +244,16 @@ const nerHotspots = [
     intensity: 0.74,
     tier: "HIGH",
     insar: -16.4,
+    suggestedAction: "BRO rockfall catch nets inspection; issue alert for military and civil convoys.",
+    lastUpdated: "5 mins ago (IMD Radar)",
     exp_hi: "Border road cutting par heavy rain saturation ki wajah se rockfall alert jaari kiya gaya hai.",
-    exp_en: "Border road cut section on high rainfall saturation prone to rockfall."
+    exp_en: "Border road cut section on high rainfall saturation prone to rockfall.",
+    aiContributions: [
+      { name: "Rainfall (Antecedent 48h)", pct: 38, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Slope Gradient (SRTM DEM)", pct: 32, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Soil Moisture Saturation", pct: 18, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "InSAR Surface Creep", pct: 12, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   },
   {
     id: "NER-MN-01",
@@ -177,8 +268,16 @@ const nerHotspots = [
     intensity: 0.68,
     tier: "HIGH",
     insar: -15.0,
+    suggestedAction: "Continuous acoustic emission monitoring around railway bridge abutments.",
+    lastUpdated: "7 mins ago (InSAR Sync)",
     exp_hi: "Railway bridge construction zone ke paas soil creep monitor kiya ja raha hai.",
-    exp_en: "Slope monitoring near railway infrastructure with 125mm antecedent rainfall."
+    exp_en: "Slope monitoring near railway infrastructure with 125mm antecedent rainfall.",
+    aiContributions: [
+      { name: "Slope Gradient (SRTM DEM)", pct: 35, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+      { name: "Rainfall (Antecedent 48h)", pct: 32, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+      { name: "Soil Moisture Saturation", pct: 21, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+      { name: "InSAR Surface Creep", pct: 12, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+    ]
   }
 ];
 
@@ -332,6 +431,95 @@ const highwayCorridors = [
   }
 ];
 
+const generateMarkerPopupHtml = (pt: HotspotSector) => {
+  const color =
+    pt.intensity >= 0.75
+      ? "#ef4444"
+      : pt.intensity >= 0.55
+      ? "#f97316"
+      : pt.intensity >= 0.35
+      ? "#f59e0b"
+      : "#10b981";
+
+  const tierBg =
+    pt.intensity >= 0.75
+      ? "rgba(239, 68, 68, 0.18)"
+      : pt.intensity >= 0.55
+      ? "rgba(249, 115, 22, 0.18)"
+      : pt.intensity >= 0.35
+      ? "rgba(245, 158, 11, 0.18)"
+      : "rgba(16, 185, 129, 0.18)";
+
+  const tierBorder =
+    pt.intensity >= 0.75
+      ? "rgba(239, 68, 68, 0.5)"
+      : pt.intensity >= 0.55
+      ? "rgba(249, 115, 22, 0.5)"
+      : pt.intensity >= 0.35
+      ? "rgba(245, 158, 11, 0.5)"
+      : "rgba(16, 185, 129, 0.5)";
+
+  return `
+    <div style="font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-width: 290px; max-width: 330px; background: #0e1424; color: #f8fafc; border-radius: 14px; overflow: hidden; padding: 14px; box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8);">
+      <!-- Header: Location & Current Risk Level Badge -->
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; border-bottom: 1px solid #1f293d; padding-bottom: 10px; margin-bottom: 10px;">
+        <div style="min-width: 0;">
+          <div style="font-size: 10px; font-weight: 700; color: #38bdf8; font-family: monospace; letter-spacing: 0.5px;">${pt.id}</div>
+          <div style="font-size: 14px; font-weight: 800; color: #ffffff; line-height: 1.25; margin-top: 2px;">${pt.name}</div>
+          <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">📍 ${pt.district}, ${pt.state}</div>
+        </div>
+        <span style="display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: ${tierBg}; color: ${color}; border: 1px solid ${tierBorder}; white-space: nowrap; box-shadow: 0 0 10px ${color}25;">
+          ${pt.tier} RISK
+        </span>
+      </div>
+
+      <!-- Telemetry 2x2 Grid (LSI, 48h Rain, Slope, Soil) -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+        <div style="background: #131b2e; border: 1px solid #1f293d; border-radius: 8px; padding: 8px 10px;">
+          <div style="font-size: 10px; font-weight: 600; color: #94a3b8;">LSI Susceptibility</div>
+          <div style="font-size: 16px; font-weight: 900; color: ${color}; font-family: monospace; margin-top: 2px;">
+            ${(pt.intensity * 100).toFixed(1)}%
+          </div>
+        </div>
+        <div style="background: #131b2e; border: 1px solid #1f293d; border-radius: 8px; padding: 8px 10px;">
+          <div style="font-size: 10px; font-weight: 600; color: #94a3b8;">48h Rainfall</div>
+          <div style="font-size: 16px; font-weight: 900; color: #38bdf8; font-family: monospace; margin-top: 2px;">
+            ${pt.rain48} <span style="font-size: 11px; font-weight: 700; color: #7dd3fc;">mm</span>
+          </div>
+        </div>
+        <div style="background: #131b2e; border: 1px solid #1f293d; border-radius: 8px; padding: 8px 10px;">
+          <div style="font-size: 10px; font-weight: 600; color: #94a3b8;">Slope Gradient</div>
+          <div style="font-size: 15px; font-weight: 900; color: #fbbf24; font-family: monospace; margin-top: 2px;">
+            ${pt.slope}°
+          </div>
+        </div>
+        <div style="background: #131b2e; border: 1px solid #1e293b; border-radius: 8px; padding: 8px 10px;">
+          <div style="font-size: 10px; font-weight: 600; color: #94a3b8;">Soil Saturation</div>
+          <div style="font-size: 15px; font-weight: 900; color: #60a5fa; font-family: monospace; margin-top: 2px;">
+            ${pt.soil}%
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggested Action Callout Box -->
+      <div style="background: ${tierBg}; border: 1px solid ${tierBorder}; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px;">
+        <div style="font-size: 10px; font-weight: 800; color: ${color}; text-transform: uppercase; letter-spacing: 0.4px; display: flex; align-items: center; gap: 4px;">
+          ⚡ Suggested Action
+        </div>
+        <div style="font-size: 11px; color: #f1f5f9; margin-top: 3px; line-height: 1.35; font-weight: 500;">
+          ${pt.suggestedAction}
+        </div>
+      </div>
+
+      <!-- Footer: Last Updated Time -->
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 10px; color: #64748b; padding-top: 6px; border-top: 1px solid #1f293d;">
+        <span>🕒 Last Updated: <b style="color: #cbd5e1; font-weight: 600;">${pt.lastUpdated}</b></span>
+        <span style="font-size: 9px; color: #38bdf8; font-family: monospace; font-weight: 600;">Telemetry Live</span>
+      </div>
+    </div>
+  `;
+};
+
 export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
   lang,
   onSelectFeature,
@@ -427,9 +615,22 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
           fillOpacity: 1.0
         });
 
+        const popupHtml = generateMarkerPopupHtml(pt);
+        const popupConfig = {
+          maxWidth: 340,
+          minWidth: 280,
+          className: "ner-risk-popup",
+          autoPan: true,
+          offset: [0, -8] as [number, number]
+        };
+
+        coreMarker.bindPopup(popupHtml, popupConfig);
+        outerCircle.bindPopup(popupHtml, popupConfig);
+
         const handleSelect = () => {
           setSelectedItem({ ...pt, isCitizenReport: false });
           if (onSelectFeature) onSelectFeature(pt);
+          coreMarker.openPopup();
         };
 
         outerCircle.on("click", handleSelect);
@@ -443,6 +644,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               <span style="font-weight:bold;color:${color};font-size:11px;">LSI: ${(pt.intensity * 100).toFixed(0)}%</span>
               <span style="background:${color}25;color:${color};border:1px solid ${color}40;padding:1px 4px;border-radius:3px;font-size:9px;font-weight:bold;">${pt.tier}</span>
             </div>
+            <div style="font-size:9px;color:#38bdf8;margin-top:3px;">Click to view full risk dossier</div>
           </div>
         `;
 
@@ -820,40 +1022,40 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
             <span className="text-gray-400 font-semibold mr-1">Layer:</span>
             <button
               onClick={() => setActiveLayer("heatmap")}
-              className={`px-3 py-1.5 rounded-lg transition text-xs font-bold ${
+              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold ${
                 activeLayer === "heatmap"
-                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800/60"
+                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105"
+                  : "text-gray-300 hover:text-white hover:bg-slate-800/60 hover:scale-102"
               }`}
             >
               {t.layerHeatmap}
             </button>
             <button
               onClick={() => setActiveLayer("polygons")}
-              className={`px-3 py-1.5 rounded-lg transition text-xs font-bold ${
+              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold ${
                 activeLayer === "polygons"
-                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800/60"
+                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105"
+                  : "text-gray-300 hover:text-white hover:bg-slate-800/60 hover:scale-102"
               }`}
             >
               {t.layerSusceptibility}
             </button>
             <button
               onClick={() => setActiveLayer("roads")}
-              className={`px-3 py-1.5 rounded-lg transition text-xs font-bold ${
+              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold ${
                 activeLayer === "roads"
-                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800/60"
+                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105"
+                  : "text-gray-300 hover:text-white hover:bg-slate-800/60 hover:scale-102"
               }`}
             >
               {t.layerRoadStatus}
             </button>
             <button
               onClick={() => setActiveLayer("citizens")}
-              className={`px-3 py-1.5 rounded-lg transition text-xs font-bold flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold flex items-center gap-1.5 ${
                 activeLayer === "citizens"
-                  ? "bg-rose-600 text-white shadow-md shadow-rose-600/30"
-                  : "text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
+                  ? "bg-rose-600 text-white shadow-md shadow-rose-600/30 scale-105"
+                  : "text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 hover:scale-102"
               }`}
             >
               <Camera className="w-3 h-3" />
@@ -870,7 +1072,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               setSelectedItem(nerHotspots[0]);
               mapInstanceRef.current?.flyTo([25.275, 91.731], 9, { duration: 1.0 });
             }}
-            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-gray-200 font-medium transition"
+            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold border border-transparent hover:border-gray-600 hover:scale-105 active:scale-95 transition-all shadow-sm"
           >
             Cherrapunji
           </button>
@@ -879,7 +1081,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               setSelectedItem(nerHotspots[2]);
               mapInstanceRef.current?.flyTo([27.050, 88.490], 9.5, { duration: 1.0 });
             }}
-            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-gray-200 font-medium transition"
+            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold border border-transparent hover:border-gray-600 hover:scale-105 active:scale-95 transition-all shadow-sm"
           >
             29th Mile NH-10
           </button>
@@ -888,7 +1090,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               setSelectedItem(nerHotspots[1]);
               mapInstanceRef.current?.flyTo([25.842, 93.435], 9, { duration: 1.0 });
             }}
-            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-gray-200 font-medium transition"
+            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold border border-transparent hover:border-gray-600 hover:scale-105 active:scale-95 transition-all shadow-sm"
           >
             Karbi Anglong
           </button>
@@ -1020,78 +1222,147 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
           )}
 
           {/* Landslide Susceptibility Index (LSI) Gauge with Illuminated Bar */}
-          <div className="p-3.5 bg-slate-900/90 rounded-2xl border border-gray-800 space-y-2 shadow-inner">
+          <div className="p-3.5 bg-slate-900/90 rounded-2xl border border-gray-800 space-y-2.5 shadow-inner">
             <div className="flex justify-between items-baseline text-xs text-gray-300 font-medium">
               <span className="font-semibold text-gray-200">Landslide Susceptibility Index (LSI)</span>
-              <span className="text-base font-black text-white font-mono tracking-tight">
+              <span
+                className="text-2xl sm:text-3xl font-black font-mono tracking-tight"
+                style={{
+                  color: getColor(selectedItem.intensity),
+                  textShadow: `0 0 14px ${getColor(selectedItem.intensity)}50`
+                }}
+              >
                 {(selectedItem.intensity * 100).toFixed(1)}%
               </span>
             </div>
-            <div className="w-full bg-gray-950 h-2.5 rounded-full overflow-hidden p-0.5 border border-gray-800">
+            <div className="w-full bg-gray-950 h-3 rounded-full overflow-hidden p-0.5 border border-gray-800/90">
               <div
                 className="h-full rounded-full transition-all duration-700 shadow-sm"
                 style={{
                   width: `${selectedItem.intensity * 100}%`,
                   backgroundColor: getColor(selectedItem.intensity),
-                  boxShadow: `0 0 10px ${getColor(selectedItem.intensity)}`
+                  boxShadow: `0 0 12px ${getColor(selectedItem.intensity)}`
                 }}
               ></div>
             </div>
           </div>
 
-          {/* Multi-Source Geotechnical Metrics (2x2 Grid with Strong Hierarchy) */}
+          {/* Multi-Source Geotechnical Metrics (2x2 Grid with Strong Hierarchy & Prominent Numbers) */}
           <div className="grid grid-cols-2 gap-2.5 text-xs">
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 transition space-y-1">
+            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
               <div className="flex items-center space-x-1.5 text-gray-400">
                 <Mountain className="w-3.5 h-3.5 text-amber-400" />
-                <span className="text-[11px] font-medium">Slope Gradient</span>
+                <span className="text-[11px] font-semibold">Slope Gradient</span>
               </div>
-              <p className="text-lg font-black text-white font-mono">{selectedItem.slope}°</p>
-              <span className="text-[10px] text-gray-500 block">SRTM 30m DEM</span>
+              <div className="flex items-baseline space-x-1">
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.slope}</p>
+                <span className="text-xs font-bold text-amber-400 font-mono">°</span>
+              </div>
+              <span className="text-[10px] text-gray-500 block font-mono">SRTM 30m DEM</span>
             </div>
 
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 transition space-y-1">
+            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
               <div className="flex items-center space-x-1.5 text-gray-400">
                 <CloudRain className="w-3.5 h-3.5 text-sky-400" />
-                <span className="text-[11px] font-medium">48h Rain</span>
+                <span className="text-[11px] font-semibold">48h Rain</span>
               </div>
-              <p className="text-lg font-black text-white font-mono">{selectedItem.rain48} mm</p>
-              <span className="text-[10px] text-gray-500 block">IMD AWS Gauge</span>
+              <div className="flex items-baseline space-x-1">
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.rain48}</p>
+                <span className="text-xs font-bold text-sky-400 font-mono">mm</span>
+              </div>
+              <span className="text-[10px] text-gray-500 block font-mono">IMD AWS Gauge</span>
             </div>
 
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 transition space-y-1">
+            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
               <div className="flex items-center space-x-1.5 text-gray-400">
                 <Droplets className="w-3.5 h-3.5 text-blue-400" />
-                <span className="text-[11px] font-medium">Soil Saturation</span>
+                <span className="text-[11px] font-semibold">Soil Saturation</span>
               </div>
-              <p className="text-lg font-black text-white font-mono">{selectedItem.soil}%</p>
-              <span className="text-[10px] text-gray-500 block">NASA SMAP L4</span>
+              <div className="flex items-baseline space-x-1">
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.soil}</p>
+                <span className="text-xs font-bold text-blue-400 font-mono">%</span>
+              </div>
+              <span className="text-[10px] text-gray-500 block font-mono">NASA SMAP L4</span>
             </div>
 
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 transition space-y-1">
+            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
               <div className="flex items-center space-x-1.5 text-gray-400">
                 <Activity className="w-3.5 h-3.5 text-rose-400" />
-                <span className="text-[11px] font-medium">InSAR Creep</span>
+                <span className="text-[11px] font-semibold">InSAR Creep</span>
               </div>
-              <p className="text-lg font-black text-white font-mono">{selectedItem.insar} mm/yr</p>
-              <span className="text-[10px] text-gray-500 block">Sentinel-1 InSAR</span>
+              <div className="flex items-baseline space-x-1">
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.insar}</p>
+                <span className="text-xs font-bold text-rose-400 font-mono">mm/yr</span>
+              </div>
+              <span className="text-[10px] text-gray-500 block font-mono">Sentinel-1 InSAR</span>
             </div>
           </div>
 
-          {/* AI Multilingual SHAP Explainability Card */}
-          <div className="p-3.5 rounded-2xl bg-sky-950/20 border border-sky-800/40 text-xs space-y-2 shadow-inner">
-            <div className="flex items-center justify-between text-sky-300">
-              <div className="flex items-center gap-1.5 font-bold">
-                <Info className="w-4 h-4 text-sky-400 shrink-0" />
-                <span>AI Attribution (SHAP)</span>
+          {/* Visual AI Cause Explanation Section with Horizontal Contribution Bars */}
+          <div className="p-4 rounded-2xl bg-gradient-to-b from-[#10192e] to-[#0c1220] border border-sky-800/40 text-xs space-y-3 shadow-xl">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-sky-500/15 border border-sky-500/30 text-sky-400">
+                  <Activity className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-black text-white uppercase tracking-wider">
+                    AI Cause Explanation
+                  </h4>
+                  <p className="text-[10px] text-gray-400 font-mono">
+                    Feature Contribution &bull; TreeSHAP v0.42
+                  </p>
+                </div>
               </div>
-              <span className="text-[10px] bg-sky-500/20 text-sky-200 px-2 py-0.5 rounded font-mono">
-                TreeSHAP v0.42
+              <span className="text-[10px] font-mono font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30 px-2 py-0.5 rounded-full">
+                Confidence 94.8%
               </span>
             </div>
-            <p className="text-sky-100/90 leading-relaxed text-[11px] font-normal">
-              {lang === "hi" ? selectedItem.exp_hi : selectedItem.exp_en}
-            </p>
+
+            {/* Horizontal Feature Contribution Bars */}
+            <div className="space-y-2.5 pt-1">
+              {(selectedItem.aiContributions || [
+                { name: "Rainfall (Antecedent 48h)", pct: 42, color: "#38bdf8", gradient: "from-sky-500 to-blue-500" },
+                { name: "Slope Gradient (SRTM DEM)", pct: 28, color: "#f59e0b", gradient: "from-amber-500 to-orange-500" },
+                { name: "Soil Moisture Saturation", pct: 18, color: "#60a5fa", gradient: "from-blue-500 to-indigo-500" },
+                { name: "InSAR Surface Creep", pct: 12, color: "#f43f5e", gradient: "from-rose-500 to-pink-500" }
+              ]).map((contrib: any, idx: number) => (
+                <div key={idx} className="space-y-1">
+                  <div className="flex justify-between items-center text-[11px]">
+                    <span className="font-semibold text-gray-300 flex items-center gap-1.5">
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0 shadow-sm"
+                        style={{ backgroundColor: contrib.color }}
+                      ></span>
+                      {contrib.name}
+                    </span>
+                    <span
+                      className="font-mono font-black text-xs"
+                      style={{ color: contrib.color }}
+                    >
+                      {contrib.pct}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-950/90 h-2.5 rounded-full overflow-hidden p-0.5 border border-gray-800/90">
+                    <div
+                      className={`h-full rounded-full bg-gradient-to-r ${contrib.gradient} transition-all duration-700 shadow-sm`}
+                      style={{
+                        width: `${contrib.pct}%`,
+                        boxShadow: `0 0 8px ${contrib.color}50`
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Qualitative Narrative Summary */}
+            <div className="pt-2 border-t border-gray-800/80">
+              <p className="text-slate-300 leading-relaxed text-[11px] font-normal">
+                {lang === "hi" ? selectedItem.exp_hi : selectedItem.exp_en}
+              </p>
+            </div>
           </div>
         </div>
 
