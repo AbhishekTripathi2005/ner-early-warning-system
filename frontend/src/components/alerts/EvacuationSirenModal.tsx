@@ -134,23 +134,23 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[2500] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-4xl max-h-[94vh] overflow-y-auto rounded-3xl bg-[#0b0f19] border-2 border-rose-500/80 shadow-[0_0_50px_rgba(244,63,94,0.35)] p-5 sm:p-7 text-slate-100 space-y-6">
+      <div className="relative w-full max-w-4xl max-h-[94vh] overflow-y-auto rounded-2xl bg-[#0c1322] border-2 border-rose-500/70 shadow-[0_0_50px_rgba(244,63,94,0.25)] ring-1 ring-slate-800 p-5 sm:p-7 text-slate-100 space-y-5">
         {/* Modal Top Header with Live Siren Glow */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-800 gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-3">
           <div className="flex items-center space-x-3">
             <div className="p-3 rounded-2xl bg-rose-600 text-white shadow-lg shadow-rose-600/50 animate-pulse">
               <AlertTriangle className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs bg-rose-500/20 text-rose-300 font-mono px-2 py-0.5 rounded font-bold border border-rose-500/40">
+                <span className="text-[11px] bg-rose-500/15 text-rose-300 font-mono px-2 py-0.5 rounded-md font-bold border border-rose-500/30">
                   CAP v1.2 LIVE DISPATCH
                 </span>
-                <span className="text-xs text-gray-400 font-mono">
+                <span className="text-xs text-slate-400 font-mono">
                   Ticket #{sectorData.id}-EVAC-2026
                 </span>
               </div>
-              <h3 className="text-lg sm:text-xl font-black text-white tracking-tight uppercase mt-0.5">
+              <h3 className="text-base sm:text-lg font-black text-white tracking-tight uppercase mt-0.5">
                 Multi-Channel Evacuation Broadcast Simulator
               </h3>
             </div>
@@ -159,11 +159,11 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
           {/* Controls: Language Switcher & Audio Toggle & Close */}
           <div className="flex items-center space-x-2 self-end sm:self-center">
             {/* Language Switcher */}
-            <div className="flex items-center bg-slate-900 border border-gray-700 rounded-xl p-0.5 text-xs">
+            <div className="flex items-center bg-[#080d1a] border border-slate-800 rounded-xl p-0.5 text-xs">
               <button
                 onClick={() => setModalLang("en")}
                 className={`px-2.5 py-1 rounded-lg transition font-bold ${
-                  modalLang === "en" ? "bg-rose-600 text-white" : "text-gray-400 hover:text-white"
+                  modalLang === "en" ? "bg-rose-600 text-white" : "text-slate-400 hover:text-white"
                 }`}
               >
                 EN
@@ -171,7 +171,7 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
               <button
                 onClick={() => setModalLang("hi")}
                 className={`px-2.5 py-1 rounded-lg transition font-bold ${
-                  modalLang === "hi" ? "bg-rose-600 text-white" : "text-gray-400 hover:text-white"
+                  modalLang === "hi" ? "bg-rose-600 text-white" : "text-slate-400 hover:text-white"
                 }`}
               >
                 हिन्दी
@@ -179,7 +179,7 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
               <button
                 onClick={() => setModalLang("as")}
                 className={`px-2.5 py-1 rounded-lg transition font-bold ${
-                  modalLang === "as" ? "bg-rose-600 text-white" : "text-gray-400 hover:text-white"
+                  modalLang === "as" ? "bg-rose-600 text-white" : "text-slate-400 hover:text-white"
                 }`}
               >
                 অসমীয়া
@@ -191,8 +191,8 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
               onClick={() => setSoundEnabled(!soundEnabled)}
               className={`p-2 rounded-xl border transition ${
                 soundEnabled
-                  ? "bg-rose-500/20 border-rose-500/40 text-rose-300"
-                  : "bg-slate-900 border-gray-700 text-gray-500"
+                  ? "bg-rose-500/20 border-rose-500/40 text-rose-300 shadow-sm"
+                  : "bg-slate-900 border-slate-800 text-slate-500"
               }`}
               title={soundEnabled ? "Siren Audio Active" : "Siren Audio Muted"}
             >
@@ -202,25 +202,25 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-slate-800 transition border border-gray-800"
+              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition border border-slate-800"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Live Broadcast Progress Bar */}
-        <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-gray-800 space-y-2">
+        <div className="p-3.5 rounded-xl bg-[#080d1a] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-gray-300 flex items-center gap-1.5">
+            <div className="font-semibold text-slate-300 flex items-center gap-1.5">
               <Radio className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
               <span>Cell Broadcast & Multi-Agency Dispatch Status:</span>
-            </span>
-            <span className="font-mono font-bold text-emerald-400">
+            </div>
+            <span className="font-mono font-bold text-emerald-400 tabular-nums">
               {deliveryProgress === 100 ? "✓ 4,820 / 4,820 DELIVERED (100%)" : `TRANSMITTING... ${deliveryProgress}%`}
             </span>
           </div>
-          <div className="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-gray-800 p-0.5">
+          <div className="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800/80 p-0.5">
             <div
               className="h-full rounded-full bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-500 transition-all duration-300"
               style={{ width: `${deliveryProgress}%` }}
@@ -232,31 +232,31 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           {/* Column A (Left 5 Cols): Realistic Citizen Smartphone Mockup */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <Smartphone className="w-3.5 h-3.5 text-sky-400" />
               <span>Citizen Handset Screen (Overridden Alarm)</span>
-            </span>
+            </div>
 
             {/* Phone Bezel */}
-            <div className="w-full max-w-[310px] rounded-[38px] bg-[#020617] border-[4px] border-slate-700 shadow-2xl p-3.5 space-y-3 relative overflow-hidden">
+            <div className="w-full max-w-[310px] rounded-[38px] bg-[#020617] border-[4px] border-slate-700/80 shadow-2xl p-3.5 space-y-3 relative overflow-hidden ring-1 ring-slate-600/40">
               {/* Speaker notch */}
-              <div className="w-20 h-4 bg-slate-800 rounded-full mx-auto mb-1"></div>
+              <div className="w-20 h-4 bg-slate-800/80 rounded-full mx-auto mb-1"></div>
 
               {/* Handset Notification Popup */}
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-red-950 to-slate-900 border-2 border-rose-500 shadow-xl space-y-2.5 animate-in zoom-in-95 duration-200">
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-red-950/80 to-[#0c1322] border-2 border-rose-500/80 shadow-xl space-y-2.5 animate-in zoom-in-95 duration-200">
                 <div className="flex items-center justify-between pb-1.5 border-b border-rose-500/30">
                   <div className="flex items-center space-x-1.5 text-rose-400 font-bold text-[11px]">
                     <AlertTriangle className="w-3.5 h-3.5 animate-bounce" />
                     <span>GOVT EMERGENCY ALERT</span>
                   </div>
-                  <span className="text-[10px] font-mono text-gray-400">NOW</span>
+                  <span className="text-[10px] font-mono text-slate-400">NOW</span>
                 </div>
 
                 <div className="space-y-1">
                   <h4 className="text-xs font-black text-white leading-tight">
                     {currentMsg.headline}
                   </h4>
-                  <p className="text-[10px] text-gray-300 leading-relaxed">
+                  <p className="text-[10px] text-slate-300 leading-relaxed">
                     {currentMsg.body}
                   </p>
                 </div>
@@ -265,7 +265,7 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
                   ⚠️ <b>{currentMsg.instruction}</b>
                 </div>
 
-                <div className="space-y-1 pt-1 text-[10px] text-gray-400 border-t border-rose-500/20">
+                <div className="space-y-1 pt-1 text-[10px] text-slate-400 border-t border-rose-500/20">
                   <div className="flex items-center gap-1 text-sky-300">
                     <Building className="w-3 h-3 shrink-0" />
                     <span className="truncate">{currentMsg.shelter}</span>
@@ -278,43 +278,43 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
               </div>
 
               {/* Simulated SMS App Notification */}
-              <div className="p-2.5 rounded-xl bg-slate-900/90 border border-gray-800 text-[11px] space-y-1">
-                <div className="flex items-center justify-between text-[10px] text-gray-400">
-                  <span className="font-bold text-sky-400">SMS &bull; BSNL / CDAC-SACHET</span>
+              <div className="p-2.5 rounded-xl bg-[#0c1322] border border-slate-800 text-[11px] space-y-1">
+                <div className="flex items-center justify-between text-[10px] text-slate-400">
+                  <span className="font-bold text-sky-400 font-mono">SMS &bull; BSNL / CDAC-SACHET</span>
                   <span>1m ago</span>
                 </div>
-                <p className="text-gray-300 text-[10px] line-clamp-2">
+                <p className="text-slate-300 text-[10px] line-clamp-2">
                   [MDoNER-LEWS] RED ALERT: Evacuate {sectorData.name}. Dial 1070 for SDRF rescue convoy.
                 </p>
               </div>
 
               {/* Home indicator bar */}
-              <div className="w-28 h-1 bg-slate-700 rounded-full mx-auto mt-2"></div>
+              <div className="w-28 h-1 bg-slate-700/80 rounded-full mx-auto mt-2"></div>
             </div>
           </div>
 
           {/* Column B (Right 7 Cols): Government CAP v1.2 Protocol Transmission Details */}
           <div className="lg:col-span-7 space-y-3.5">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>Control Room Automated Transmission Receipt</span>
-            </span>
+            </div>
 
             {/* Transmission Metrics 3-Card Grid */}
             <div className="grid grid-cols-3 gap-2.5 text-xs">
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-gray-800 space-y-0.5">
-                <span className="text-[10px] text-gray-400">Cell Towers Synced</span>
-                <p className="text-base font-black text-white font-mono">14 Towers</p>
+              <div className="p-3 rounded-xl bg-[#080d1a] border border-slate-800 space-y-0.5">
+                <span className="text-[10px] text-slate-400 font-medium">Cell Towers Synced</span>
+                <p className="text-sm font-black text-white font-mono tabular-nums">14 Towers</p>
                 <span className="text-[10px] text-emerald-400 font-medium">BSNL &bull; Jio &bull; Airtel</span>
               </div>
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-gray-800 space-y-0.5">
-                <span className="text-[10px] text-gray-400">Subscribers Alerted</span>
-                <p className="text-base font-black text-white font-mono">4,820</p>
+              <div className="p-3 rounded-xl bg-[#080d1a] border border-slate-800 space-y-0.5">
+                <span className="text-[10px] text-slate-400 font-medium">Subscribers Alerted</span>
+                <p className="text-sm font-black text-white font-mono tabular-nums">4,820</p>
                 <span className="text-[10px] text-sky-400 font-medium">Geofenced Polygon</span>
               </div>
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-gray-800 space-y-0.5">
-                <span className="text-[10px] text-gray-400">Transmission Time</span>
-                <p className="text-base font-black text-white font-mono">1.84 sec</p>
+              <div className="p-3 rounded-xl bg-[#080d1a] border border-slate-800 space-y-0.5">
+                <span className="text-[10px] text-slate-400 font-medium">Transmission Time</span>
+                <p className="text-sm font-black text-white font-mono tabular-nums">1.84 sec</p>
                 <span className="text-[10px] text-emerald-400 font-medium">Ultra-Low Latency</span>
               </div>
             </div>
@@ -323,25 +323,25 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
             <div className="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-xs space-y-2">
               <div className="flex items-center justify-between text-emerald-300 font-bold">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                   <span>SDRF & NDRF Automated Tasking Ticket</span>
                 </div>
-                <span className="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded font-mono">
+                <span className="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded font-mono border border-emerald-500/30">
                   #SDRF-NER-2026-089
                 </span>
               </div>
               <p className="text-slate-300 text-[11px] leading-relaxed">
-                NDRF 1st Battalion (Guwahati/Shillong Base) alerted. 2 rescue teams mobilized with JCB earthmovers and emergency inflatable rafts. Designated liaison officer: <b>Deputy Commandant P. Borah (+91-94350-11223)</b>.
+                NDRF 1st Battalion (Guwahati/Shillong Base) alerted. 2 rescue teams mobilized with JCB earthmovers and emergency inflatable rafts. Designated liaison officer: <b className="text-white">Deputy Commandant P. Borah (+91-94350-11223)</b>.
               </p>
             </div>
 
             {/* Standardized NDMA CAP v1.2 Protocol Payload Preview */}
-            <div className="p-3 rounded-xl bg-slate-950 border border-gray-800 space-y-1.5 font-mono text-[11px]">
-              <div className="flex items-center justify-between text-gray-400 pb-1 border-b border-gray-800 text-[10px]">
+            <div className="p-3 rounded-xl bg-[#050811] border border-slate-800 space-y-1.5 font-mono text-[11px]">
+              <div className="flex items-center justify-between text-slate-400 pb-1.5 border-b border-slate-800 text-[10px]">
                 <span>CAP XML/JSON Payload (OASIS Standard)</span>
                 <span className="text-sky-400">MDoNER Disaster Protocol</span>
               </div>
-              <pre className="text-emerald-400 overflow-x-auto text-[10px] leading-relaxed max-h-36">
+              <pre className="text-emerald-400 overflow-x-auto text-[10px] leading-relaxed max-h-36 scrollbar-thin">
 {`{
   "identifier": "URN:OID:2.49.0.0.356.NER.${sectorData.id}.2026",
   "sender": "control-room@ner-lews.gov.in",
@@ -368,8 +368,8 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
         </div>
 
         {/* Modal Bottom Actions */}
-        <div className="pt-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center space-x-2 text-xs text-gray-400">
+        <div className="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center space-x-2 text-xs text-slate-400">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span>All cellular towers in {sectorData.district} acknowledge delivery confirmation</span>
           </div>
@@ -377,7 +377,7 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white border border-gray-700 transition"
+              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#080d1a] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition"
             >
               Close Dispatch Monitor
             </button>
@@ -386,7 +386,7 @@ export const EvacuationSirenModal: React.FC<EvacuationSirenModalProps> = ({
                 setDeliveryProgress(0);
                 setTimeout(() => setDeliveryProgress(100), 800);
               }}
-              className="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/30 transition flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/30 transition flex items-center gap-1.5 active:scale-[0.99]"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Re-Broadcast Test Alert</span>

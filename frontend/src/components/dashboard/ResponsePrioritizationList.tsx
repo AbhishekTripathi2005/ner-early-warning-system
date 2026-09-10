@@ -129,17 +129,17 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
   });
 
   return (
-    <div className="p-4 sm:p-5 rounded-2xl bg-[#111827] border border-gray-800 space-y-4">
+    <div className="p-4 sm:p-5 rounded-2xl bg-[#0c1322] border border-slate-800/90 space-y-4 shadow-xl">
       {/* Header with Sorting Buttons */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-3 border-b border-gray-800 gap-2.5">
-        <div className="flex items-center space-x-2 text-rose-400 font-semibold text-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-3 border-b border-slate-800/90 gap-2.5">
+        <div className="flex items-center space-x-2 text-rose-400 font-bold text-sm">
           <Siren className="w-5 h-5 animate-pulse" />
-          <span>{t.prioritizationTitle}</span>
+          <span className="uppercase tracking-wide">{t.prioritizationTitle}</span>
         </div>
 
         {/* Multi-Factor Sorting Controls */}
         <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className="text-gray-400 text-[11px] mr-1 flex items-center gap-1">
+          <span className="text-slate-400 text-[11px] mr-1 flex items-center gap-1">
             <ArrowUpDown className="w-3 h-3" /> Sort By:
           </span>
           <button
@@ -147,7 +147,7 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
             className={`px-2.5 py-1 rounded-lg border transition text-[11px] font-bold ${
               sortBy === "RANK"
                 ? "bg-rose-600 text-white border-rose-500 shadow-sm"
-                : "bg-slate-900 border-gray-800 text-gray-400 hover:text-white"
+                : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
             }`}
           >
             Priority Rank
@@ -157,7 +157,7 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
             className={`px-2.5 py-1 rounded-lg border transition text-[11px] font-bold ${
               sortBy === "ISOLATION"
                 ? "bg-rose-600 text-white border-rose-500 shadow-sm"
-                : "bg-slate-900 border-gray-800 text-gray-400 hover:text-white"
+                : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
             }`}
           >
             Villages Cut Off
@@ -167,7 +167,7 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
             className={`px-2.5 py-1 rounded-lg border transition text-[11px] font-bold ${
               sortBy === "POPULATION"
                 ? "bg-rose-600 text-white border-rose-500 shadow-sm"
-                : "bg-slate-900 border-gray-800 text-gray-400 hover:text-white"
+                : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
             }`}
           >
             Population at Risk
@@ -177,7 +177,7 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
             className={`px-2.5 py-1 rounded-lg border transition text-[11px] font-bold ${
               sortBy === "LSI"
                 ? "bg-rose-600 text-white border-rose-500 shadow-sm"
-                : "bg-slate-900 border-gray-800 text-gray-400 hover:text-white"
+                : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
             }`}
           >
             AI LSI Score
@@ -193,19 +193,19 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
             key={sector.sectorId}
             className={`p-4 rounded-xl border transition-all duration-200 ${
               sector.priorityLevel === 1
-                ? "bg-gradient-to-r from-red-950/40 via-slate-900/90 to-slate-900 border-red-500/40 shadow-md shadow-red-950/20"
+                ? "bg-[#0d1424] border-slate-800 border-l-4 border-l-rose-500 shadow-md hover:border-slate-700 hover:border-l-rose-400"
                 : sector.priorityLevel === 2
-                ? "bg-gradient-to-r from-amber-950/30 via-slate-900/90 to-slate-900 border-amber-500/30"
-                : "bg-slate-900/70 border-gray-800"
+                ? "bg-[#0d1424] border-slate-800 border-l-4 border-l-amber-500 shadow-md hover:border-slate-700 hover:border-l-amber-400"
+                : "bg-[#0d1424] border-slate-800 border-l-4 border-l-emerald-500 hover:border-slate-700"
             }`}
           >
             {/* Main Required Format Line */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 pb-2.5 border-b border-gray-800/80">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 pb-2.5 border-b border-slate-800/80">
               <div className="flex items-start sm:items-center space-x-3">
                 <span
                   className={`flex items-center justify-center w-8 h-8 rounded-xl font-mono text-xs font-black shrink-0 ${
                     sector.priorityLevel === 1
-                      ? "bg-red-600 text-white shadow-md shadow-red-600/30"
+                      ? "bg-rose-600 text-white shadow-sm"
                       : sector.priorityLevel === 2
                       ? "bg-amber-600 text-white"
                       : "bg-emerald-600 text-white"
@@ -226,8 +226,8 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
                       {sector.popAtRisk.toLocaleString()} population affected
                     </span>
                   </h4>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    {sector.zone} &bull; <b className="text-gray-300">{sector.district}, {sector.state}</b>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {sector.zone} &bull; <b className="text-slate-300">{sector.district}, {sector.state}</b>
                   </p>
                 </div>
               </div>
@@ -237,7 +237,7 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
                 <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${sector.urgencyColor}`}>
                   {sector.urgencyLabel}
                 </span>
-                <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-950 border border-gray-700 text-sky-400">
+                <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-950 border border-slate-800 text-sky-400 tabular-nums">
                   LSI: {sector.lsi.toFixed(2)}
                 </span>
               </div>
@@ -246,19 +246,19 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
             {/* Tactical Incident Details */}
             <div className="pt-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
               {/* Action Directive */}
-              <div className="p-2.5 rounded-lg bg-black/40 border border-gray-800/80 space-y-1">
-                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                   <Shield className="w-3.5 h-3.5 text-rose-400" /> Action Directive
                 </span>
                 <p className="text-slate-200 leading-relaxed">{sector.action}</p>
               </div>
 
               {/* Isolated Villages List */}
-              <div className="p-2.5 rounded-lg bg-black/40 border border-gray-800/80 space-y-1">
-                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1">
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-1">
+                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
                   <Home className="w-3.5 h-3.5" /> Cut-Off Hamlets ({sector.villagesIsolated})
                 </span>
-                <p className="text-slate-300">
+                <p className="text-slate-300 leading-relaxed">
                   {sector.isolatedVillageNames.length > 0
                     ? sector.isolatedVillageNames.join(", ")
                     : "None (Direct Highway Connectivity Intact)"}
@@ -266,13 +266,13 @@ export const ResponsePrioritizationList: React.FC<ResponsePrioritizationListProp
               </div>
 
               {/* Emergency Logistics */}
-              <div className="p-2.5 rounded-lg bg-black/40 border border-gray-800/80 space-y-1">
-                <span className="text-[11px] font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1">
+              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-1">
+                <span className="text-[11px] font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
                   <Truck className="w-3.5 h-3.5" /> Resource Mobilization
                 </span>
-                <div className="space-y-0.5 text-gray-300">
+                <div className="space-y-0.5 text-slate-300 leading-relaxed">
                   <p>Unit: <b className="text-white">{sector.battalionAssigned}</b></p>
-                  <p>Buses: <b className="text-sky-300">{sector.evacuationBuses} Dispatched</b> &bull; Route: <span className="text-gray-400">{sector.routeStatus}</span></p>
+                  <p>Buses: <b className="text-sky-300">{sector.evacuationBuses} Dispatched</b> &bull; Route: <span className="text-slate-400">{sector.routeStatus}</span></p>
                 </div>
               </div>
             </div>

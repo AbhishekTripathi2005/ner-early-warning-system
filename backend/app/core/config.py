@@ -9,8 +9,15 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     DEBUG: bool = os.getenv("DEBUG", "True").lower() == "true"
     
-    # CORS
-    BACKEND_CORS_ORIGINS: List[str] = ["*"]
+    # CORS - Restricted per Security Audit (Patch 2)
+    BACKEND_CORS_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "https://sih-landslide-ner.vercel.app",
+        "https://sih2026-landslide-ner.vercel.app"
+    ]
     
     # Database
     DATABASE_URL: str = os.getenv(

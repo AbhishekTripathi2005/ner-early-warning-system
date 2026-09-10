@@ -540,11 +540,50 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
   const isLocatingRef = useRef<boolean>(false);
 
   const [activeLayer, setActiveLayer] = useState<"heatmap" | "polygons" | "roads" | "citizens">("heatmap");
+  const [hotspotsData, setHotspotsData] = useState<HotspotSector[]>(nerHotspots);
+  const [telemetryStatus, setTelemetryStatus] = useState<"live" | "offline">("offline");
   // Default to Cherrapunji Escarpment (first item) as requested by user
   const [selectedItem, setSelectedItem] = useState<any>(nerHotspots[0]);
   const [sirenDispatched, setSirenDispatched] = useState(false);
   const [isSirenModalOpen, setIsSirenModalOpen] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
+  const [isExpandedMap, setIsExpandedMap] = useState(false);
+
+  // Live Telemetry Handshake with FastAPI Backend (Port 8000)
+  useEffect(() => {
+    let isMounted = true;
+    fetch("http://127.0.0.1:8000/api/v1/risk-zones/hotspots")
+      .then((res) => {
+        if (!res.ok) throw new Error("Status " + res.status);
+        return res.json();
+      })
+      .then((data) => {
+        if (isMounted && data?.hotspots && Array.isArray(data.hotspots)) {
+          setHotspotsData((prev: HotspotSector[]) => {
+            const liveMap = new Map<string, HotspotSector>(data.hotspots.map((h: any) => [h.id, h as HotspotSector]));
+            return prev.map((item: HotspotSector): HotspotSector => liveMap.get(item.id) || item);
+          });
+          setTelemetryStatus("live");
+          console.log("[GIS] Connected to live FastAPI telemetry on Port 8000");
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setTelemetryStatus("offline");
+          console.log("[GIS] Backend offline or unreachable, using offline-cached hotspots");
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const toggleExpandedMap = () => {
+    setIsExpandedMap((prev) => !prev);
+    setTimeout(() => {
+      mapInstanceRef.current?.invalidateSize();
+    }, 250);
+  };
 
   // Initialize Leaflet Map with Clean, Watermark-Free Esri Dark Gray Basemap
   useEffect(() => {
@@ -1011,68 +1050,82 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
   };
 
   return (
-    <div className="relative w-full h-[620px] bg-[#0b0f19] rounded-2xl border border-gray-800/90 overflow-hidden flex flex-col lg:flex-row shadow-2xl">
+    <div className={`transition-all duration-300 ${
+      isExpandedMap
+        ? "fixed inset-0 z-[5500] p-3 sm:p-5 bg-black/90 backdrop-blur-xl flex flex-col lg:flex-row gap-3"
+        : "relative w-full h-[640px] bg-[#080d1a] rounded-2xl border border-slate-800/90 overflow-hidden flex flex-col lg:flex-row shadow-2xl"
+    }`}>
       {/* 1. Master Map Canvas */}
       <div className="flex-1 relative h-full flex flex-col justify-between">
         {/* Floating Top Control Pills */}
         <div className="absolute top-3.5 left-3.5 z-[1000] flex flex-wrap items-center gap-2">
           {/* Layer Selector Bar */}
-          <div className="flex items-center space-x-1.5 bg-slate-900/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-gray-700/80 shadow-2xl text-xs">
+          <div className="flex items-center space-x-1.5 bg-slate-900/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-slate-700/80 shadow-xl text-xs">
             <Layers className="w-3.5 h-3.5 text-sky-400 mr-1" />
-            <span className="text-gray-400 font-semibold mr-1">Layer:</span>
+            <span className="text-slate-400 font-semibold mr-1">Layer:</span>
             <button
               onClick={() => setActiveLayer("heatmap")}
-              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold ${
+              className={`px-3 py-1 rounded-lg transition-all text-xs font-bold ${
                 activeLayer === "heatmap"
-                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800/60 hover:scale-102"
+                  ? "bg-sky-600 text-white shadow-sm shadow-sky-600/40"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/80"
               }`}
             >
               {t.layerHeatmap}
             </button>
             <button
               onClick={() => setActiveLayer("polygons")}
-              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold ${
+              className={`px-3 py-1 rounded-lg transition-all text-xs font-bold ${
                 activeLayer === "polygons"
-                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800/60 hover:scale-102"
+                  ? "bg-sky-600 text-white shadow-sm shadow-sky-600/40"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/80"
               }`}
             >
               {t.layerSusceptibility}
             </button>
             <button
               onClick={() => setActiveLayer("roads")}
-              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold ${
+              className={`px-3 py-1 rounded-lg transition-all text-xs font-bold ${
                 activeLayer === "roads"
-                  ? "bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800/60 hover:scale-102"
+                  ? "bg-sky-600 text-white shadow-sm shadow-sky-600/40"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/80"
               }`}
             >
               {t.layerRoadStatus}
             </button>
             <button
               onClick={() => setActiveLayer("citizens")}
-              className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-lg transition-all text-xs font-bold flex items-center gap-1.5 ${
                 activeLayer === "citizens"
-                  ? "bg-rose-600 text-white shadow-md shadow-rose-600/30 scale-105"
-                  : "text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 hover:scale-102"
+                  ? "bg-rose-600 text-white shadow-sm shadow-rose-600/40"
+                  : "text-rose-400 hover:text-rose-300 hover:bg-rose-950/40"
               }`}
             >
               <Camera className="w-3 h-3" />
               <span>{t.layerCitizenReports || "Citizen Reports"} ({citizenReports.length})</span>
             </button>
           </div>
+
+          {/* Live Telemetry Status Pill */}
+          <div className={`hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl border shadow-xl text-[11px] font-mono backdrop-blur-md transition-all ${
+            telemetryStatus === "live"
+              ? "bg-emerald-950/80 border-emerald-600/50 text-emerald-300"
+              : "bg-slate-900/90 border-slate-700/80 text-slate-400"
+          }`}>
+            <span className={`w-2 h-2 rounded-full ${telemetryStatus === "live" ? "bg-emerald-400 animate-pulse" : "bg-slate-500"}`} />
+            <span className="font-semibold">{telemetryStatus === "live" ? t.fastApiLive : t.telemetryOffline}</span>
+          </div>
         </div>
 
         {/* Quick Hotspot Fly-to Controls (Top Right) */}
-        <div className="absolute top-3.5 right-3.5 z-[1000] hidden md:flex items-center space-x-1.5 bg-slate-900/95 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-gray-700/80 shadow-2xl text-[11px]">
-          <span className="text-gray-400 font-semibold px-1">Jump:</span>
+        <div className="absolute top-3.5 right-3.5 z-[1000] hidden md:flex items-center space-x-1.5 bg-slate-900/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-slate-700/80 shadow-xl text-[11px]">
+          <span className="text-slate-400 font-semibold px-1">{t.jumpTo}</span>
           <button
             onClick={() => {
               setSelectedItem(nerHotspots[0]);
               mapInstanceRef.current?.flyTo([25.275, 91.731], 9, { duration: 1.0 });
             }}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold border border-transparent hover:border-gray-600 hover:scale-105 active:scale-95 transition-all shadow-sm"
+            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold border border-transparent hover:border-slate-600 transition shadow-sm"
           >
             Cherrapunji
           </button>
@@ -1081,7 +1134,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               setSelectedItem(nerHotspots[2]);
               mapInstanceRef.current?.flyTo([27.050, 88.490], 9.5, { duration: 1.0 });
             }}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold border border-transparent hover:border-gray-600 hover:scale-105 active:scale-95 transition-all shadow-sm"
+            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold border border-transparent hover:border-slate-600 transition shadow-sm"
           >
             29th Mile NH-10
           </button>
@@ -1090,9 +1143,16 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               setSelectedItem(nerHotspots[1]);
               mapInstanceRef.current?.flyTo([25.842, 93.435], 9, { duration: 1.0 });
             }}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 font-semibold border border-transparent hover:border-gray-600 hover:scale-105 active:scale-95 transition-all shadow-sm"
+            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold border border-transparent hover:border-slate-600 transition shadow-sm"
           >
             Karbi Anglong
+          </button>
+          <button
+            onClick={toggleExpandedMap}
+            className="ml-1 p-1.5 rounded-lg bg-sky-600/20 hover:bg-sky-600 text-sky-300 hover:text-white border border-sky-500/30 transition shadow-sm"
+            title={isExpandedMap ? "Exit Fullscreen Map" : "Expand Fullscreen GIS Canvas"}
+          >
+            {isExpandedMap ? <X className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
         </div>
 
@@ -1100,31 +1160,27 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
         <div ref={mapContainerRef} className="w-full h-full" style={{ minHeight: "380px" }}></div>
 
         {/* Floating Map Legend (Bottom-Left) */}
-        <div className="absolute bottom-3.5 left-3.5 z-[1000] flex items-center space-x-3 text-xs text-gray-400 bg-slate-900/95 backdrop-blur-md px-3.5 py-2 rounded-xl border border-gray-800 shadow-2xl">
-          <span className="font-bold text-gray-200">{t.legendRiskScale}</span>
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> {t.lowRisk}</span>
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> {t.moderateRisk}</span>
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> {t.highRisk}</span>
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span> {t.severeRisk}</span>
+        <div className="absolute bottom-3.5 left-3.5 z-[1000] flex items-center space-x-3 text-xs text-slate-400 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800 shadow-xl">
+          <span className="font-bold text-slate-200">{t.legendRiskScale}</span>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> <span>{t.lowRisk}</span></div>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> <span>{t.moderateRisk}</span></div>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> <span>{t.highRisk}</span></div>
+          <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span> <span>{t.severeRisk}</span></div>
         </div>
 
-        {/* Clean Basemap Label with Live Status (Bottom-Right, Zero Overlap) */}
-        <div className="absolute bottom-3.5 right-3.5 z-[1000] hidden sm:flex items-center space-x-2 bg-slate-900/95 backdrop-blur-md px-3 py-2 rounded-xl border border-gray-800 text-[11px] text-gray-300 shadow-2xl">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="font-medium text-gray-300">Esri Dark Gray Canvas &bull; Watermark-Free</span>
-        </div>
+
       </div>
 
       {/* 2. Integrated Telemetry & Visual Inspection Deck (Polished Right Panel) */}
-      <div className="w-full lg:w-[410px] bg-[#0e1424] border-t lg:border-t-0 lg:border-l border-gray-800 p-5 flex flex-col justify-between overflow-y-auto space-y-4 shadow-xl">
+      <div className="w-full lg:w-[420px] bg-[#0c1322] border-t lg:border-t-0 lg:border-l border-slate-800/90 p-5 flex flex-col justify-between overflow-y-auto space-y-4 shadow-xl">
         <div className="space-y-4">
           {/* Header Info with Strong Hierarchy */}
-          <div className="flex items-start justify-between pb-3.5 border-b border-gray-800/90">
+          <div className="flex items-start justify-between pb-3.5 border-b border-slate-800/90">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-sky-400 font-mono font-bold">{selectedItem.id}</span>
                 {selectedItem.isCitizenReport ? (
-                  <span className="text-[10px] bg-rose-500/20 text-rose-300 font-bold px-2 py-0.5 rounded border border-rose-500/40">
+                  <span className="text-[10px] bg-rose-500/15 text-rose-300 font-bold px-2 py-0.5 rounded border border-rose-500/30">
                     📸 GROUND OBS
                   </span>
                 ) : (
@@ -1136,19 +1192,27 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               <h3 className="text-base sm:text-lg font-black text-white tracking-tight leading-snug">
                 {selectedItem.name}
               </h3>
-              <p className="text-xs text-gray-400 font-medium">
+              <p className="text-xs text-slate-400 font-medium">
                 {selectedItem.district || selectedItem.state}
               </p>
+              <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                <div className="text-[10px] text-rose-300 font-mono font-bold bg-rose-500/15 px-2 py-0.5 rounded border border-rose-500/30 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping"></span>
+                  <span>3.5km Evac Perimeter</span>
+                </div>
+                <span className="text-[10px] text-slate-400 font-mono">
+                  ~4,820 Civilians
+                </span>
+              </div>
             </div>
 
             {/* Risk Tier Badge */}
             <span
-              className="px-3 py-1 rounded-xl text-xs font-black shrink-0 uppercase tracking-wider shadow-md"
+              className="px-3 py-1 rounded-xl text-xs font-black shrink-0 uppercase tracking-wider shadow-sm font-mono"
               style={{
-                backgroundColor: `${getColor(selectedItem.intensity)}20`,
+                backgroundColor: `${getColor(selectedItem.intensity)}18`,
                 color: getColor(selectedItem.intensity),
-                border: `1px solid ${getColor(selectedItem.intensity)}50`,
-                boxShadow: `0 0 12px ${getColor(selectedItem.intensity)}25`
+                border: `1px solid ${getColor(selectedItem.intensity)}40`
               }}
             >
               {selectedItem.tier}
@@ -1157,8 +1221,8 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
 
           {/* If Selected Item is a Citizen Report -> Render Photo & Action Buttons */}
           {selectedItem.isCitizenReport && selectedItem.rawReport && (
-            <div className="space-y-3 p-3.5 bg-slate-900/90 rounded-2xl border border-gray-700 shadow-inner">
-              <div className="relative h-44 rounded-xl overflow-hidden border border-gray-700 bg-black group">
+            <div className="space-y-3 p-3.5 bg-slate-950/80 rounded-2xl border border-slate-800 shadow-inner">
+              <div className="relative h-44 rounded-xl overflow-hidden border border-slate-800 bg-black group">
                 <img
                   src={selectedItem.rawReport.photoUrl}
                   alt={selectedItem.rawReport.hazard}
@@ -1168,19 +1232,19 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
                   <Camera className="w-3 h-3 text-rose-400" />
                   <span>{selectedItem.rawReport.time}</span>
                 </div>
-                <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur px-2 py-0.5 rounded text-[10px] text-sky-300 font-mono">
+                <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur px-2 py-0.5 rounded text-[10px] text-sky-300 font-mono tabular-nums">
                   {selectedItem.rawReport.lat?.toFixed(2)}°N, {selectedItem.rawReport.lon?.toFixed(2)}°E
                 </div>
               </div>
 
               <div className="flex items-center justify-between text-xs pt-1">
-                <span className="text-gray-400 font-medium">Verification Status:</span>
+                <span className="text-slate-400 font-medium">Verification Status:</span>
                 <span
                   className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold ${
                     selectedItem.rawReport.status === "VERIFIED_TRUE_ALARM"
                       ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
                       : selectedItem.rawReport.status === "DISMISSED_FALSE_ALARM"
-                      ? "bg-gray-800 text-gray-400 border border-gray-700"
+                      ? "bg-slate-800 text-slate-400 border border-slate-700"
                       : "bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse"
                   }`}
                 >
@@ -1198,7 +1262,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
                         rawReport: { ...prev.rawReport, status: "VERIFIED_TRUE_ALARM" }
                       }));
                     }}
-                    className="py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/25 transition"
+                    className="py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Verify & Alert</span>
@@ -1211,7 +1275,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
                         rawReport: { ...prev.rawReport, status: "DISMISSED_FALSE_ALARM" }
                       }));
                     }}
-                    className="py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 border border-gray-700 transition"
+                    className="py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 border border-slate-700 transition"
                   >
                     <X className="w-3.5 h-3.5" />
                     <span>Dismiss</span>
@@ -1222,84 +1286,110 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
           )}
 
           {/* Landslide Susceptibility Index (LSI) Gauge with Illuminated Bar */}
-          <div className="p-3.5 bg-slate-900/90 rounded-2xl border border-gray-800 space-y-2.5 shadow-inner">
-            <div className="flex justify-between items-baseline text-xs text-gray-300 font-medium">
-              <span className="font-semibold text-gray-200">Landslide Susceptibility Index (LSI)</span>
+          <div className="p-3.5 bg-slate-950/80 rounded-2xl border border-slate-800/80 space-y-2.5 shadow-inner">
+            <div className="flex justify-between items-baseline text-xs text-slate-300 font-medium">
+              <span className="font-semibold text-slate-200">Landslide Susceptibility Index (LSI)</span>
               <span
-                className="text-2xl sm:text-3xl font-black font-mono tracking-tight"
+                className="text-2xl sm:text-3xl font-black font-mono tracking-tight tabular-nums"
                 style={{
-                  color: getColor(selectedItem.intensity),
-                  textShadow: `0 0 14px ${getColor(selectedItem.intensity)}50`
+                  color: getColor(selectedItem.intensity)
                 }}
               >
                 {(selectedItem.intensity * 100).toFixed(1)}%
               </span>
             </div>
-            <div className="w-full bg-gray-950 h-3 rounded-full overflow-hidden p-0.5 border border-gray-800/90">
+            <div className="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-800">
               <div
-                className="h-full rounded-full transition-all duration-700 shadow-sm"
+                className="h-full rounded-full transition-all duration-500"
                 style={{
                   width: `${selectedItem.intensity * 100}%`,
-                  backgroundColor: getColor(selectedItem.intensity),
-                  boxShadow: `0 0 12px ${getColor(selectedItem.intensity)}`
+                  backgroundColor: getColor(selectedItem.intensity)
                 }}
               ></div>
             </div>
           </div>
 
-          {/* Multi-Source Geotechnical Metrics (2x2 Grid with Strong Hierarchy & Prominent Numbers) */}
+          {/* Multi-Source Geotechnical Metrics (2x2 Grid with Strong Hierarchy & Failure Threshold Verification) */}
           <div className="grid grid-cols-2 gap-2.5 text-xs">
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
-              <div className="flex items-center space-x-1.5 text-gray-400">
-                <Mountain className="w-3.5 h-3.5 text-amber-400" />
-                <span className="text-[11px] font-semibold">Slope Gradient</span>
+            <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60 transition-all duration-200 space-y-1">
+              <div className="flex items-center justify-between text-slate-400">
+                <div className="flex items-center space-x-1.5">
+                  <Mountain className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="text-[11px] font-semibold">{t.slopeGradient}</span>
+                </div>
+                {selectedItem.slope > 35 && (
+                  <span className="text-[9px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 px-1.5 py-0.5 rounded">
+                    &gt;35° {lang === "hi" ? "गंभीर" : "CRITICAL"}
+                  </span>
+                )}
               </div>
               <div className="flex items-baseline space-x-1">
-                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.slope}</p>
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight tabular-nums">{selectedItem.slope}</p>
                 <span className="text-xs font-bold text-amber-400 font-mono">°</span>
               </div>
-              <span className="text-[10px] text-gray-500 block font-mono">SRTM 30m DEM</span>
+              <span className="text-[10px] text-slate-500 block font-mono">SRTM 30m DEM</span>
             </div>
 
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
-              <div className="flex items-center space-x-1.5 text-gray-400">
-                <CloudRain className="w-3.5 h-3.5 text-sky-400" />
-                <span className="text-[11px] font-semibold">48h Rain</span>
+            <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60 transition-all duration-200 space-y-1">
+              <div className="flex items-center justify-between text-slate-400">
+                <div className="flex items-center space-x-1.5">
+                  <CloudRain className="w-3.5 h-3.5 text-sky-400" />
+                  <span className="text-[11px] font-semibold">{lang === "hi" ? "48 घंटे वर्षा" : "48h Rain"}</span>
+                </div>
+                {selectedItem.rain48 > 150 && (
+                  <span className="text-[9px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 px-1.5 py-0.5 rounded animate-pulse">
+                    {lang === "hi" ? "सीमा पार" : "BREACHED"}
+                  </span>
+                )}
               </div>
               <div className="flex items-baseline space-x-1">
-                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.rain48}</p>
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight tabular-nums">{selectedItem.rain48}</p>
                 <span className="text-xs font-bold text-sky-400 font-mono">mm</span>
               </div>
-              <span className="text-[10px] text-gray-500 block font-mono">IMD AWS Gauge</span>
+              <span className="text-[10px] text-slate-500 block font-mono">IMD AWS Gauge</span>
             </div>
 
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
-              <div className="flex items-center space-x-1.5 text-gray-400">
-                <Droplets className="w-3.5 h-3.5 text-blue-400" />
-                <span className="text-[11px] font-semibold">Soil Saturation</span>
+            <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60 transition-all duration-200 space-y-1">
+              <div className="flex items-center justify-between text-slate-400">
+                <div className="flex items-center space-x-1.5">
+                  <Droplets className="w-3.5 h-3.5 text-blue-400" />
+                  <span className="text-[11px] font-semibold">{t.soilSaturation}</span>
+                </div>
+                {selectedItem.soil > 80 && (
+                  <span className="text-[9px] font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 px-1.5 py-0.5 rounded">
+                    {lang === "hi" ? "संतृप्त" : "PORE SURGE"}
+                  </span>
+                )}
               </div>
               <div className="flex items-baseline space-x-1">
-                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.soil}</p>
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight tabular-nums">{selectedItem.soil}</p>
                 <span className="text-xs font-bold text-blue-400 font-mono">%</span>
               </div>
-              <span className="text-[10px] text-gray-500 block font-mono">NASA SMAP L4</span>
+              <span className="text-[10px] text-slate-500 block font-mono">NASA SMAP L4</span>
             </div>
 
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-gray-800 hover:border-gray-700 hover:bg-slate-800/80 transition-all duration-200 space-y-1">
-              <div className="flex items-center space-x-1.5 text-gray-400">
-                <Activity className="w-3.5 h-3.5 text-rose-400" />
-                <span className="text-[11px] font-semibold">InSAR Creep</span>
+            <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60 transition-all duration-200 space-y-1">
+              <div className="flex items-center justify-between text-slate-400">
+                <div className="flex items-center space-x-1.5">
+                  <Activity className="w-3.5 h-3.5 text-rose-400" />
+                  <span className="text-[11px] font-semibold">{t.insarCreep}</span>
+                </div>
+                {Math.abs(selectedItem.insar) > 15 && (
+                  <span className="text-[9px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 px-1.5 py-0.5 rounded">
+                    {lang === "hi" ? "सक्रिय विस्थापन" : "ACTIVE SLIP"}
+                  </span>
+                )}
               </div>
               <div className="flex items-baseline space-x-1">
-                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">{selectedItem.insar}</p>
+                <p className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight tabular-nums">{selectedItem.insar}</p>
                 <span className="text-xs font-bold text-rose-400 font-mono">mm/yr</span>
               </div>
-              <span className="text-[10px] text-gray-500 block font-mono">Sentinel-1 InSAR</span>
+              <span className="text-[10px] text-slate-500 block font-mono">Sentinel-1 InSAR</span>
             </div>
           </div>
 
           {/* Visual AI Cause Explanation Section with Horizontal Contribution Bars */}
-          <div className="p-4 rounded-2xl bg-gradient-to-b from-[#10192e] to-[#0c1220] border border-sky-800/40 text-xs space-y-3 shadow-xl">
+          <div className="p-4 rounded-2xl bg-slate-950/90 border border-sky-900/35 text-xs space-y-3 shadow-lg">
             {/* Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -1308,15 +1398,15 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
                 </div>
                 <div>
                   <h4 className="text-xs font-black text-white uppercase tracking-wider">
-                    AI Cause Explanation
+                    {t.aiCauseExplanation}
                   </h4>
-                  <p className="text-[10px] text-gray-400 font-mono">
+                  <p className="text-[10px] text-slate-400 font-mono">
                     Feature Contribution &bull; TreeSHAP v0.42
                   </p>
                 </div>
               </div>
               <span className="text-[10px] font-mono font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30 px-2 py-0.5 rounded-full">
-                Confidence 94.8%
+                {lang === "hi" ? "सटीकता 94.8%" : "Confidence 94.8%"}
               </span>
             </div>
 
@@ -1330,26 +1420,25 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
               ]).map((contrib: any, idx: number) => (
                 <div key={idx} className="space-y-1">
                   <div className="flex justify-between items-center text-[11px]">
-                    <span className="font-semibold text-gray-300 flex items-center gap-1.5">
+                    <div className="font-semibold text-slate-300 flex items-center gap-1.5">
                       <span
                         className="w-2 h-2 rounded-full shrink-0 shadow-sm"
                         style={{ backgroundColor: contrib.color }}
                       ></span>
-                      {contrib.name}
-                    </span>
+                      <span>{contrib.name}</span>
+                    </div>
                     <span
-                      className="font-mono font-black text-xs"
+                      className="font-mono font-black text-xs tabular-nums"
                       style={{ color: contrib.color }}
                     >
                       {contrib.pct}%
                     </span>
                   </div>
-                  <div className="w-full bg-slate-950/90 h-2.5 rounded-full overflow-hidden p-0.5 border border-gray-800/90">
+                  <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden p-0.5 border border-slate-800">
                     <div
-                      className={`h-full rounded-full bg-gradient-to-r ${contrib.gradient} transition-all duration-700 shadow-sm`}
+                      className={`h-full rounded-full bg-gradient-to-r ${contrib.gradient} transition-all duration-500`}
                       style={{
-                        width: `${contrib.pct}%`,
-                        boxShadow: `0 0 8px ${contrib.color}50`
+                        width: `${contrib.pct}%`
                       }}
                     ></div>
                   </div>
@@ -1358,7 +1447,7 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
             </div>
 
             {/* Qualitative Narrative Summary */}
-            <div className="pt-2 border-t border-gray-800/80">
+            <div className="pt-2 border-t border-slate-800/80">
               <p className="text-slate-300 leading-relaxed text-[11px] font-normal">
                 {lang === "hi" ? selectedItem.exp_hi : selectedItem.exp_en}
               </p>
@@ -1371,16 +1460,16 @@ export const HeatmapViewer: React.FC<HeatmapViewerProps> = ({
           <button
             onClick={handleSiren}
             disabled={sirenDispatched}
-            className={`w-full py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 flex items-center justify-center space-x-2 shadow-xl ${
+            className={`w-full py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg ${
               sirenDispatched
-                ? "bg-emerald-600 text-white shadow-emerald-600/40 ring-2 ring-emerald-400"
-                : "bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-rose-600/30 hover:shadow-rose-600/50"
+                ? "bg-emerald-600 text-white shadow-emerald-600/30 ring-2 ring-emerald-400"
+                : "bg-rose-600 hover:bg-rose-500 text-white shadow-rose-600/30 hover:shadow-rose-600/40 active:scale-[0.99]"
             }`}
           >
             {sirenDispatched ? (
               <>
                 <CheckCircle2 className="w-4 h-4" />
-                <span>SIREN & SMS BROADCAST DISPATCHED</span>
+                <span>{t.sirenDispatched}</span>
               </>
             ) : (
               <>

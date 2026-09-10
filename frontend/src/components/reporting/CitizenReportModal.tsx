@@ -265,26 +265,26 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[5000] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#0e1424] border border-gray-700 shadow-2xl p-4 sm:p-6 text-slate-100 space-y-4 relative z-[5001]">
+    <div className="fixed inset-0 z-[5000] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-150">
+      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#0c1322] border border-slate-700/80 shadow-2xl p-4 sm:p-6 text-slate-100 space-y-4 z-[5001]">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-gray-800">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2.5 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
+            <div className="p-2.5 rounded-xl bg-rose-500/15 text-rose-400 border border-rose-500/30">
               <Camera className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-black uppercase tracking-wide text-white">
+              <h3 className="text-base font-bold uppercase tracking-wide text-white">
                 {t.reportModalTitle}
               </h3>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-slate-400">
                 Photo & Video (Max 20s) &bull; Auto GPS &bull; Offline Resilient Queue
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -294,17 +294,17 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
           {/* 1. Media Type Selector: Photo vs Video */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-gray-300 uppercase tracking-wider">
+              <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                 {t.uploadPhoto}
               </label>
-              <div className="flex items-center space-x-1 bg-slate-900 border border-gray-800 p-0.5 rounded-lg text-xs">
+              <div className="flex items-center space-x-1 bg-slate-950 border border-slate-800 p-0.5 rounded-lg text-xs">
                 <button
                   type="button"
                   onClick={() => setActiveMediaTab("image")}
                   className={`px-3 py-1 rounded-md font-bold flex items-center gap-1.5 transition ${
                     activeMediaTab === "image"
                       ? "bg-rose-600 text-white shadow-sm"
-                      : "text-gray-400 hover:text-white"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
                   <Camera className="w-3.5 h-3.5" />
@@ -316,7 +316,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                   className={`px-3 py-1 rounded-md font-bold flex items-center gap-1.5 transition ${
                     activeMediaTab === "video"
                       ? "bg-rose-600 text-white shadow-sm"
-                      : "text-gray-400 hover:text-white"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
                   <Video className="w-3.5 h-3.5" />
@@ -327,7 +327,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
 
             {/* Quick Sample Selector Buttons */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
-              <span className="text-[11px] text-gray-400 shrink-0 font-medium">Demo Samples:</span>
+              <span className="text-[11px] text-slate-400 shrink-0 font-medium">Demo Samples:</span>
               {SAMPLE_PRESETS.map((preset, idx) => (
                 <button
                   type="button"
@@ -335,8 +335,8 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                   onClick={() => applyPreset(idx)}
                   className={`text-xs px-2.5 py-1 rounded-lg border transition shrink-0 flex items-center gap-1.5 ${
                     selectedPresetIndex === idx
-                      ? "bg-sky-600 text-white border-sky-400 font-bold shadow-md shadow-sky-600/30"
-                      : "bg-slate-900/80 text-gray-400 border-gray-700 hover:text-white hover:border-gray-600"
+                      ? "bg-sky-600 text-white border-sky-400 font-bold shadow-sm"
+                      : "bg-slate-950/80 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700"
                   }`}
                 >
                   {preset.mediaType === "video" ? (
@@ -352,7 +352,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
             {/* Media Preview & Upload Box */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
               {/* Media Preview Box */}
-              <div className="relative h-44 rounded-xl border border-gray-700 bg-slate-950 overflow-hidden flex items-center justify-center group shadow-inner">
+              <div className="relative h-44 rounded-xl border border-slate-800 bg-black overflow-hidden flex items-center justify-center group shadow-inner">
                 {activeMediaTab === "video" ? (
                   <video
                     src={mediaUrl}
@@ -367,12 +367,12 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                 ) : (
-                  <div className="text-center p-4 text-gray-500">
+                  <div className="text-center p-4 text-slate-500">
                     <ImageIcon className="w-8 h-8 mx-auto mb-1 opacity-50" />
                     <span className="text-xs">No media selected</span>
                   </div>
                 )}
-                <div className="absolute top-2 left-2 bg-black/75 backdrop-blur px-2 py-0.5 rounded text-[10px] text-sky-300 font-mono flex items-center gap-1 pointer-events-none">
+                <div className="absolute top-2 left-2 bg-black/80 backdrop-blur px-2 py-0.5 rounded text-[10px] text-sky-300 font-mono flex items-center gap-1 pointer-events-none">
                   {activeMediaTab === "video" ? <Video className="w-3 h-3 text-amber-400" /> : <Camera className="w-3 h-3 text-sky-400" />}
                   <span>{activeMediaTab.toUpperCase()} &bull; {severity}</span>
                 </div>
@@ -380,12 +380,12 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
 
               {/* Upload Input */}
               <div className="space-y-2">
-                <label className="flex flex-col items-center justify-center h-44 border-2 border-dashed border-gray-700 hover:border-sky-500 rounded-xl bg-slate-900/50 cursor-pointer p-4 text-center transition group">
-                  <Upload className="w-8 h-8 text-sky-400 group-hover:-translate-y-1 transition duration-200 mb-2" />
-                  <span className="text-xs font-bold text-gray-200">
+                <label className="flex flex-col items-center justify-center h-44 border-2 border-dashed border-slate-700 hover:border-sky-500 rounded-xl bg-slate-950/60 cursor-pointer p-4 text-center transition group">
+                  <Upload className="w-8 h-8 text-sky-400 group-hover:-translate-y-0.5 transition duration-150 mb-2" />
+                  <span className="text-xs font-bold text-slate-200">
                     Click to browse device file
                   </span>
-                  <span className="text-[10px] text-gray-400 mt-1">
+                  <span className="text-[10px] text-slate-400 mt-1">
                     Supports Photos (JPG, PNG) & Videos (MP4, WebM, max 20s)
                   </span>
                   <input
@@ -414,13 +414,13 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
           {/* 2. Hazard Type & Severity */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">
+              <label className="block text-xs font-semibold text-slate-400 mb-1">
                 Hazard Classification
               </label>
               <select
                 value={hazardType}
                 onChange={(e) => setHazardType(e.target.value)}
-                className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
               >
                 <option value="New Hill Fissure / Creep">New Hill Fissure / Creep</option>
                 <option value="Active Highway Mudflow & Gravel">Active Highway Mudflow & Gravel</option>
@@ -431,7 +431,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">
+              <label className="block text-xs font-semibold text-slate-400 mb-1">
                 Reported Severity
               </label>
               <div className="grid grid-cols-3 gap-1.5">
@@ -443,11 +443,11 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                     className={`py-1.5 rounded-lg text-xs font-bold border transition ${
                       severity === lvl
                         ? lvl === "SEVERE"
-                          ? "bg-rose-600 text-white border-rose-400"
+                          ? "bg-rose-600 text-white border-rose-500 shadow-sm"
                           : lvl === "HIGH"
-                          ? "bg-amber-600 text-white border-amber-400"
-                          : "bg-emerald-600 text-white border-emerald-400"
-                        : "bg-slate-900 border-gray-800 text-gray-400 hover:text-white"
+                          ? "bg-amber-600 text-white border-amber-500 shadow-sm"
+                          : "bg-emerald-600 text-white border-emerald-500 shadow-sm"
+                        : "bg-slate-900 border-slate-800 text-slate-400 hover:text-white"
                     }`}
                   >
                     {lvl}
@@ -460,7 +460,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
           {/* 3. Location / Coordinates with Auto-GPS Button */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-gray-400">
+              <label className="text-xs font-semibold text-slate-400">
                 Geo-Location Coordinates
               </label>
               <button
@@ -481,7 +481,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                   value={locationName}
                   onChange={(e) => setLocationName(e.target.value)}
                   placeholder="e.g. Singtam Flank, NH-10"
-                  className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
                   required
                 />
               </div>
@@ -492,7 +492,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                   value={lat}
                   onChange={(e) => setLat(parseFloat(e.target.value) || 0)}
                   placeholder="Latitude (°N)"
-                  className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono tabular-nums focus:outline-none focus:border-sky-500"
                   required
                 />
               </div>
@@ -503,7 +503,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                   value={lon}
                   onChange={(e) => setLon(parseFloat(e.target.value) || 0)}
                   placeholder="Longitude (°E)"
-                  className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono tabular-nums focus:outline-none focus:border-sky-500"
                   required
                 />
               </div>
@@ -512,7 +512,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
 
           {/* 4. Description */}
           <div>
-            <label className="block text-xs font-medium text-gray-400 mb-1">
+            <label className="block text-xs font-semibold text-slate-400 mb-1">
               Field Observation Details
             </label>
             <textarea
@@ -520,7 +520,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe width of crack, rate of mudflow, threatening buildings or road obstruction..."
-              className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 leading-relaxed"
+              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 leading-relaxed"
               required
             ></textarea>
           </div>
@@ -528,7 +528,7 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
           {/* 5. Reporter Name & Contact (Optional) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">
+              <label className="block text-xs font-semibold text-slate-400 mb-1">
                 Reporter Name (Optional)
               </label>
               <input
@@ -536,11 +536,11 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                 value={reporterName}
                 onChange={(e) => setReporterName(e.target.value)}
                 placeholder="e.g. Ramesh Kalita (Village Volunteer)"
-                className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">
+              <label className="block text-xs font-semibold text-slate-400 mb-1">
                 Emergency Mobile # (For verification)
               </label>
               <input
@@ -548,24 +548,24 @@ export const CitizenReportModal: React.FC<CitizenReportModalProps> = ({
                 value={reporterPhone}
                 onChange={(e) => setReporterPhone(e.target.value)}
                 placeholder="+91-98XXX-XXXXX"
-                className="w-full bg-slate-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
               />
             </div>
           </div>
 
           {/* Footer Action Buttons */}
-          <div className="pt-2 border-t border-gray-800 flex items-center justify-end gap-2.5">
+          <div className="pt-2 border-t border-slate-800 flex items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 text-gray-300 hover:text-white border border-gray-700 transition"
+              className="px-4 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white transition shadow-lg shadow-rose-600/30 flex items-center gap-1.5"
+              className="px-5 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white transition shadow-sm flex items-center gap-1.5"
             >
               {isSubmitting ? (
                 <span>Syncing to Early Warning Map...</span>

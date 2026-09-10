@@ -176,39 +176,39 @@ export const WeatherForecastWidget: React.FC<WeatherForecastWidgetProps> = ({ la
       : timeSeriesForecastData;
 
   return (
-    <div className="p-4 sm:p-5 rounded-2xl bg-[#111827] border border-gray-800 space-y-5">
+    <div className="p-4 sm:p-5 rounded-2xl bg-[#0c1322] border border-slate-800/90 space-y-5 shadow-xl">
       {/* Header & Data Fusion Badges */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3 border-b border-gray-800 gap-2.5">
-        <div className="flex items-center space-x-2 text-sky-400 font-semibold text-sm">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3 border-b border-slate-800/90 gap-2.5">
+        <div className="flex items-center space-x-2 text-sky-400 font-bold text-sm">
           <CloudRain className="w-5 h-5" />
-          <span>{t.weatherForecastTitle}</span>
+          <span className="uppercase tracking-wide">{t.weatherForecastTitle}</span>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center bg-slate-900 border border-gray-800 p-0.5 rounded-lg text-xs">
+          <div className="flex items-center bg-slate-950 border border-slate-800 p-0.5 rounded-lg text-xs">
             <button
               onClick={() => setSelectedRange("ALL")}
               className={`px-2.5 py-1 rounded font-bold transition text-[11px] ${
-                selectedRange === "ALL" ? "bg-sky-600 text-white" : "text-gray-400 hover:text-white"
+                selectedRange === "ALL" ? "bg-sky-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
               }`}
             >
-              Full 48h Timeline
+              {lang === "hi" ? "संपूर्ण 48 घंटे" : "Full 48h Timeline"}
             </button>
             <button
               onClick={() => setSelectedRange("NOWCAST")}
               className={`px-2.5 py-1 rounded font-bold transition text-[11px] ${
-                selectedRange === "NOWCAST" ? "bg-sky-600 text-white" : "text-gray-400 hover:text-white"
+                selectedRange === "NOWCAST" ? "bg-sky-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
               }`}
             >
-              6h Nowcast
+              {t.nowcast6h}
             </button>
             <button
               onClick={() => setSelectedRange("EXTENDED")}
               className={`px-2.5 py-1 rounded font-bold transition text-[11px] ${
-                selectedRange === "EXTENDED" ? "bg-sky-600 text-white" : "text-gray-400 hover:text-white"
+                selectedRange === "EXTENDED" ? "bg-sky-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
               }`}
             >
-              24-48h Extended
+              {t.extendedForecast}
             </button>
           </div>
 
@@ -220,77 +220,79 @@ export const WeatherForecastWidget: React.FC<WeatherForecastWidgetProps> = ({ la
 
       {/* 4 Hydro-Meteorological Diagnostic KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="p-3 rounded-xl bg-slate-900/80 border border-gray-800 space-y-1">
-          <div className="flex items-center justify-between text-xs text-gray-400">
-            <span>Peak 6h Intensity</span>
+        <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>{t.peakIntensity}</span>
             <CloudRain className="w-3.5 h-3.5 text-sky-400" />
           </div>
-          <p className="text-xl font-black text-white font-mono">54.8 mm/h</p>
-          <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider">
-            Cloudburst Trigger Zone
+          <p className="text-xl font-black text-white font-mono tabular-nums">54.8 mm/h</p>
+          <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">
+            {lang === "hi" ? "बादल फटने का क्षेत्र" : "Cloudburst Trigger Zone"}
           </span>
         </div>
 
-        <div className="p-3 rounded-xl bg-slate-900/80 border border-gray-800 space-y-1">
-          <div className="flex items-center justify-between text-xs text-gray-400">
-            <span>Antecedent Soil Moisture</span>
+        <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>{t.soilMoisture}</span>
             <Droplets className="w-3.5 h-3.5 text-emerald-400" />
           </div>
-          <p className="text-xl font-black text-white font-mono">97.0% Saturation</p>
-          <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">
-            AMC-III Critical Threshold
+          <p className="text-xl font-black text-white font-mono tabular-nums">97.0% Saturation</p>
+          <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">
+            {lang === "hi" ? "एएमसी-3 महत्वपूर्ण सीमा" : "AMC-III Critical Threshold"}
           </span>
         </div>
 
-        <div className="p-3 rounded-xl bg-slate-900/80 border border-gray-800 space-y-1">
-          <div className="flex items-center justify-between text-xs text-gray-400">
-            <span>48h Cumulative Outlook</span>
+        <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>{t.cumulativeOutlook}</span>
             <Layers className="w-3.5 h-3.5 text-indigo-400" />
           </div>
-          <p className="text-xl font-black text-white font-mono">271.0 mm</p>
-          <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider">
-            GSI Extreme Watch
+          <p className="text-xl font-black text-white font-mono tabular-nums">271.0 mm</p>
+          <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">
+            {lang === "hi" ? "जीएसआई अत्यधिक निगरानी" : "GSI Extreme Watch"}
           </span>
         </div>
 
-        <div className="p-3 rounded-xl bg-slate-900/80 border border-gray-800 space-y-1">
-          <div className="flex items-center justify-between text-xs text-gray-400">
-            <span>Doppler Radar Echo</span>
+        <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>{t.dopplerEcho}</span>
             <Activity className="w-3.5 h-3.5 text-rose-400" />
           </div>
-          <p className="text-xl font-black text-white font-mono">48 dBZ</p>
-          <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider">
-            Sohra Escarpment Cell
+          <p className="text-xl font-black text-white font-mono tabular-nums">48 dBZ</p>
+          <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider block">
+            {lang === "hi" ? "सोहरा बादल सेल" : "Sohra Escarpment Cell"}
           </span>
         </div>
       </div>
 
       {/* Main Interactive Recharts Time-Series Chart */}
-      <div className="p-4 rounded-xl bg-slate-900/70 border border-gray-800 space-y-3">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-gray-400 gap-1">
-          <span className="font-bold text-gray-200">
-            Dual-Axis Projection: Rainfall Rate (mm/h) vs. Landslide Susceptibility Index (0.00 - 1.00)
+      <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-slate-400 gap-1">
+          <span className="font-bold text-slate-200">
+            {lang === "hi"
+              ? "द्वि-अक्षीय प्रक्षेपण: वर्षा दर (मिमी/घंटा) बनाम भूस्खलन संवेदनशीलता सूचकांक (0.00 - 1.00)"
+              : "Dual-Axis Projection: Rainfall Rate (mm/h) vs. Landslide Susceptibility Index (0.00 - 1.00)"}
           </span>
           <div className="flex items-center space-x-3 text-[11px]">
-            <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-sky-500 inline-block"></span> Rainfall Rate (mm/h)
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-3 h-1 bg-rose-500 inline-block"></span> Landslide Risk Score
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded bg-sky-500 inline-block"></span> <span>{lang === "hi" ? "वर्षा दर (मिमी/घंटा)" : "Rainfall Rate (mm/h)"}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-1 rounded bg-rose-500 inline-block"></span> <span>{lang === "hi" ? "भूस्खलन जोखिम स्कोर" : "Landslide Risk Score"}</span>
+            </div>
           </div>
         </div>
 
         <div className="h-64 sm:h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={filteredData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#1e293d" vertical={false} />
               <XAxis
                 dataKey="time"
-                stroke="#6b7280"
+                stroke="#64748b"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: "#374151" }}
+                axisLine={{ stroke: "#334155" }}
               />
               {/* Left Y Axis: Rainfall */}
               <YAxis
@@ -298,7 +300,7 @@ export const WeatherForecastWidget: React.FC<WeatherForecastWidgetProps> = ({ la
                 stroke="#38bdf8"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: "#374151" }}
+                axisLine={{ stroke: "#334155" }}
                 unit="mm"
                 domain={[0, 80]}
               />
@@ -309,7 +311,7 @@ export const WeatherForecastWidget: React.FC<WeatherForecastWidgetProps> = ({ la
                 stroke="#f43f5e"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: "#374151" }}
+                axisLine={{ stroke: "#334155" }}
                 domain={[0, 1]}
                 tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
               />
@@ -334,9 +336,9 @@ export const WeatherForecastWidget: React.FC<WeatherForecastWidgetProps> = ({ la
                 yAxisId="left"
                 dataKey="rainfall"
                 name="Rainfall Rate"
-                fill="#0ea5e9"
-                radius={[6, 6, 0, 0]}
-                barSize={28}
+                fill="#0284c7"
+                radius={[4, 4, 0, 0]}
+                barSize={26}
               />
 
               {/* Glowing Line for Landslide Risk Score */}
@@ -346,9 +348,9 @@ export const WeatherForecastWidget: React.FC<WeatherForecastWidgetProps> = ({ la
                 dataKey="riskScore"
                 name="Landslide Risk Score"
                 stroke="#f43f5e"
-                strokeWidth={3}
-                dot={{ r: 4, fill: "#f43f5e", stroke: "#ffffff", strokeWidth: 1.5 }}
-                activeDot={{ r: 6, fill: "#ffffff", stroke: "#f43f5e", strokeWidth: 2 }}
+                strokeWidth={2.5}
+                dot={{ r: 3.5, fill: "#f43f5e", stroke: "#ffffff", strokeWidth: 1.5 }}
+                activeDot={{ r: 5.5, fill: "#ffffff", stroke: "#f43f5e", strokeWidth: 2 }}
               />
             </ComposedChart>
           </ResponsiveContainer>
@@ -356,7 +358,7 @@ export const WeatherForecastWidget: React.FC<WeatherForecastWidgetProps> = ({ la
       </div>
 
       {/* Advisory Callout Box */}
-      <div className="p-3.5 rounded-xl bg-amber-950/30 border border-amber-500/40 text-xs text-amber-200 flex items-start gap-2.5">
+      <div className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/35 text-xs text-amber-200 flex items-start gap-2.5">
         <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
         <div className="space-y-1">
           <p className="font-bold text-amber-300">

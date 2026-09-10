@@ -13,7 +13,7 @@ The North Eastern Region (NER) of India suffers devastating landslides every mon
 This platform delivers an end-to-end, cloud-native early warning system combining:
 1. **Multi-Source Geospatial Ingestion**: Satellite SAR (Sentinel-1), Optical (Sentinel-2), SRTM/Copernicus Digital Elevation Models (DEM), and IMD Gridded Rainfall.
 2. **Predictive AI/ML Engine**: Real-time Landslide Susceptibility Index (LSI) & Dynamic Threshold Triggering using XGBoost, PyTorch, and GeoAI.
-3. **Interactive GIS Web Dashboard**: Next.js + Esri Dark Gray Canvas GIS (Watermark-Free) for hazard zonation heatmaps, 3D slope rendering, sensor telemetry, and automated evacuation routing.
+3. **Interactive GIS Web Dashboard**: Next.js + Esri Dark Gray Canvas GIS for hazard zonation heatmaps, 3D slope rendering, sensor telemetry, and automated evacuation routing.
 4. **Offline & Low-Network Resilience**: Service Worker (`/sw.js`) + IndexedDB caching for GIS tiles and offline queueing for citizen hazard reports.
 5. **Multi-Channel Alert Dispatcher**: Web Audio evacuation siren synthesizer + SMS broadcast simulator + Browser Web Speech API text-to-speech voice bulletins.
 
@@ -32,6 +32,12 @@ This platform delivers an end-to-end, cloud-native early warning system combinin
 | **7** | **Voice Alert (Text-to-Speech)** | Added "🔊 Listen" button to all alert cards using browser Web Speech API (`window.speechSynthesis`). Speaks localized emergency bulletins in English, Hindi, Assamese, Bodo, and Khasi for low-literacy field users. Includes audio sound-wave animations. | `AlertBanner.tsx` |
 | **8** | **Multilingual Coverage (Bodo & Khasi)** | Added full i18n support for Bodo (`brx` / बर' राव) and Khasi (`kha` / Ka Ktien Khasi) alongside English, Hindi, and Assamese. All 5 languages accessible via the top command center switcher. | `i18n.ts`, `page.tsx` |
 | **9** | **Mobile Responsiveness (375px)** | Optimized layout for iPhone SE / 375px mobile viewports: scrollable tab bar, flex wrapping in header, responsive font sizes, touch-friendly Leaflet controls, and zero horizontal page overflow. | `page.tsx`, `globals.css` |
+| **10** | **Dual Persona Interface (Command vs Citizen)** | Added 1-click mode switcher between `🛡️ Strategic Command` (dense telemetry, SHAP explainers, response matrices, BRO corridors) and `👤 Citizen Safety View` (clean high-level safety advisories, emergency numbers, evacuation guidelines, crowdsourced report submission). Eliminates cognitive overload for judges and citizens. | `page.tsx` |
+| **11** | **Zero English Leakage 5-Language Native i18n** | Full native dictionary localization across English (`en`), Hindi (`hi`), Assamese (`as`), Bodo (`brx`), and Khasi (`kha`). Complete coverage across StatCards, AlertBanner, WeatherForecastWidget, RoadStatusPanel, OfficerReviewPanel, and Citizen safety cards. | `i18n.ts`, `page.tsx` |
+| **12** | **SitRep (Situation Report) Generator** | Automated generation of standardized operational situation reports with 1-click formatted copy-to-clipboard, print formatting, and NDMA-aligned command briefings. | `SitRepModal.tsx`, `page.tsx` |
+| **13** | **PyTorch LSTM Nowcasting & Trained Artifacts** | Real PyTorch LSTM time-series model (`lstm_nowcast.py`) with state-dict weights file (`lstm_nowcast_weights.pt`) and realistic synthetic temporal training pipeline (`train_lstm.py`) with transparent UI labeling. | `lstm_nowcast.py`, `train_lstm.py` |
+| **14** | **Enterprise Auth, PyJWT & CORS Hardening** | Upgraded authentication to standard PyJWT tokens with cryptographic signing, bcrypt password hashing, and tightened FastAPI CORS origins to mitigate open wildcard vulnerabilities. | `auth.py`, `config.py` |
+| **15** | **GIS Presentation & Vercel Readiness** | Cleaned GIS map viewer basemap labels, standardized spatial projection badges (`EPSG:4326 • WGS 84`), and added Vercel monorepo deployment configuration. | `HeatmapViewer.tsx`, `page.tsx` |
 
 ---
 
@@ -73,14 +79,21 @@ npm run dev
 | **ML Engine Prediction API** | `http://localhost:8001/docs` | ML inference microservice docs |
 | **PostGIS Spatial DB** | `localhost:5432` (`db: landslide_ner`) | Spatially indexed GIS database |
 
+### 4. Vercel Cloud Deployment (Frontend)
+- **Monorepo Setting**: In Vercel Project Settings > General:
+  - Set **Root Directory** to `frontend`
+  - Ensure **Framework Preset** is set to `Next.js`
+- Automated CI/CD pipeline triggers seamlessly on every `git push origin main`.
+
 ---
 
 ## 🏆 SIH 2026 Evaluation Highlights
-- **Watermark-Free Esri GIS**: World Dark Gray Base & Reference vector tiles with smooth regional camera jump shortcuts.
+- **High-Performance Esri GIS**: World Dark Gray Base & Reference vector tiles with smooth regional camera jump shortcuts.
+- **Dual Persona Command vs Citizen View**: Tailored layouts preventing cognitive overload for citizens while providing granular GIS telemetry for disaster officers.
 - **Offline-First Field Resilience**: Service worker precaches app shell and map tiles; citizen reports queue locally in IndexedDB during network failure and auto-sync on reconnect.
 - **Crowdsourced Photo & Video Reporting**: Verified ground truth with GPS auto-tagging and AI spatial correlation scoring.
-- **Multilingual Early Warning**: 5 languages supported: English, Hindi, Assamese, Bodo (बर'), and Khasi.
-- **Continuous Learning Loop**: Officer ground-truth feedback logs directly feed back into retraining pipelines.
+- **Multilingual Early Warning**: 5 languages supported: English, Hindi, Assamese, Bodo (बर'), and Khasi with zero English leakage.
+- **Continuous Learning Loop**: Officer ground-truth feedback logs directly feed back into retraining pipelines with real PyTorch LSTM weights.
 
 ---
 

@@ -1,26 +1,33 @@
+/* Leaflet Core Styles - Must be at the very top of the CSS file */
+@import "leaflet/dist/leaflet.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Leaflet Core Styles */
-@import "leaflet/dist/leaflet.css";
-
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 15, 29;
-  --background-end-rgb: 15, 23, 42;
+  --foreground-rgb: 248, 250, 252;
+  --background-rgb: 7, 11, 20;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #090d16;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #070b14;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure tabular numbers for real-time telemetry */
+.font-mono,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Custom Leaflet Dark Mode styling */
 .leaflet-container {
-  background: #090d16 !important;
+  background: #070b14 !important;
   font-family: inherit;
   width: 100%;
   height: 100%;
@@ -28,11 +35,11 @@ body {
 }
 
 .leaflet-popup-content-wrapper {
-  background: #0e1424 !important;
-  color: #f3f4f6 !important;
-  border: 1px solid #1f293d !important;
-  border-radius: 16px !important;
-  box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(14, 165, 233, 0.15) !important;
+  background: #0d1526 !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #1e293d !important;
+  border-radius: 14px !important;
+  box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.8), 0 0 15px rgba(2, 132, 199, 0.15) !important;
   padding: 0 !important;
 }
 
@@ -119,20 +126,20 @@ body {
   border: 2px solid #ffffff;
 }
 
-/* Smooth scrollbar */
+/* Smooth custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b0f19;
+  background: #080d1a;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f2937;
-  border-radius: 3px;
+  background: #1a2538;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  background: #2a3b56;
 }
 
 /* Fix for Leaflet custom divIcon default styles */

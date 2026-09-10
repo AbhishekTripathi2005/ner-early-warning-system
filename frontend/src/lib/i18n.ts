@@ -45,6 +45,79 @@ export interface TranslationSchema {
   offlineBannerText: string;
   villagesIsolated: string;
   populationAffected: string;
+  // Persona & Header
+  tacticalCommand: string;
+  citizenSafeView: string;
+  publicSafetyView: string;
+  citizenPortalTitle: string;
+  citizenPortalSubtitle: string;
+  opconLevel: string;
+  generateSitRep: string;
+  shortcutsHint: string;
+  helplineTollFree: string;
+  safetyAdvisoryTitle: string;
+  safetyAdvisoryDesc: string;
+  officialSdrfAdvisory: string;
+  // Stat Cards
+  statCriticalHotspots: string;
+  statHotspotsSub: string;
+  statSectorsUnit: string;
+  statPrecipitation: string;
+  statRainSub: string;
+  statIoTHillNodes: string;
+  statIoTUptime: string;
+  statHybridAiEngine: string;
+  statAiSubOnline: string;
+  statAiSubOffline: string;
+  // Citizen Safe View Cards
+  vicinitySafetyTitle: string;
+  vicinitySafetyStatus: string;
+  vicinitySafetyDesc: string;
+  highwayCorridorsTitle: string;
+  highwayCorridorsStatus: string;
+  highwayCorridorsDesc: string;
+  emergencyAssistanceTitle: string;
+  emergencyAssistanceStatus: string;
+  emergencyAssistanceDesc: string;
+  // Officer Review Panel & Feedback
+  officerLoginToVerify: string;
+  continuousLearningTitle: string;
+  retrainingPipelineHook: string;
+  selectActiveAlert: string;
+  officerAnnotation: string;
+  observedRainfall: string;
+  fieldVerificationNotes: string;
+  submitFeedback: string;
+  confirmedTP: string;
+  falseAlarmFP: string;
+  missedEventFN: string;
+  signingAs: string;
+  publicViewLoginPrompt: string;
+  // Road Status Panel
+  broTrafficFeed: string;
+  blockedCorridorsCount: string;
+  strandedTrucks: string;
+  medicalOxygenConvoys: string;
+  civilianFuelReserves: string;
+  broEarthmovers: string;
+  hazardLabel: string;
+  clearanceEtaLabel: string;
+  // Weather Forecast
+  nowcast6h: string;
+  extendedForecast: string;
+  peakIntensity: string;
+  soilMoisture: string;
+  cumulativeOutlook: string;
+  dopplerEcho: string;
+  // GIS & Map
+  jumpTo: string;
+  fastApiLive: string;
+  telemetryOffline: string;
+  aiCauseExplanation: string;
+  slopeGradient: string;
+  soilSaturation: string;
+  insarCreep: string;
+  sirenDispatched: string;
 }
 
 export const translations: Record<Language, TranslationSchema> = {
@@ -92,10 +165,76 @@ export const translations: Record<Language, TranslationSchema> = {
     stopVoiceAlert: "Stop Audio",
     offlineBannerText: "Operating in Offline Field Mode (Cached GIS Tiles)",
     villagesIsolated: "Villages Cut Off",
-    populationAffected: "Population Affected"
+    populationAffected: "Population Affected",
+    tacticalCommand: "Tactical Command",
+    citizenSafeView: "Citizen Safe View",
+    publicSafetyView: "Public Safety View",
+    citizenPortalTitle: "NER Citizen Landslide Safety & Travel Portal",
+    citizenPortalSubtitle: "Jargon-free road accessibility, rainfall advisories & 1-click community hazard reporting",
+    opconLevel: "OPCON LEVEL-3: MONSOON SURGE WATCH",
+    generateSitRep: "Generate Official SitRep",
+    shortcutsHint: "⌨ Shortcuts: [1-5] Decks • [S] SitRep • [R] Report • [C] Mode",
+    helplineTollFree: "📞 Helpline: 1070 / 1078 (Toll-Free)",
+    safetyAdvisoryTitle: "PUBLIC SAFETY ADVISORY: Valley Settlements Safe • Caution on High Slopes",
+    safetyAdvisoryDesc: "Active monsoons along East Khasi Hills (Cherrapunji) & North Sikkim. Follow road signage on NH-10.",
+    officialSdrfAdvisory: "Official SDRF Advisory",
+    statCriticalHotspots: "NER Critical Hotspots",
+    statHotspotsSub: "+2 Critical (Severe Tier)",
+    statSectorsUnit: "Sectors",
+    statPrecipitation: "Peak 48h Precipitation",
+    statRainSub: "Cherrapunji AWS Threshold Crossed",
+    statIoTHillNodes: "Active IoT Hill Nodes",
+    statIoTUptime: "99.4% Multi-Sensor Telemetry Uptime",
+    statHybridAiEngine: "Hybrid AI Inference Engine",
+    statAiSubOnline: "Static LSI + LSTM 2-6h Nowcasting",
+    statAiSubOffline: "Edge Heuristics & Cached Inference",
+    vicinitySafetyTitle: "Your Vicinity Safety",
+    vicinitySafetyStatus: "Moderate Watch (Valleys Normal)",
+    vicinitySafetyDesc: "Residential valley settlements are stable. Travelers on mountain highways (NH-10, NH-29) should monitor road alerts before starting journeys.",
+    highwayCorridorsTitle: "Key Highway Corridors",
+    highwayCorridorsStatus: "NH-10 Diverted • NH-29 Pilot Convoy",
+    highwayCorridorsDesc: "NH-10 transit routed via Panbu-Mungpoo link road. NH-6 (Shillong-Silchar) open for light vehicles.",
+    emergencyAssistanceTitle: "Emergency Assistance",
+    emergencyAssistanceStatus: "NDRF & SDRF Pre-Positioned",
+    emergencyAssistanceDesc: "Quick reaction teams on standby at Haflong, Gangtok, and Sohra. Call 1070 (State) or 1078 (NDMA) for immediate rescue.",
+    officerLoginToVerify: "Officer Login to Verify",
+    continuousLearningTitle: "Continuous Learning & Ground-Truth Feedback Panel",
+    retrainingPipelineHook: "AI Model Retraining Pipeline Hook",
+    selectActiveAlert: "Select Active Early Warning Alert",
+    officerAnnotation: "Officer Ground-Truth Annotation",
+    observedRainfall: "Observed Ground Rainfall (mm / 48h)",
+    fieldVerificationNotes: "Field Verification Notes",
+    submitFeedback: "Submit Ground-Truth Validation",
+    confirmedTP: "Confirmed (TP)",
+    falseAlarmFP: "False Alarm (FP)",
+    missedEventFN: "Missed Event (FN)",
+    signingAs: "Signing as",
+    publicViewLoginPrompt: "Public View • Login as Officer to sign official record",
+    broTrafficFeed: "BRO / Traffic Police Live Feed",
+    blockedCorridorsCount: "1 Blocked Corridor",
+    strandedTrucks: "Stranded Supply Trucks",
+    medicalOxygenConvoys: "Medical Oxygen Convoys",
+    civilianFuelReserves: "Civilian Fuel Reserves",
+    broEarthmovers: "BRO Earthmovers (JCB)",
+    hazardLabel: "Hazard:",
+    clearanceEtaLabel: "Clearance ETA:",
+    nowcast6h: "6h Nowcast",
+    extendedForecast: "24-48h Extended",
+    peakIntensity: "Peak 6h Intensity",
+    soilMoisture: "Antecedent Soil Moisture",
+    cumulativeOutlook: "48h Cumulative Outlook",
+    dopplerEcho: "Doppler Radar Echo",
+    jumpTo: "Jump:",
+    fastApiLive: "FastAPI Engine: Live (Port 8000)",
+    telemetryOffline: "Telemetry: Offline Cache",
+    aiCauseExplanation: "AI Cause Explanation",
+    slopeGradient: "Slope Gradient",
+    soilSaturation: "Soil Saturation",
+    insarCreep: "InSAR Creep",
+    sirenDispatched: "SIREN & SMS BROADCAST DISPATCHED"
   },
   hi: {
-    title: "उत्तर-पूर्वी क्षेत्र (NER) भूस्खलन पूर्व चेतावनी प्रणाली",
+    title: "उत्तर-पूर्वी क्षेत्र (NER) भूस्खलन पूर्व चेतावनी एवं जोखिम निगरानी प्रणाली",
     subtitle: "उत्तर-पूर्वी क्षेत्र विकास मंत्रालय (MDoNER) • आपदा प्रबंधन प्रकोष्ठ",
     aiOnline: "एआई भविष्यवाणी इंजन: सक्रिय (ONLINE)",
     refreshTelemetry: "डेटा रीफ्रेश करें",
@@ -138,7 +277,73 @@ export const translations: Record<Language, TranslationSchema> = {
     stopVoiceAlert: "आवाज़ रोकें",
     offlineBannerText: "ऑफ़लाइन मोड सक्रिय (लोकल कैश डेटा)",
     villagesIsolated: "संपर्क कटा गांव",
-    populationAffected: "प्रभावित आबादी"
+    populationAffected: "प्रभावित आबादी",
+    tacticalCommand: "सामरिक कमांड",
+    citizenSafeView: "नागरिक सुरक्षा दृश्य",
+    publicSafetyView: "जन सुरक्षा दृश्य",
+    citizenPortalTitle: "उत्तर-पूर्व नागरिक भूस्खलन सुरक्षा एवं यात्रा पोर्टल",
+    citizenPortalSubtitle: "सरल सड़क संपर्क स्थिति, वर्षा चेतावनी एवं 1-क्लिक नागरिक आपदा रिपोर्टिंग",
+    opconLevel: "ऑपकॉन स्तर-3: मानसून वृद्धि निगरानी",
+    generateSitRep: "आधिकारिक सिटरैप (SitRep) बनाएं",
+    shortcutsHint: "⌨ शॉर्टकट्स: [1-5] डेक्स • [S] सिटरैप • [R] रिपोर्ट • [C] मोड",
+    helplineTollFree: "📞 हेल्पलाइन: 1070 / 1078 (टोल-फ्री)",
+    safetyAdvisoryTitle: "जन सुरक्षा सलाह: घाटी बस्तियां सुरक्षित • ऊंची ढलानों पर सतर्क रहें",
+    safetyAdvisoryDesc: "पूर्वी खासी हिल्स (चेरापूंजी) व उत्तर सिक्किम में भारी बारिश जारी। राष्ट्रीय राजमार्ग-10 पर सड़क संकेतों का पालन करें।",
+    officialSdrfAdvisory: "आधिकारिक SDRF एडवाइजरी",
+    statCriticalHotspots: "उत्तर-पूर्व संवेदनशील क्षेत्र",
+    statHotspotsSub: "+2 अति गंभीर (गंभीर श्रेणी)",
+    statSectorsUnit: "क्षेत्र",
+    statPrecipitation: "उच्चतम 48 घंटे की वर्षा",
+    statRainSub: "चेरापूंजी AWS सीमा पार",
+    statIoTHillNodes: "सक्रिय IoT पहाड़ी सेंसर नोड्स",
+    statIoTUptime: "99.4% मल्टी-सेंसर टेलीमेट्री अपटाइम",
+    statHybridAiEngine: "हाइब्रिड एआई भविष्यवाणी इंजन",
+    statAiSubOnline: "स्थैतिक LSI + LSTM 2-6 घंटे का नाउकास्ट",
+    statAiSubOffline: "एज अनुमानी व कैश्ड डेटा",
+    vicinitySafetyTitle: "आपके क्षेत्र की सुरक्षा",
+    vicinitySafetyStatus: "मध्यम निगरानी (घाटी सामान्य)",
+    vicinitySafetyDesc: "आवासीय घाटी बस्तियां सुरक्षित हैं। पहाड़ी राजमार्गों (NH-10, NH-29) पर यात्रा करने वाले नागरिक निकलने से पहले सड़क अलर्ट जांच लें।",
+    highwayCorridorsTitle: "प्रमुख राजमार्ग गलियारे",
+    highwayCorridorsStatus: "NH-10 मार्ग परिवर्तित • NH-29 पायलट काफिला",
+    highwayCorridorsDesc: "NH-10 यातायात पानबू-मोंगपू संपर्क मार्ग से संचालित। NH-6 (शिलांग-सिलचर) हल्के वाहनों के लिए खुला है।",
+    emergencyAssistanceTitle: "आपातकालीन सहायता",
+    emergencyAssistanceStatus: "एनडीआरएफ एवं एसडीआरएफ तैनात",
+    emergencyAssistanceDesc: "हाफलॉन्ग, गंगटोक और सोहरा में त्वरित प्रतिक्रिया दल तैनात हैं। तत्काल बचाव के लिए 1070 (राज्य) या 1078 (NDMA) पर कॉल करें।",
+    officerLoginToVerify: "सत्यापन हेतु अधिकारी लॉगिन करें",
+    continuousLearningTitle: "निरंतर शिक्षण एवं जमीनी साक्ष्य फीडबैक पैनल",
+    retrainingPipelineHook: "एआई मॉडल पुनः प्रशिक्षण पाइपलाइन",
+    selectActiveAlert: "सक्रिय चेतावनी का चयन करें",
+    officerAnnotation: "अधिकारी जमीनी साक्ष्य वर्गीकरण",
+    observedRainfall: "मापी गई जमीनी वर्षा (मिमी / 48 घंटे)",
+    fieldVerificationNotes: "मैदानी सत्यापन विवरण / टिप्पणी",
+    submitFeedback: "जमीनी सत्यापन दर्ज करें",
+    confirmedTP: "सत्यापित (TP)",
+    falseAlarmFP: "झूठा अलार्म (FP)",
+    missedEventFN: "छूटी घटना (FN)",
+    signingAs: "हस्ताक्षरकर्ता",
+    publicViewLoginPrompt: "सार्वजनिक दृश्य • आधिकारिक रिकॉर्ड दर्ज करने हेतु अधिकारी लॉगिन करें",
+    broTrafficFeed: "बीआरओ / यातायात पुलिस लाइव फीड",
+    blockedCorridorsCount: "1 अवरुद्ध गलियारा",
+    strandedTrucks: "फंसे हुए आपूर्ति वाहन",
+    medicalOxygenConvoys: "चिकित्सा ऑक्सीजन काफिले",
+    civilianFuelReserves: "नागरिक ईंधन भंडार",
+    broEarthmovers: "बीआरओ अर्थमूवर (JCB)",
+    hazardLabel: "खतरा कारण:",
+    clearanceEtaLabel: "मार्ग खुलने का अनुमानित समय:",
+    nowcast6h: "6 घंटे का नाउकास्ट",
+    extendedForecast: "24-48 घंटे का विस्तारित पूर्वानुमान",
+    peakIntensity: "अधिकतम 6 घंटे की तीव्रता",
+    soilMoisture: "मिट्टी की पूर्व नमी संतृप्ति",
+    cumulativeOutlook: "48 घंटे की कुल अनुमानित वर्षा",
+    dopplerEcho: "डॉप्लर रडार प्रतिध्वनि",
+    jumpTo: "त्वरित दृश्य:",
+    fastApiLive: "फास्टएपीआई इंजन: लाइव (पोर्ट 8000)",
+    telemetryOffline: "टेलीमेट्री: ऑफ़लाइन कैश",
+    aiCauseExplanation: "एआई कारक व्याख्या (TreeSHAP)",
+    slopeGradient: "ढलान प्रवणता",
+    soilSaturation: "मिट्टी संतृप्ति",
+    insarCreep: "इनसार विस्थापन (InSAR)",
+    sirenDispatched: "आपातकालीन सायरन व एसएमएस प्रसारित किया गया"
   },
   as: {
     title: "উত্তৰ-পূব অঞ্চল (NER) ভূমিস্খলন প্ৰাৰম্ভিক সতৰ্কবাণী ব্যৱস্থা",
@@ -160,7 +365,7 @@ export const translations: Record<Language, TranslationSchema> = {
     layerSensors: "IoT ছেন্সৰ",
     legendRiskScale: "বিপদৰ মাত্ৰা:",
     lowRisk: "কম (<০.৩৫)",
-    moderateRisk: "मध्यम",
+    moderateRisk: "মধ্যম",
     highRisk: "উচ্চ",
     severeRisk: "অতি ভয়াৱহ (>০.৭৫)",
     roadStatusTitle: "ৰাষ্ট্ৰীয় ঘাইপথ সংযোগ আৰু বন্ধৰ অৱস্থা",
@@ -184,7 +389,73 @@ export const translations: Record<Language, TranslationSchema> = {
     stopVoiceAlert: "কণ্ঠ বন্ধ কৰক",
     offlineBannerText: "অফলাইন ম'ড সক্ৰিয় (স্থানীয় মানচিত্ৰ কেচ)",
     villagesIsolated: "বিচ্ছিন্ন গাঁও",
-    populationAffected: "প্ৰভাৱিত জনসংখ্যা"
+    populationAffected: "প্ৰভাৱিত জনসংখ্যা",
+    tacticalCommand: "কৌশলগত কমাণ্ড",
+    citizenSafeView: "নাগৰিক সুৰক্ষা দৰ্শন",
+    publicSafetyView: "জনসুৰক্ষা দৰ্শন",
+    citizenPortalTitle: "উত্তৰ-পূব নাগৰিক ভূমিস্খলন সুৰক্ষা আৰু ভ্ৰমণ প'ৰ্টেল",
+    citizenPortalSubtitle: "সহজ পথ যোগাযোগ, বৰষুণৰ আগজাননী আৰু ১-ক্লিক বিপদ ৰিপৰ্ট",
+    opconLevel: "অপকন স্তৰ-৩: বাৰিষা বৃদ্ধি সতৰ্কতা",
+    generateSitRep: "চৰকাৰী চিটৰেপ প্ৰস্তুত কৰক",
+    shortcutsHint: "⌨ চৰ্টকাট: [১-৫] ডেক • [S] চিটৰেপ • [R] ৰিপৰ্ট • [C] ম'ড",
+    helplineTollFree: "📞 হেল্পলাইন: ১০৭০ / ১০৭৮ (টোল-ফ্ৰী)",
+    safetyAdvisoryTitle: "জনসুৰক্ষা পৰামৰ্শ: উপত্যকাৰ বসতি সুৰক্ষিত • ওখ পাহাৰত সতৰ্ক থাকক",
+    safetyAdvisoryDesc: "পূব খাছী পাহাৰ (চেৰাপুঞ্জী) আৰু উত্তৰ ছিকিমত প্ৰবল বাৰিষা। NH-10 ত পথ নিৰ্দেশনা মানি চলক।",
+    officialSdrfAdvisory: "চৰকাৰী SDRF পৰামৰ্শ",
+    statCriticalHotspots: "উত্তৰ-পূবৰ সংবেদনশীল অঞ্চল",
+    statHotspotsSub: "+২ অতি ভয়াৱহ",
+    statSectorsUnit: "খণ্ড",
+    statPrecipitation: "সৰ্বোচ্চ ৪৮ ঘণ্টাৰ বৰষুণ",
+    statRainSub: "চেৰাপুঞ্জী AWS সীমা পাৰ",
+    statIoTHillNodes: "সক্ৰিয় IoT পাহাৰীয়া ন'ড",
+    statIoTUptime: "৯৯.৪% মাল্টি-ছেন্সৰ টেলিমেট্ৰি উপলব্ধ",
+    statHybridAiEngine: "হাইব্ৰিড এআই ইনফাৰেন্স ইঞ্জিন",
+    statAiSubOnline: "ষ্টেটিক LSI + LSTM ২-৬ ঘণ্টাৰ নাওকাষ্ট",
+    statAiSubOffline: "স্থানীয় এজ আৰু কেচ ইনফাৰেন্স",
+    vicinitySafetyTitle: "আপোনাৰ অঞ্চলৰ সুৰক্ষা",
+    vicinitySafetyStatus: "মধ্যম নিৰীক্ষণ (উপত্যকা স্বাভাৱিক)",
+    vicinitySafetyDesc: "আৱাসিক উপত্যকাৰ বসতিসমূহ সুৰক্ষিত। পাহাৰীয়া ঘাইপথত (NH-10, NH-29) যাত্ৰা কৰাৰ পূৰ্বে পথৰ সতৰ্কবাণী পৰীক্ষা কৰক।",
+    highwayCorridorsTitle: "প্ৰধান ৰাষ্ট্ৰীয় ঘাইপথ",
+    highwayCorridorsStatus: "NH-10 সলনি কৰা হৈছে • NH-29 কনভয়",
+    highwayCorridorsDesc: "NH-10 যাতায়াত পানবু-মুংপু সংযোগী পথেৰে চলোৱা হৈছে। NH-6 (শ্বিলং-শিলচৰ) পাতল বাহনৰ বাবে খোলা আছে।",
+    emergencyAssistanceTitle: "জৰুৰীকালীন সাহায্য",
+    emergencyAssistanceStatus: "NDRF আৰু SDRF নিয়োগ কৰা হৈছে",
+    emergencyAssistanceDesc: "হাফলং, গেংটক আৰু চেৰাপুঞ্জীত উদ্ধাৰকাৰী দল সাজু আছে। তৎক্ষণাৎ উদ্ধাৰৰ বাবে ১০৭০ বা ১০৭৮ ত কল কৰক।",
+    officerLoginToVerify: "পৰীক্ষাৰ বাবে বিষয়া প্ৰৱেশ কৰক",
+    continuousLearningTitle: "ধাৰাবাহিক প্ৰশিক্ষণ আৰু প্ৰত্যক্ষ প্ৰমাণ পেনেল",
+    retrainingPipelineHook: "এআই ম'ডেল পুনৰ প্ৰশিক্ষণ ব্যৱস্থা",
+    selectActiveAlert: "সক্ৰিয় সতৰ্কবাণী বাছক",
+    officerAnnotation: "বিষয়াৰ প্ৰত্যক্ষ পৰীক্ষা শ্ৰেণীবিভাজন",
+    observedRainfall: "প্ৰত্যক্ষ বৰষুণৰ পৰিমাণ (মিমি / ৪৮ ঘণ্টা)",
+    fieldVerificationNotes: "ক্ষেত্ৰ পৰীক্ষণৰ টোকা",
+    submitFeedback: "প্ৰত্যক্ষ প্ৰমাণ দাখিল কৰক",
+    confirmedTP: "প্ৰমাণিত (TP)",
+    falseAlarmFP: "ভুল সতৰ্কবাণী (FP)",
+    missedEventFN: "অনুপস্থিত ঘটনা (FN)",
+    signingAs: "স্বাক্ষৰকৰ্তা",
+    publicViewLoginPrompt: "ৰাজহুৱা দৰ্শন • চৰকাৰী নথিৰ বাবে বিষয়া হিচাপে প্ৰৱেশ কৰক",
+    broTrafficFeed: "BRO / যান-বাহন আৰক্ষী লাইভ খবৰ",
+    blockedCorridorsCount: "১ বন্ধ পথ",
+    strandedTrucks: "আবদ্ধ যোগান বাহন",
+    medicalOxygenConvoys: "চিকিৎসা অক্সিজেন কনভয়",
+    civilianFuelReserves: "ইন্ধন মজুত",
+    broEarthmovers: "BRO জেচিবি (JCB)",
+    hazardLabel: "বিপদ কাৰণ:",
+    clearanceEtaLabel: "পথ মুকলিৰ আনুমানিক সময়:",
+    nowcast6h: "৬ ঘণ্টাৰ নাওকাষ্ট",
+    extendedForecast: "২৪-৪৮ ঘণ্টাৰ বিস্তৃত আগজাননী",
+    peakIntensity: "সৰ্বোচ্চ ৬ ঘণ্টাৰ তীব্ৰতা",
+    soilMoisture: "মাটিৰ আৰ্দ্ৰতা সংপৃক্ততা",
+    cumulativeOutlook: "৪৮ ঘণ্টাৰ মুঠ বৰষুণ",
+    dopplerEcho: "ডপলাৰ ৰাডাৰ প্ৰতিধ্বনি",
+    jumpTo: "যাওক:",
+    fastApiLive: "FastAPI ইঞ্জিন: সক্ৰিয় (Port 8000)",
+    telemetryOffline: "টেলিমেট্ৰি: অফলাইন কেচ",
+    aiCauseExplanation: "এআই কাৰণ ব্যাখ্যা (TreeSHAP)",
+    slopeGradient: "ঢালৰ মাত্ৰা",
+    soilSaturation: "মাটিৰ সংপৃক্ততা",
+    insarCreep: "InSAR স্থানচ্যুতি",
+    sirenDispatched: "চাইৰেন আৰু বাৰ্তা সম্প্ৰচাৰ কৰা হ'ল"
   },
   brx: {
     title: "सान्जा-साहा ओनसोल (NER) हा बाग्लायनाय सिगां सांग्रांथि राहा",
@@ -230,7 +501,73 @@ export const translations: Record<Language, TranslationSchema> = {
     stopVoiceAlert: "राव दोनथ'",
     offlineBannerText: "अफलाइन मड जागासिनो (लोकेल मानसावगारि केच)",
     villagesIsolated: "फोनांजाब गैयै गामिफोर",
-    populationAffected: "जायगानि सुबुं अनजिमा"
+    populationAffected: "जायगानि सुबुं अनजिमा",
+    tacticalCommand: "थाखो कमाण्ड",
+    citizenSafeView: "नागरिक रैखा नुथाय",
+    publicSafetyView: "रायजो रैखा नुथाय",
+    citizenPortalTitle: "NER नागरिक हा बाग्लायनाय रैखा आरो दावबायनाय पर्टेल",
+    citizenPortalSubtitle: "गोरलै लामा खौरां, अखा सांग्रांथि आरो १-क्लिक खैफोद रिपोर्ट",
+    opconLevel: "अपकन थाखो-३: अखा बोथोर सांग्रांथि",
+    generateSitRep: "सोरखारि सिटरेप दान्थि",
+    shortcutsHint: "⌨ सर्टकाट: [१-५] डेक • [S] सिटरेप • [R] रिपोर्ट • [C] मड",
+    helplineTollFree: "📞 हेफाजाब नम्बर: १०७० / १०७८",
+    safetyAdvisoryTitle: "रायजो रैखा खौरां: हायेन जायगाफोरा रैखा • हाजो सायाव सांग्रां था",
+    safetyAdvisoryDesc: "सान्जा खासि हाजो आरो सा सिक्किमाव गोख्रों अखा। NH-10 लामायाव सांग्रांथि दिन्थिनायखौ मानि।",
+    officialSdrfAdvisory: "सोरखारि SDRF खौरां",
+    statCriticalHotspots: "गोख्रों खैफोद जायगाफोर",
+    statHotspotsSub: "+२ जोबोर गोख्रों थाखो",
+    statSectorsUnit: "ओनसोल",
+    statPrecipitation: "बांसिन ४८ घन्टा अखा",
+    statRainSub: "चेरापुन्जी AWS सिमा बारबाय",
+    statIoTHillNodes: "सक्रिय IoT हाजो नोडफोर",
+    statIoTUptime: "९९.४% सेन्सर टेलिमेट्रि जागासिनो",
+    statHybridAiEngine: "हाइब्रिड एआइ साननाय मोडल",
+    statAiSubOnline: "LSI + LSTM २-६ घन्टा सिगां खौरां",
+    statAiSubOffline: "लोकेल आरो केच साननाय",
+    vicinitySafetyTitle: "नोंथांनि जायगानि रैखा",
+    vicinitySafetyStatus: "गेजेर सांग्रांथि (हायेन मोजां)",
+    vicinitySafetyDesc: "गाहाय ओनसोलफोरा रैखाथि गोनां। हाजो लामायाव (NH-10, NH-29) थांब्ला लामा सांग्रांथिखौ नायग्रो।",
+    highwayCorridorsTitle: "गाहाय राजलामा लामाफोर",
+    highwayCorridorsStatus: "NH-10 लामा दालाय • NH-29 कन्भोय",
+    highwayCorridorsDesc: "NH-10 लामाया पानबु-मुंपु लामाजों जागासिनो। NH-6 (शिलंग-शिलचर) फिसा गारिनि थाखाय खुलि।",
+    emergencyAssistanceTitle: "खैफोद हेफाजाब",
+    emergencyAssistanceStatus: "NDRF आरो SDRF थियारि जाबाय",
+    emergencyAssistanceDesc: "हाफलों, गान्तोक आरो सहरायाव रैखाथि हान्जाफोर दं। १०७० एबा १०७८ आव कल खालाम।",
+    officerLoginToVerify: "नायबिजिरनो थाखाय अफिसार हाब",
+    continuousLearningTitle: "सोलोंगासिनो थानाय आरो साखि फिथाय पर्टेल",
+    retrainingPipelineHook: "एआइ मोडल फिन-सोलोंथाय पाइपलाइन",
+    selectActiveAlert: "जागासिनो थानाय सांग्रांथि सायख'",
+    officerAnnotation: "अफिसारनि साखि थाखो",
+    observedRainfall: "जायगानि अखा (मिमि / ४८ घन्टा)",
+    fieldVerificationNotes: "जायगा नायबिजिरनाय खौरां",
+    submitFeedback: "साखि खौरां हर",
+    confirmedTP: "थार (TP)",
+    falseAlarmFP: "नंखाय (FP)",
+    missedEventFN: "गोजावनाय (FN)",
+    signingAs: "फारि खालामग्रा",
+    publicViewLoginPrompt: "रायजो नुथाय • अफिसार हिसाबै हाब",
+    broTrafficFeed: "BRO / ट्राफिक पुलिस लाइभ खौरां",
+    blockedCorridorsCount: "१ बन्द लामा",
+    strandedTrucks: "थाथ'नाय सामोग्रि गारि",
+    medicalOxygenConvoys: "अक्सिजेन गारि हान्जा",
+    civilianFuelReserves: "थाव बफर",
+    broEarthmovers: "BRO अर्थमुभार (JCB)",
+    hazardLabel: "खैफोद जाहोन:",
+    clearanceEtaLabel: "लामा उदां जानाय सम:",
+    nowcast6h: "६ घन्टा सिगां खौरां",
+    extendedForecast: "२४-४८ घन्टा गोलाव खौरां",
+    peakIntensity: "बांसिन ६ घन्टा गोख्रोंथि",
+    soilMoisture: "हायाव दै गोनांथि",
+    cumulativeOutlook: "४८ घन्टा गासै अखा",
+    dopplerEcho: "डपलार राडार",
+    jumpTo: "थां:",
+    fastApiLive: "FastAPI इन्जिन: लाइभ (Port 8000)",
+    telemetryOffline: "टेलिमेट्रि: अफलाइन केच",
+    aiCauseExplanation: "एआइ जाहोन बेखेवनाय",
+    slopeGradient: "हाजो दाथाय",
+    soilSaturation: "हा संप्रिक्त",
+    insarCreep: "InSAR थाथाय",
+    sirenDispatched: "साइरेन आरो एसएमस हरबाय"
   },
   kha: {
     title: "Raid Bah NER Ka Jingmaham Bakloi Halor Ka Jingtwad Khyndew",
@@ -276,6 +613,72 @@ export const translations: Record<Language, TranslationSchema> = {
     stopVoiceAlert: "Sangeh ka Ktien",
     offlineBannerText: "Ka Trei Offline (La pynlang ha memory)",
     villagesIsolated: "Ki Shnong ba la sahkut",
-    populationAffected: "Ki Nongshongshnong ba shah ktah"
+    populationAffected: "Ki Nongshongshnong ba shah ktah",
+    tacticalCommand: "Tactical Command",
+    citizenSafeView: "Jingiohi Shngain ki Shnong",
+    publicSafetyView: "Jingiada ki Paidbah",
+    citizenPortalTitle: "NER Portal Jingiada bad Jingiaid Lyngba ki Shnong",
+    citizenPortalSubtitle: "Jingtip surok, jingmaham slap bad jingujor jingma kloi",
+    opconLevel: "OPCON KYRDAN-3: JINGSYNTIAT SLAP JUR",
+    generateSitRep: "Pynmih SitRep Sorkar",
+    shortcutsHint: "⌨ Shortcuts: [1-5] Decks • [S] SitRep • [R] Report • [C] Mode",
+    helplineTollFree: "📞 Helpline: 1070 / 1078 (Toll-Free)",
+    safetyAdvisoryTitle: "JINGMAHAM PAIDBAH: Ki Them ki shngain • Sumar ha ki riat bajrong",
+    safetyAdvisoryDesc: "Slap jur ha East Khasi Hills (Sohra) & North Sikkim. Bud ki dak surok ha NH-10.",
+    officialSdrfAdvisory: "Jingpynbna Sorkar SDRF",
+    statCriticalHotspots: "Ki Jaka ba kham Ma ha NER",
+    statHotspotsSub: "+2 Kham Ma Jur",
+    statSectorsUnit: "Ki Bynta",
+    statPrecipitation: "Slap ba jur tam 48 Kynta",
+    statRainSub: "La palat ka rukom Sohra AWS",
+    statIoTHillNodes: "Ki IoT Node ba Trei ha Lum",
+    statIoTUptime: "99.4% Uptime ki Sensor Telemetry",
+    statHybridAiEngine: "Hybrid AI Inference Engine",
+    statAiSubOnline: "Static LSI + LSTM 2-6h Nowcast",
+    statAiSubOffline: "Edge Heuristics & Cached Data",
+    vicinitySafetyTitle: "Jingshngain ha Jaka jong Phi",
+    vicinitySafetyStatus: "Jingsyntiat Pdeng (Ki Them Shngain)",
+    vicinitySafetyDesc: "Ki jaka shong ha them ki shngain. Ki nongleit surok bah lum (NH-10, NH-29) ki dei ban khmih bniah ia ki jingmaham shwa ban mih.",
+    highwayCorridorsTitle: "Ki Surok Bah ba Kongsan",
+    highwayCorridorsStatus: "NH-10 Phai da kawei • NH-29 Convoy",
+    highwayCorridorsDesc: "NH-10 la phai lyngba surok Panbu-Mungpoo. NH-6 (Shillong-Silchar) plie na ka bynta kali rit.",
+    emergencyAssistanceTitle: "Jingiarap Kyrkieh",
+    emergencyAssistanceStatus: "NDRF & SDRF ki la pynkhreh lpa",
+    emergencyAssistanceDesc: "Ki kynhun iarap kyrkieh ki la don ha Haflong, Gangtok bad Sohra. Phone ha 1070 (Jylla) ne 1078 (NDMA) na ka bynta ban pyllait im.",
+    officerLoginToVerify: "Bsut ki Officer ban Pynskhem",
+    continuousLearningTitle: "Continuous Learning & Ground-Truth Feedback",
+    retrainingPipelineHook: "AI Model Retraining Pipeline Hook",
+    selectActiveAlert: "Jied ia ka Jingmaham ba Trei",
+    officerAnnotation: "Jingbatai Shisha ki Officer",
+    observedRainfall: "Jinghap Slap ba lap (mm / 48 kynta)",
+    fieldVerificationNotes: "Ki Jingthoh na Madan",
+    submitFeedback: "Phah ia ka Jingpynskhem",
+    confirmedTP: "La pynskhem (TP)",
+    falseAlarmFP: "Jingmaham Lamler (FP)",
+    missedEventFN: "Jingjia ba Jah (FN)",
+    signingAs: "Nongsoi",
+    publicViewLoginPrompt: "Paidbah • Bsut kum u Officer ban soi ia ka rekod",
+    broTrafficFeed: "BRO / Traffic Police Live Feed",
+    blockedCorridorsCount: "1 Surok ba la khang",
+    strandedTrucks: "Ki Kali kit mar ba sahkut",
+    medicalOxygenConvoys: "Ki Kali Kit Oxygen Dawai",
+    civilianFuelReserves: "Putei Petrol & Diesel",
+    broEarthmovers: "Ki JCB BRO",
+    hazardLabel: "Daw Jingma:",
+    clearanceEtaLabel: "Por ban plie biang:",
+    nowcast6h: "6 Kynta Nowcast",
+    extendedForecast: "24-48 Kynta Jingpynkhreh",
+    peakIntensity: "Jingjur slap 6 kynta",
+    soilMoisture: "Jingsngem ka Khyndew",
+    cumulativeOutlook: "Jinghap Slap Baroh 48 Kynta",
+    dopplerEcho: "Doppler Radar Echo",
+    jumpTo: "Leit kloi:",
+    fastApiLive: "FastAPI Engine: Live",
+    telemetryOffline: "Telemetry: Offline Cache",
+    aiCauseExplanation: "AI Cause Explanation",
+    slopeGradient: "Jingriat ka Lum",
+    soilSaturation: "Jingsngem Khyndew",
+    insarCreep: "InSAR Creep",
+    sirenDispatched: "La pynbna ia ka Siren & SMS"
   }
 };

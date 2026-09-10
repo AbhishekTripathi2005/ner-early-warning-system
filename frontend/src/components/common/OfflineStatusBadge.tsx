@@ -100,10 +100,10 @@ export const OfflineStatusBadge: React.FC<OfflineStatusBadgeProps> = ({ onSyncRe
         </div>
 
         <div className="flex items-center space-x-2 shrink-0 text-xs">
-          <span className="bg-black/50 px-2.5 py-1 rounded-md border border-amber-500/30 text-amber-300 font-mono text-[11px] flex items-center gap-1.5">
+          <div className="bg-black/50 px-2.5 py-1 rounded-md border border-amber-500/30 text-amber-300 font-mono text-[11px] flex items-center gap-1.5">
             <Database className="w-3 h-3 text-amber-400" />
             <span>Queued Reports: <b>{pendingCount}</b></span>
-          </span>
+          </div>
           <span className="text-[10px] text-amber-300/70 uppercase tracking-wider">
             Auto-syncs on reconnect
           </span>
