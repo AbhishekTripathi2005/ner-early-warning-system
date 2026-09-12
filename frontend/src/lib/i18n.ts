@@ -118,6 +118,10 @@ export interface TranslationSchema {
   soilSaturation: string;
   insarCreep: string;
   sirenDispatched: string;
+  // Live Telemetry Explorer
+  liveTelemetryTab: string;
+  liveTelemetryTitle: string;
+  liveTelemetrySubtitle: string;
 }
 
 export const translations: Record<Language, TranslationSchema> = {
@@ -231,7 +235,10 @@ export const translations: Record<Language, TranslationSchema> = {
     slopeGradient: "Slope Gradient",
     soilSaturation: "Soil Saturation",
     insarCreep: "InSAR Creep",
-    sirenDispatched: "SIREN & SMS BROADCAST DISPATCHED"
+    sirenDispatched: "SIREN & SMS BROADCAST DISPATCHED",
+    liveTelemetryTab: "Live Station Telemetry",
+    liveTelemetryTitle: "Live Meteorological & Geotechnical Explorer",
+    liveTelemetrySubtitle: "Real-Time WMO/IMD Global Weather Station & Topographic Ingestion Feed"
   },
   hi: {
     title: "उत्तर-पूर्वी क्षेत्र (NER) भूस्खलन पूर्व चेतावनी एवं जोखिम निगरानी प्रणाली",
@@ -343,7 +350,10 @@ export const translations: Record<Language, TranslationSchema> = {
     slopeGradient: "ढलान प्रवणता",
     soilSaturation: "मिट्टी संतृप्ति",
     insarCreep: "इनसार विस्थापन (InSAR)",
-    sirenDispatched: "आपातकालीन सायरन व एसएमएस प्रसारित किया गया"
+    sirenDispatched: "आपातकालीन सायरन व एसएमएस प्रसारित किया गया",
+    liveTelemetryTab: "लाइव वेदर एवं सेंसर एक्सप्लोरर",
+    liveTelemetryTitle: "लाइव मौसम एवं भू-तकनीकी टेलीमेट्री एक्सप्लोरर",
+    liveTelemetrySubtitle: "रियल-टाइम WMO/IMD स्टेशन हैंडशेक एवं स्थलाकृतिक इनजेशन फीड"
   },
   as: {
     title: "উত্তৰ-পূব অঞ্চল (NER) ভূমিস্খলন প্ৰাৰম্ভিক সতৰ্কবাণী ব্যৱস্থা",
@@ -455,7 +465,10 @@ export const translations: Record<Language, TranslationSchema> = {
     slopeGradient: "ঢালৰ মাত্ৰা",
     soilSaturation: "মাটিৰ সংপৃক্ততা",
     insarCreep: "InSAR স্থানচ্যুতি",
-    sirenDispatched: "চাইৰেন আৰু বাৰ্তা সম্প্ৰচাৰ কৰা হ'ল"
+    sirenDispatched: "চাইৰেন আৰু বাৰ্তা সম্প্ৰচাৰ কৰা হ'ল",
+    liveTelemetryTab: "লাইভ বতৰ আৰু সংবেদক সন্ধান",
+    liveTelemetryTitle: "লাইভ বতৰ আৰু ভূ-কাৰিকৰী টেলিমেট্ৰি সন্ধান",
+    liveTelemetrySubtitle: "ৰিয়েল-টাইম WMO/IMD ষ্টেচন হেণ্ডশ্বেক আৰু ভূ-সংস্থানিক তথ্য"
   },
   brx: {
     title: "सान्जा-साहा ओनसोल (NER) हा बाग्लायनाय सिगां सांग्रांथि राहा",
@@ -567,7 +580,10 @@ export const translations: Record<Language, TranslationSchema> = {
     slopeGradient: "हाजो दाथाय",
     soilSaturation: "हा संप्रिक्त",
     insarCreep: "InSAR थाथाय",
-    sirenDispatched: "साइरेन आरो एसएमस हरबाय"
+    sirenDispatched: "साइरेन आरो एसएमस हरबाय",
+    liveTelemetryTab: "लाइभ बारहावा आर' सेन्सर",
+    liveTelemetryTitle: "लाइभ बारहावा आर' हाजो टेलिमेट्रि",
+    liveTelemetrySubtitle: "WMO/IMD हाबनाय आरो लाइभ सिस्टेम"
   },
   kha: {
     title: "Raid Bah NER Ka Jingmaham Bakloi Halor Ka Jingtwad Khyndew",
@@ -679,6 +695,9 @@ export const translations: Record<Language, TranslationSchema> = {
     slopeGradient: "Jingriat ka Lum",
     soilSaturation: "Jingsngem Khyndew",
     insarCreep: "InSAR Creep",
-    sirenDispatched: "La pynbna ia ka Siren & SMS"
+    sirenDispatched: "La pynbna ia ka Siren & SMS",
+    liveTelemetryTab: "Jingtip Suinbneng ba Live",
+    liveTelemetryTitle: "Ka Jingkhmih Suinbneng bad Telemetry ba Live",
+    liveTelemetrySubtitle: "WMO/IMD Live Handshake bad Jingtip Khyndew na Satellites"
   }
 };

@@ -26,6 +26,13 @@ export interface QueuedCitizenReport {
   aiCorrelationScore?: number;
   aiCorrelationNote?: string;
   isOfflineQueued: boolean;
+  slope?: number;
+  rain48?: number;
+  soil?: number;
+  insar?: number;
+  elevation?: number;
+  isLiveTelemetry?: boolean;
+  telemetrySource?: string;
 }
 
 export interface OfflineFeedbackLog {

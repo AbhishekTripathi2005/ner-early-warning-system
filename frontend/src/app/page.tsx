@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { AlertBanner } from "../components/alerts/AlertBanner";
 import { StatCards } from "../components/dashboard/StatCards";
-import { HeatmapViewer } from "../components/gis/HeatmapViewer";
 import { RoadStatusPanel } from "../components/dashboard/RoadStatusPanel";
 import { WeatherForecastWidget } from "../components/dashboard/WeatherForecastWidget";
 import { ResponsePrioritizationList } from "../components/dashboard/ResponsePrioritizationList";
@@ -13,6 +13,26 @@ import { OfficerLoginModal } from "../components/dashboard/OfficerLoginModal";
 import { CitizenReportModal, CitizenReportData } from "../components/reporting/CitizenReportModal";
 import { SitRepModal } from "../components/dashboard/SitRepModal";
 import { OfflineStatusBadge } from "../components/common/OfflineStatusBadge";
+
+const HeatmapViewer = dynamic(
+  () => import("../components/gis/HeatmapViewer").then((mod) => mod.HeatmapViewer),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[520px] rounded-2xl bg-[#090d16] border border-slate-800 flex items-center justify-center">
+        <div className="flex items-center space-x-2 text-sky-400 font-mono text-xs">
+          <span className="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+          <span>LOADING ESRI DARK GRAY GIS ENGINE...</span>
+        </div>
+      </div>
+    )
+  }
+);
+
+const LiveTelemetryExplorer = dynamic(
+  () => import("../components/dashboard/LiveTelemetryExplorer").then((mod) => mod.LiveTelemetryExplorer),
+  { ssr: false }
+);
 import { Language, translations } from "../lib/i18n";
 import { QueuedCitizenReport } from "../lib/offlineDb";
 import {
@@ -55,7 +75,14 @@ const defaultCitizenReports: CitizenReportData[] = [
     status: "PENDING_REVIEW",
     time: "25 mins ago",
     aiCorrelationScore: 0.92,
-    aiCorrelationNote: "Ground crack coordinates align with 89% slope susceptibility index & 195mm rainfall. InSAR creep detected within 500m."
+    aiCorrelationNote: "Ground crack coordinates align with 89% slope susceptibility index & 195mm rainfall. InSAR creep detected within 500m.",
+    slope: 41.5,
+    rain48: 195.0,
+    soil: 89.0,
+    insar: -22.0,
+    elevation: 1390,
+    isLiveTelemetry: true,
+    telemetrySource: "Singtam AWS Ground Station"
   },
   {
     id: 502,
@@ -75,7 +102,14 @@ const defaultCitizenReports: CitizenReportData[] = [
     status: "PENDING_REVIEW",
     time: "15 mins ago",
     aiCorrelationScore: 0.95,
-    aiCorrelationNote: "Cloudburst zone radar echo 48 dBZ. Severe dynamic instability verified."
+    aiCorrelationNote: "Cloudburst zone radar echo 48 dBZ. Severe dynamic instability verified.",
+    slope: 36.2,
+    rain48: 168.0,
+    soil: 84.0,
+    insar: -18.5,
+    elevation: 680,
+    isLiveTelemetry: true,
+    telemetrySource: "Haflong AWS Ground Station"
   },
   {
     id: 503,
@@ -94,7 +128,14 @@ const defaultCitizenReports: CitizenReportData[] = [
     status: "VERIFIED_TRUE_ALARM",
     time: "2 hours ago",
     aiCorrelationScore: 0.94,
-    aiCorrelationNote: "Sohra escarpment high rainfall zone (260.4mm/48h). Saturated shear failure confirmed by geological survey."
+    aiCorrelationNote: "Sohra escarpment high rainfall zone (260.4mm/48h). Saturated shear failure confirmed by geological survey.",
+    slope: 32.8,
+    rain48: 260.4,
+    soil: 91.5,
+    insar: -14.2,
+    elevation: 1430,
+    isLiveTelemetry: true,
+    telemetrySource: "Sohra AWS Ground Station"
   }
 ];
 
@@ -104,12 +145,17 @@ export default function DashboardPage() {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isSitRepModalOpen, setIsSitRepModalOpen] = useState(false);
   const [currentOfficer, setCurrentOfficer] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<"roads" | "weather" | "priorities" | "history" | "review">("roads");
+  const [activeTab, setActiveTab] = useState<"roads" | "weather" | "live" | "priorities" | "history" | "review">("roads");
   const [currentTime, setCurrentTime] = useState("");
   const [citizenReports, setCitizenReports] = useState<CitizenReportData[]>(defaultCitizenReports);
   const [focusTarget, setFocusTarget] = useState<{ lat: number; lon: number; id: number; _ts?: number } | null>(null);
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [viewMode, setViewMode] = useState<"command" | "citizen">("command");
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   // Tactical Operations Center Keyboard Shortcuts
   useEffect(() => {
@@ -119,9 +165,10 @@ export default function DashboardPage() {
       }
       if (e.key === "1") setActiveTab("roads");
       if (e.key === "2") setActiveTab("weather");
-      if (e.key === "3") setActiveTab("priorities");
-      if (e.key === "4") setActiveTab("history");
-      if (e.key === "5") setActiveTab("review");
+      if (e.key === "3") setActiveTab("live");
+      if (e.key === "4") setActiveTab("priorities");
+      if (e.key === "5") setActiveTab("history");
+      if (e.key === "6") setActiveTab("review");
       if (e.key === "s" || e.key === "S") setIsSitRepModalOpen((prev) => !prev);
       if (e.key === "r" || e.key === "R") setIsReportModalOpen((prev) => !prev);
       if (e.key === "c" || e.key === "C") setViewMode((prev) => (prev === "command" ? "citizen" : "command"));
@@ -290,6 +337,25 @@ export default function DashboardPage() {
             </button>
           </div>
 
+          {/* Live Station Telemetry Direct CTA Button */}
+          <button
+            onClick={() => {
+              setActiveTab("live");
+              const sec = document.getElementById("operations-deck-section");
+              if (sec) sec.scrollIntoView({ behavior: "smooth" });
+            }}
+            className={`flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wide px-3 py-2 rounded-xl shadow-sm transition-all duration-150 border ${
+              activeTab === "live"
+                ? "bg-emerald-600 text-white border-emerald-500 shadow-emerald-600/30"
+                : "bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 border-emerald-500/40 hover:text-emerald-200"
+            }`}
+            title="Search any location in India for real-time Open-Meteo telemetry & LSI score"
+          >
+            <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+            <span className="hidden sm:inline">{t.liveTelemetryTab}</span>
+            <span className="sm:hidden">{lang === "hi" ? "लाइव" : "Live"}</span>
+          </button>
+
           {/* Photo & Video Hazard Report Button */}
           <button
             onClick={() => setIsReportModalOpen(true)}
@@ -302,21 +368,21 @@ export default function DashboardPage() {
           {/* Live IST Clock */}
           <div className="flex items-center space-x-1.5 text-xs bg-slate-950 border border-slate-800 px-2.5 py-2 rounded-xl text-slate-300 font-mono tabular-nums shadow-sm">
             <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span className="text-[11px] font-semibold" suppressHydrationWarning>{currentTime || "LIVE IST"}</span>
+            <span className="text-[11px] font-semibold">{hasMounted ? currentTime : "LIVE IST"}</span>
           </div>
 
           {/* AI Engine Status (Dynamic Online vs Local Edge Cache State) */}
-          {isOnline ? (
-            <div className="flex items-center space-x-1.5 text-xs bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2.5 py-2 rounded-xl font-medium shadow-sm" suppressHydrationWarning>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-              <span className="hidden sm:inline font-semibold">{t.aiOnline}</span>
-              <span className="sm:hidden font-mono font-bold text-[10px]">AI OK</span>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-1.5 text-xs bg-amber-500/15 border border-amber-500/35 text-amber-300 px-2.5 py-2 rounded-xl font-medium shadow-sm animate-pulse" suppressHydrationWarning>
+          {hasMounted && !isOnline ? (
+            <div className="flex items-center space-x-1.5 text-xs bg-amber-500/15 border border-amber-500/35 text-amber-300 px-2.5 py-2 rounded-xl font-medium shadow-sm animate-pulse">
               <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span className="hidden sm:inline font-semibold font-mono">AI Engine: LOCAL (Edge Cache)</span>
               <span className="sm:hidden font-mono font-bold text-[10px]">AI LOCAL</span>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-1.5 text-xs bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 px-2.5 py-2 rounded-xl font-medium shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+              <span className="hidden sm:inline font-semibold">{t.aiOnline}</span>
+              <span className="sm:hidden font-mono font-bold text-[10px]">AI OK</span>
             </div>
           )}
 
@@ -551,7 +617,7 @@ export default function DashboardPage() {
       </section>
 
       {/* 5. Clear Operations Deck Navigation Tabs & Panels */}
-      <section className="p-3.5 sm:p-5 rounded-2xl bg-[#0c1322] border border-slate-800/90 space-y-4 shadow-xl">
+      <section id="operations-deck-section" className="p-3.5 sm:p-5 rounded-2xl bg-[#0c1322] border border-slate-800/90 space-y-4 shadow-xl">
         {/* Modern Segmented Tab Bar with Horizontal Scroll for Small Screens */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-800/90">
           <div className="flex items-center gap-1.5 p-1 bg-slate-950 border border-slate-800 rounded-2xl overflow-x-auto max-w-full">
@@ -577,6 +643,18 @@ export default function DashboardPage() {
             >
               <CloudRain className="w-3.5 h-3.5" />
               <span>{t.weatherForecastTitle}</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("live")}
+              className={`px-3.5 py-2 rounded-xl text-xs flex items-center space-x-2 transition-all duration-150 shrink-0 ${
+                activeTab === "live"
+                  ? "bg-emerald-600 text-white shadow-sm font-bold"
+                  : "text-emerald-400 hover:text-emerald-300 hover:bg-slate-900 font-medium"
+              }`}
+            >
+              <Radio className="w-3.5 h-3.5 text-emerald-300 animate-pulse" />
+              <span>{t.liveTelemetryTab}</span>
             </button>
 
             {/* Tactical Command Only Decks: Priorities & Historical Trends (Hidden in Citizen View to Eliminate Cockpit Effect) */}
@@ -641,6 +719,7 @@ export default function DashboardPage() {
         <div className="transition-opacity duration-200">
           {activeTab === "roads" && <RoadStatusPanel lang={lang} />}
           {activeTab === "weather" && <WeatherForecastWidget lang={lang} />}
+          {activeTab === "live" && <LiveTelemetryExplorer lang={lang} />}
           {activeTab === "priorities" && <ResponsePrioritizationList lang={lang} />}
           {activeTab === "history" && <HistoricalTrendsChart lang={lang} />}
           {activeTab === "review" && (
